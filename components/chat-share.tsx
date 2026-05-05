@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from 'react'
 
-import { Share } from 'lucide-react'
+import { Icon } from '@iconify/react'
 import { toast } from 'sonner'
 
 import { shareChat } from '@/lib/actions/chat'
@@ -11,13 +11,13 @@ import { cn } from '@/lib/utils'
 
 import { Button } from './ui/button'
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger
 } from './ui/dialog'
 import { Spinner } from './ui/spinner'
 
@@ -77,7 +77,7 @@ export function ChatShare({ chatId, className }: ChatShareProps) {
             variant={'ghost'}
             onClick={() => setOpen(true)}
           >
-            <Share size={14} />
+            <Icon icon="solar:share-bold" className="size-3.5" />
           </Button>
         </DialogTrigger>
         <DialogContent>

@@ -4,8 +4,6 @@ import { useState } from 'react'
 
 import { Icon } from '@iconify/react'
 
-import { cn } from '@/lib/utils'
-
 const faqs = [
   {
     q: 'Is Morphic free to use?',
@@ -33,40 +31,32 @@ export function FaqSection() {
   const [open, setOpen] = useState<number | null>(null)
 
   return (
-    <section className="relative px-6 py-24">
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-muted/20" />
-
-      <div className="mx-auto max-w-3xl">
-        {/* Header */}
-        <div className="mb-12 text-center">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+    <section className="bg-background px-6 py-[80px]">
+      <div className="mx-auto max-w-[720px]">
+        {/* Section label */}
+        <div className="mb-4 flex justify-center">
+          <span className="text-[11px] font-semibold uppercase tracking-[0.88px] text-muted-foreground">
             FAQ
-          </p>
-          <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Common questions.
-          </h2>
+          </span>
         </div>
 
+        {/* Section head */}
+        <h2 className="mb-12 text-center text-[26px] sm:text-[36px] font-normal leading-[1.2] tracking-[-0.72px] text-foreground">
+          Common questions.
+        </h2>
+
         {/* Items */}
-        <div className="space-y-2">
+        <div className="divide-y divide-border border-t border-b border-border">
           {faqs.map((faq, i) => {
             const isOpen = open === i
             return (
-              <div
-                key={i}
-                className={cn(
-                  'rounded-xl border transition-all',
-                  isOpen
-                    ? 'border-border bg-card shadow-sm'
-                    : 'border-border/50 bg-card/40 hover:border-border/80 hover:bg-card/60'
-                )}
-              >
+              <div key={i}>
                 <button
                   onClick={() => setOpen(isOpen ? null : i)}
-                  className="flex w-full items-center justify-between px-5 py-4 text-left gap-4"
+                  className="flex w-full items-center justify-between px-0 py-5 text-left gap-4"
                   aria-expanded={isOpen}
                 >
-                  <span className="font-medium text-foreground text-sm leading-snug">
+                  <span className="text-[16px] font-medium leading-[1.4] text-foreground">
                     {faq.q}
                   </span>
                   <Icon
@@ -75,12 +65,12 @@ export function FaqSection() {
                         ? 'solar:alt-arrow-up-bold'
                         : 'solar:alt-arrow-down-bold'
                     }
-                    className="size-4 shrink-0 text-muted-foreground transition-transform"
+                    className="size-4 shrink-0 text-muted-foreground"
                   />
                 </button>
                 {isOpen && (
-                  <div className="px-5 pb-4">
-                    <p className="text-sm text-muted-foreground leading-relaxed">
+                  <div className="pb-5">
+                    <p className="text-[14px] leading-[1.5] text-muted-foreground">
                       {faq.a}
                     </p>
                   </div>

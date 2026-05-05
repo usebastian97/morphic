@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useState } from 'react'
 
-import { Eye, EyeOff } from 'lucide-react'
+import { Icon } from '@iconify/react'
 
 import { Input, InputProps } from '@/components/ui/input'
 
@@ -25,11 +25,7 @@ const PasswordInput = React.forwardRef<HTMLInputElement, InputProps>(
           className="h-full px-3 py-2 hover:bg-transparent absolute right-0 flex items-center justify-center"
           onClick={() => setShowPassword(!showPassword)}
         >
-          {showPassword ? (
-            <EyeOff className="h-4 w-4" />
-          ) : (
-            <Eye className="h-4 w-4" />
-          )}
+          <Icon icon={showPassword ? 'solar:eye-closed-bold' : 'solar:eye-bold'} className="h-4 w-4" />
         </Button>
       </div>
     )

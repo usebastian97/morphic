@@ -2,34 +2,34 @@
 'use client'
 
 import {
-  type Dispatch,
-  type SetStateAction,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState
+    type Dispatch,
+    type SetStateAction,
+    useCallback,
+    useEffect,
+    useMemo,
+    useState
 } from 'react'
 
-import { Images } from 'lucide-react'
+
+import { Icon } from '@iconify/react'
 
 import { SearchResultImage } from '@/lib/types'
 
 import {
-  Carousel,
-  type CarouselApi,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious
+    Carousel,
+    type CarouselApi,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious
 } from '@/components/ui/carousel'
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger
 } from '@/components/ui/dialog'
 
 import { ImageCreditOverlay } from '@/components/image-credit-overlay'
@@ -311,7 +311,7 @@ export const SearchResultsImageSection: React.FC<
                   index === imageSubset.length - 1 &&
                   filteredCount > 1 && (
                     <div className="absolute bottom-1.5 right-1.5 bg-black/40 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-full flex items-center gap-1">
-                      <Images size={14} />
+                      <Icon icon="solar:gallery-bold" className="size-3.5" />
                       <span>{filteredCount}</span>
                     </div>
                   )}

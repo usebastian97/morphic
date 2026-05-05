@@ -1,13 +1,13 @@
 'use client'
 
-import { useMemo, useState } from 'react'
 import Image from 'next/image'
+import { useMemo, useState } from 'react'
 
-import { Check, ChevronDown } from 'lucide-react'
+import { Icon } from '@iconify/react'
 
 import {
-  MODEL_SELECTION_COOKIE,
-  serializeModelSelectionCookie
+    MODEL_SELECTION_COOKIE,
+    serializeModelSelectionCookie
 } from '@/lib/config/model-selection-cookie'
 import { ModelSelectorData } from '@/lib/types/model-selector'
 import { Model } from '@/lib/types/models'
@@ -16,12 +16,12 @@ import { setCookie } from '@/lib/utils/cookies'
 
 import { Button } from './ui/button'
 import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList
 } from './ui/command'
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 
@@ -124,7 +124,8 @@ export function ModelSelectorClient({ data }: ModelSelectorClientProps) {
           <span className="truncate max-w-40 text-xs font-medium">
             {selectedModel.name}
           </span>
-          <ChevronDown
+          <Icon
+            icon="solar:alt-arrow-down-bold"
             className={cn(
               'h-3 w-3 ml-0.5 opacity-50 transition-transform duration-200',
               open && 'rotate-180'
@@ -164,7 +165,8 @@ export function ModelSelectorClient({ data }: ModelSelectorClientProps) {
                       }}
                       className="cursor-pointer"
                     >
-                      <Check
+                      <Icon
+                        icon="solar:check-bold"
                         className={cn(
                           'h-4 w-4',
                           isSelected ? 'opacity-100' : 'opacity-0'

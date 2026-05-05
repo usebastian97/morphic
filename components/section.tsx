@@ -2,24 +2,14 @@
 
 import React from 'react'
 
-import {
-  BookCheck,
-  Check,
-  File,
-  FileText,
-  Film,
-  Image,
-  MessageCircleMore,
-  Repeat2,
-  Search
-} from 'lucide-react'
+import { Icon } from '@iconify/react'
 
 import { cn } from '@/lib/utils'
 
+import { ToolBadge } from './tool-badge'
 import { Badge } from './ui/badge'
 import { Separator } from './ui/separator'
 import { StatusIndicator } from './ui/status-indicator'
-import { ToolBadge } from './tool-badge'
 
 type SectionProps = {
   children: React.ReactNode
@@ -42,32 +32,31 @@ export const Section: React.FC<SectionProps> = ({
   let type: 'text' | 'badge' = 'text'
   switch (title) {
     case 'Images':
-      // eslint-disable-next-line jsx-a11y/alt-text
-      icon = <Image size={iconSize} className={iconClassName} />
+      icon = <Icon icon="solar:gallery-bold" className={iconClassName} style={{ fontSize: iconSize }} />
       break
     case 'Videos':
-      icon = <Film size={iconSize} className={iconClassName} />
+      icon = <Icon icon="solar:video-library-bold" className={iconClassName} style={{ fontSize: iconSize }} />
       type = 'badge'
       break
     case 'Sources':
-      icon = <FileText size={iconSize} className={iconClassName} />
+      icon = <Icon icon="solar:document-text-bold" className={iconClassName} style={{ fontSize: iconSize }} />
       type = 'badge'
       break
     case 'Answer':
-      icon = <BookCheck size={iconSize} className={iconClassName} />
+      icon = <Icon icon="solar:book-bookmark-bold" className={iconClassName} style={{ fontSize: iconSize }} />
       break
     case 'Related':
-      icon = <Repeat2 size={iconSize} className={iconClassName} />
+      icon = <Icon icon="solar:restart-bold" className={iconClassName} style={{ fontSize: iconSize }} />
       break
     case 'Follow-up':
-      icon = <MessageCircleMore size={iconSize} className={iconClassName} />
+      icon = <Icon icon="solar:chat-round-dots-bold" className={iconClassName} style={{ fontSize: iconSize }} />
       break
     case 'Content':
-      icon = <File size={iconSize} className={iconClassName} />
+      icon = <Icon icon="solar:file-bold" className={iconClassName} style={{ fontSize: iconSize }} />
       type = 'badge'
       break
     default:
-      icon = <Search size={iconSize} className={iconClassName} />
+      icon = <Icon icon="solar:magnifer-bold" className={iconClassName} style={{ fontSize: iconSize }} />
   }
 
   return (
@@ -120,7 +109,7 @@ export function ToolArgsSection({
       </div>
       {number && number > 0 && (
         <div className="shrink-0">
-          <StatusIndicator icon={Check} iconClassName="text-green-500">
+          <StatusIndicator icon="solar:check-bold" iconClassName="text-green-500">
             {number} results
           </StatusIndicator>
         </div>

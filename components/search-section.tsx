@@ -1,7 +1,7 @@
 'use client'
 
 import { UseChatHelpers } from '@ai-sdk/react'
-import { Check, Search as SearchIcon } from 'lucide-react'
+import { Icon } from '@iconify/react'
 
 import type { SearchResults as TypeSearchResults } from '@/lib/types'
 import type { ToolPart, UIDataTypes, UIMessage, UITools } from '@/lib/types/ai'
@@ -9,7 +9,6 @@ import { cn } from '@/lib/utils'
 
 import { useArtifact } from '@/components/artifact/artifact-context'
 
-import { StatusIndicator } from './ui/status-indicator'
 import { CollapsibleMessage } from './collapsible-message'
 import { SearchSkeleton } from './default-skeleton'
 import ProcessHeader from './process-header'
@@ -17,9 +16,10 @@ import { SearchResults } from './search-results'
 import { SearchResultsImageSection } from './search-results-image'
 import { Section } from './section'
 import { SourceFavicons } from './source-favicons'
+import { StatusIndicator } from './ui/status-indicator'
 import {
-  createVideoSearchResults,
-  VideoSearchResults
+    createVideoSearchResults,
+    VideoSearchResults
 } from './video-search-results'
 
 interface SearchSectionProps {
@@ -75,14 +75,14 @@ export function SearchSection({
       ariaExpanded={isOpen}
       label={
         <div className="flex items-center gap-2 min-w-0 overflow-hidden">
-          <SearchIcon className="h-4 w-4 shrink-0 text-muted-foreground" />
+          <Icon icon="solar:magnifer-bold" className="h-4 w-4 shrink-0 text-muted-foreground" />
           <span className="truncate block min-w-0 max-w-full">{`${query}${includeDomainsString}`}</span>
         </div>
       }
       meta={
         searchResults && totalResults > 0 ? (
           <div className="flex items-center gap-2">
-            <StatusIndicator icon={Check} iconClassName="text-green-500">
+            <StatusIndicator icon="solar:check-bold" iconClassName="text-green-500">
               {totalResults} results
             </StatusIndicator>
             {searchResults.results && searchResults.results.length > 0 && (

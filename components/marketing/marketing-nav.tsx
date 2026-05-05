@@ -1,54 +1,40 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { useState } from 'react'
 
 import { Icon } from '@iconify/react'
 
 import { useHasUser } from '@/lib/contexts/user-context'
-import { cn } from '@/lib/utils'
 
 import { IconLogo } from '@/components/ui/icons'
 
 export function MarketingNav() {
-  const [scrolled, setScrolled] = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(false)
   const hasUser = useHasUser()
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 10)
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
-
   return (
-    <header
-      className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-        scrolled
-          ? 'bg-background/80 backdrop-blur-md border-b border-border/60 shadow-xs'
-          : 'bg-transparent'
-      )}
-    >
-      <div className="mx-auto max-w-6xl px-6 h-16 flex items-center justify-between">
-        {/* Logo */}
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-border h-16">
+      <div className="mx-auto max-w-[1200px] px-6 h-full flex items-center justify-between">
+        {/* Logo / wordmark */}
         <Link href="/" className="flex items-center gap-2 select-none">
-          <IconLogo className="size-6" />
-          <span className="font-semibold text-base tracking-tight">
+          <IconLogo className="size-5 text-primary" />
+          <span className="text-[14px] font-medium text-foreground tracking-tight">
             Morphic
           </span>
         </Link>
 
-        {/* Nav links */}
-        <nav className="hidden md:flex items-center gap-6 text-sm text-muted-foreground">
+        {/* Nav links — desktop */}
+        <nav className="hidden md:flex items-center gap-6">
           <Link
             href="#features"
-            className="hover:text-foreground transition-colors"
+            className="text-[14px] font-medium text-muted-foreground hover:text-foreground transition-colors"
           >
             Features
           </Link>
           <Link
             href="#how-it-works"
-            className="hover:text-foreground transition-colors"
+            className="text-[14px] font-medium text-muted-foreground hover:text-foreground transition-colors"
           >
             How it works
           </Link>
@@ -56,7 +42,7 @@ export function MarketingNav() {
             href="https://github.com/miurla/morphic"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-foreground transition-colors flex items-center gap-1"
+            className="text-[14px] font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5"
           >
             <Icon icon="solar:code-bold" className="size-3.5" />
             GitHub
@@ -64,11 +50,11 @@ export function MarketingNav() {
         </nav>
 
         {/* CTAs */}
-        <div className="flex items-center gap-2">
+        <div className="hidden md:flex items-center gap-2">
           {hasUser ? (
             <Link
               href="/chat"
-              className="inline-flex items-center gap-1.5 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+              className="inline-flex items-center gap-1.5 rounded-[8px] bg-primary px-[18px] py-[10px] text-[14px] font-medium leading-none text-primary-foreground hover:bg-[#d04200] transition-colors"
             >
               Go to app
               <Icon icon="solar:alt-arrow-right-bold" className="size-3.5" />
@@ -77,13 +63,13 @@ export function MarketingNav() {
             <>
               <Link
                 href="/auth/login"
-                className="inline-flex items-center px-3 py-2 text-sm font-medium text-foreground/70 hover:text-foreground transition-colors rounded-md hover:bg-accent"
+                className="inline-flex items-center px-3 py-2 text-[14px] font-medium text-muted-foreground hover:text-foreground transition-colors rounded-[8px] hover:bg-accent"
               >
                 Sign in
               </Link>
               <Link
                 href="/chat"
-                className="inline-flex items-center gap-1.5 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+                className="inline-flex items-center gap-1.5 rounded-[8px] bg-primary px-[18px] py-[10px] text-[14px] font-medium leading-none text-primary-foreground hover:bg-[#d04200] transition-colors"
               >
                 Get started
                 <Icon icon="solar:alt-arrow-right-bold" className="size-3.5" />
@@ -91,7 +77,38 @@ export function MarketingNav() {
             </>
           )}
         </div>
+
+        {/* Hamburger — mobile */}
+        <button
+          className="md:hidden flex items-center justify-center size-9 rounded-[8px] hover:bg-accent text-foreground"
+          onClick={() => setMobileOpen(v => !v)}
+          aria-label="Toggle menu"
+        >
+          <Icon
+            icon={mobileOpen ? 'solar:close-circle-bold' : 'solar:sidebar-minimalistic-bold'}
+            className="size-5"
+          />
+        </button>
       </div>
+
+      {/* Mobile menu */}
+      {mobileOpen && (
+        <div className="md:hidden border-t border-border bg-background px-6 py-4 flex flex-col gap-3">
+          <Link href="#features" className="text-[14px] font-medium text-muted-foreground hover:text-foreground transition-colors py-2" onClick={() => setMobileOpen(false)}>Features</Link>
+          <Link href="#how-it-works" className="text-[14px] font-medium text-muted-foreground hover:text-foreground transition-colors py-2" onClick={() => setMobileOpen(false)}>How it works</Link>
+          <Link href="https://github.com/miurla/morphic" target="_blank" rel="noopener noreferrer" className="text-[14px] font-medium text-muted-foreground hover:text-foreground transition-colors py-2 flex items-center gap-1.5"><Icon icon="solar:code-bold" className="size-3.5" />GitHub</Link>
+          <div className="pt-2 border-t border-border flex flex-col gap-2">
+            {hasUser ? (
+              <Link href="/chat" className="inline-flex items-center justify-center gap-1.5 rounded-[8px] bg-primary px-[18px] py-[10px] text-[14px] font-medium leading-none text-primary-foreground hover:bg-[#d04200] transition-colors" onClick={() => setMobileOpen(false)}>Go to app<Icon icon="solar:alt-arrow-right-bold" className="size-3.5" /></Link>
+            ) : (
+              <>
+                <Link href="/auth/login" className="inline-flex items-center justify-center px-3 py-2.5 text-[14px] font-medium text-foreground border border-border rounded-[8px] hover:bg-accent transition-colors" onClick={() => setMobileOpen(false)}>Sign in</Link>
+                <Link href="/chat" className="inline-flex items-center justify-center gap-1.5 rounded-[8px] bg-primary px-[18px] py-[10px] text-[14px] font-medium leading-none text-primary-foreground hover:bg-[#d04200] transition-colors" onClick={() => setMobileOpen(false)}>Get started<Icon icon="solar:alt-arrow-right-bold" className="size-3.5" /></Link>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </header>
   )
 }

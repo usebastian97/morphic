@@ -2,7 +2,7 @@
 
 import { useRef, useState } from 'react'
 
-import { Paperclip } from 'lucide-react'
+import { Icon } from '@iconify/react'
 import { toast } from 'sonner'
 
 import { cn } from '@/lib/utils'
@@ -81,7 +81,7 @@ export function FileUploadButton({
         type="button"
         onClick={() => inputRef.current?.click()}
       >
-        <Paperclip size={18} />
+        <Icon icon="solar:paperclip-bold" className="size-[18px]" />
       </Button>
     </div>
   )

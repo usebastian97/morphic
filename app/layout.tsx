@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter as FontSans } from 'next/font/google'
+import { JetBrains_Mono as FontMono, Inter as FontSans } from 'next/font/google'
 
 import { Analytics } from '@vercel/analytics/next'
 
@@ -17,6 +17,11 @@ import './globals.css'
 const fontSans = FontSans({
   subsets: ['latin'],
   variable: '--font-sans'
+})
+
+const fontMono = FontMono({
+  subsets: ['latin'],
+  variable: '--font-mono'
 })
 
 const title = 'Morphic'
@@ -67,7 +72,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn('font-sans antialiased', fontSans.variable)}>
+      <body className={cn('font-sans antialiased', fontSans.variable, fontMono.variable)}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

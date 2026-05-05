@@ -1,4 +1,4 @@
-import { Check, ListTodo } from 'lucide-react'
+import { Icon } from '@iconify/react'
 
 import { Part, TodoItem } from '@/lib/types/ai'
 import { cn } from '@/lib/utils'
@@ -74,7 +74,7 @@ export function ToolTodoDisplay({
       isLoading={isLoading}
       label={
         <span className="inline-flex items-center gap-2 min-w-0 overflow-hidden">
-          <ListTodo className="size-4 text-muted-foreground shrink-0" />
+          <Icon icon="solar:checklist-minimalistic-bold" className="size-4 text-muted-foreground shrink-0" />
           <span className="truncate">
             {state === 'output-available' && output
               ? output.message || 'Updated tasks'
@@ -86,7 +86,7 @@ export function ToolTodoDisplay({
         state === 'output-available' && totalCount > 0 ? (
           <span className="flex items-center gap-1 text-muted-foreground">
             {completedCount === totalCount ? (
-              <Check className="size-4 text-green-500" />
+              <Icon icon="solar:check-bold" className="size-4 text-green-500" />
             ) : null}
             <span className="text-xs">
               ({completedCount}/{totalCount})

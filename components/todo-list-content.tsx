@@ -1,6 +1,6 @@
 'use client'
 
-import { AlertCircle, Check } from 'lucide-react'
+import { Icon } from '@iconify/react'
 
 import type { TodoItem } from '@/lib/types/ai'
 import { cn } from '@/lib/utils'
@@ -35,7 +35,7 @@ export function TodoListContent({
   const getStatusIcon = (status: TodoItem['status']) => {
     switch (status) {
       case 'completed':
-        return <Check className="h-4 w-4 text-green-600 flex-shrink-0" />
+        return <Icon icon="solar:check-bold" className="h-4 w-4 text-green-600 flex-shrink-0" />
       case 'in_progress':
         return (
           <div className="relative h-4 w-4 flex items-center justify-center flex-shrink-0">
@@ -55,7 +55,7 @@ export function TodoListContent({
   if (errorText) {
     return (
       <div className="flex items-center gap-2 p-4 text-red-600">
-        <AlertCircle className="size-4" />
+        <Icon icon="solar:danger-circle-bold" className="size-4" />
         <span>Error: {errorText}</span>
       </div>
     )

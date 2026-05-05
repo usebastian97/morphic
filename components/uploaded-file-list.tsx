@@ -1,9 +1,9 @@
 'use client'
 
-import React from 'react'
 import Image from 'next/image'
+import React from 'react'
 
-import { Loader2, X } from 'lucide-react'
+import { Icon } from '@iconify/react'
 
 import { UploadedFile } from '@/lib/types'
 
@@ -42,7 +42,7 @@ export const UploadedFileList = React.memo(function UploadedFileList({
               {/* Spinner overlay while uploading */}
               {it.status === 'uploading' && (
                 <div className="absolute inset-0 bg-black/40 flex items-center justify-center z-10">
-                  <Loader2 className="animate-spin text-white" size={20} />
+                  <Icon icon="solar:refresh-bold" className="animate-spin text-white size-5" />
                 </div>
               )}
 
@@ -51,7 +51,7 @@ export const UploadedFileList = React.memo(function UploadedFileList({
                 onClick={() => onRemove(index)}
                 className="absolute top-1 right-1 bg-black/40 hover:bg-red-600 text-white rounded-full p-1 z-20"
               >
-                <X size={12} />
+                <Icon icon="solar:close-bold" className="size-3" />
               </button>
             </div>
 

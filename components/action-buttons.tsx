@@ -2,14 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 
-import {
-  FileText,
-  HelpCircle,
-  LucideIcon,
-  Newspaper,
-  Scale,
-  Search
-} from 'lucide-react'
+import { Icon } from '@iconify/react'
 
 import { cn } from '@/lib/utils'
 
@@ -19,34 +12,34 @@ import { Button } from './ui/button'
 const FOCUS_OUT_DELAY_MS = 100 // Delay to ensure focus has actually moved
 
 interface ActionCategory {
-  icon: LucideIcon
+  icon: string
   label: string
   key: string
 }
 
 const actionCategories: ActionCategory[] = [
   {
-    icon: Search,
+    icon: 'solar:magnifer-bold',
     label: 'Research',
     key: 'research'
   },
   {
-    icon: Scale,
+    icon: 'solar:scale-bold',
     label: 'Compare',
     key: 'compare'
   },
   {
-    icon: Newspaper,
+    icon: 'solar:newspaper-bold',
     label: 'Latest',
     key: 'latest'
   },
   {
-    icon: FileText,
+    icon: 'solar:document-text-bold',
     label: 'Summarize',
     key: 'summarize'
   },
   {
-    icon: HelpCircle,
+    icon: 'solar:info-circle-bold',
     label: 'Explain',
     key: 'explain'
   }
@@ -179,25 +172,22 @@ export function ActionButtons({
           )}
         >
           <div className="flex flex-wrap justify-center gap-2 px-2">
-            {actionCategories.map(category => {
-              const Icon = category.icon
-              return (
-                <Button
-                  key={category.key}
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  className={cn(
-                    'flex items-center gap-2 whitespace-nowrap rounded-full',
-                    'text-xs sm:text-sm px-3 sm:px-4'
-                  )}
-                  onClick={() => handleCategoryClick(category)}
-                >
-                  <Icon className="h-3 w-3 sm:h-4 sm:w-4" />
-                  <span>{category.label}</span>
-                </Button>
-              )
-            })}
+            {actionCategories.map(category => (
+              <Button
+                key={category.key}
+                type="button"
+                variant="outline"
+                size="sm"
+                className={cn(
+                  'flex items-center gap-2 whitespace-nowrap rounded-full',
+                  'text-xs sm:text-sm px-3 sm:px-4'
+                )}
+                onClick={() => handleCategoryClick(category)}
+              >
+                <Icon icon={category.icon} className="h-3 w-3 sm:h-4 sm:w-4" />
+                <span>{category.label}</span>
+              </Button>
+            ))}
           </div>
         </div>
 
@@ -220,7 +210,7 @@ export function ActionButtons({
                 )}
                 onClick={() => handlePromptClick(prompt)}
               >
-                <Search className="h-3 w-3 text-muted-foreground flex-shrink-0 group-hover:text-foreground" />
+                <Icon icon="solar:magnifer-bold" className="h-3 w-3 text-muted-foreground flex-shrink-0 group-hover:text-foreground" />
                 <span className="line-clamp-1">{prompt}</span>
               </button>
             ))}

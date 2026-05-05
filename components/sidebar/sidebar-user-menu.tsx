@@ -12,6 +12,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -23,11 +24,12 @@ import {
 import {
   SidebarMenu,
   SidebarMenuButton,
-  SidebarMenuItem
+  SidebarMenuItem,
+  useSidebar
 } from '@/components/ui/sidebar'
 
-import { ThemeMenuItems } from '../theme-menu-items'
 import { ExternalLinkItems } from '../external-link-items'
+import { ThemeMenuItems } from '../theme-menu-items'
 
 interface SidebarUserMenuProps {
   user: User
@@ -49,6 +51,7 @@ function getInitials(name: string, email: string | undefined): string {
 
 export function SidebarUserMenu({ user }: SidebarUserMenuProps) {
   const router = useRouter()
+  const { isMobile } = useSidebar()
   const userName =
     user.user_metadata?.full_name || user.user_metadata?.name || 'User'
   const avatarUrl =
@@ -70,14 +73,14 @@ export function SidebarUserMenu({ user }: SidebarUserMenuProps) {
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <Avatar className="size-7 rounded-lg">
+              <Avatar className="size-8 rounded-lg">
                 <AvatarImage src={avatarUrl} alt={userName} />
                 <AvatarFallback className="rounded-lg text-xs">
                   {getInitials(userName, user.email)}
                 </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{userName}</span>
+                <span className="truncate font-semibold">{userName}</span>
                 <span className="truncate text-xs text-muted-foreground">
                   {user.email}
                 </span>
@@ -90,7 +93,7 @@ export function SidebarUserMenu({ user }: SidebarUserMenuProps) {
           </DropdownMenuTrigger>
           <DropdownMenuContent
             className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
-            side="top"
+            side={isMobile ? 'bottom' : 'right'}
             align="end"
             sideOffset={4}
           >
@@ -103,7 +106,7 @@ export function SidebarUserMenu({ user }: SidebarUserMenuProps) {
                   </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">{userName}</span>
+                  <span className="truncate font-semibold">{userName}</span>
                   <span className="truncate text-xs text-muted-foreground">
                     {user.email}
                   </span>
@@ -111,30 +114,32 @@ export function SidebarUserMenu({ user }: SidebarUserMenuProps) {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-              <Link href="/profile">
-                <Icon icon="solar:user-rounded-bold" className="mr-2 h-4 w-4" />
-                <span>Profile</span>
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuSub>
-              <DropdownMenuSubTrigger>
-                <Icon icon="solar:palette-bold" className="mr-2 h-4 w-4" />
-                <span>Theme</span>
-              </DropdownMenuSubTrigger>
-              <DropdownMenuSubContent>
-                <ThemeMenuItems />
-              </DropdownMenuSubContent>
-            </DropdownMenuSub>
-            <DropdownMenuSub>
-              <DropdownMenuSubTrigger>
-                <Icon icon="solar:link-bold" className="mr-2 h-4 w-4" />
-                <span>Links</span>
-              </DropdownMenuSubTrigger>
-              <DropdownMenuSubContent>
-                <ExternalLinkItems />
-              </DropdownMenuSubContent>
-            </DropdownMenuSub>
+            <DropdownMenuGroup>
+              <DropdownMenuItem asChild>
+                <Link href="/profile">
+                  <Icon icon="solar:user-rounded-bold" className="mr-2 h-4 w-4" />
+                  <span>Profile</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger>
+                  <Icon icon="solar:palette-bold" className="mr-2 h-4 w-4" />
+                  <span>Theme</span>
+                </DropdownMenuSubTrigger>
+                <DropdownMenuSubContent>
+                  <ThemeMenuItems />
+                </DropdownMenuSubContent>
+              </DropdownMenuSub>
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger>
+                  <Icon icon="solar:link-bold" className="mr-2 h-4 w-4" />
+                  <span>Links</span>
+                </DropdownMenuSubTrigger>
+                <DropdownMenuSubContent>
+                  <ExternalLinkItems />
+                </DropdownMenuSubContent>
+              </DropdownMenuSub>
+            </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout}>
               <Icon icon="solar:logout-2-bold" className="mr-2 h-4 w-4" />

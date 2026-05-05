@@ -1,11 +1,11 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Textarea from 'react-textarea-autosize'
-import { useRouter } from 'next/navigation'
 
 import { UseChatHelpers } from '@ai-sdk/react'
-import { ArrowUp, ChevronDown, MessageCirclePlus, Square } from 'lucide-react'
+import { Icon } from '@iconify/react'
 import { toast } from 'sonner'
 
 import { SHORTCUT_EVENTS } from '@/lib/keyboard-shortcuts'
@@ -14,14 +14,14 @@ import type { UIDataTypes, UIMessage, UITools } from '@/lib/types/ai'
 import type { ModelSelectorData } from '@/lib/types/model-selector'
 import { cn } from '@/lib/utils'
 
-import { useArtifact } from './artifact/artifact-context'
-import { Button } from './ui/button'
-import { IconBlinkingLogo } from './ui/icons'
 import { ActionButtons } from './action-buttons'
+import { useArtifact } from './artifact/artifact-context'
 import { FileUploadButton } from './file-upload-button'
 import { MessageNavigationDots } from './message-navigation-dots'
 import { ModelSelectorClient } from './model-selector-client'
 import { SearchModeSelector } from './search-mode-selector'
+import { Button } from './ui/button'
+import { IconBlinkingLogo } from './ui/icons'
 import { UploadedFileList } from './uploaded-file-list'
 
 // Constants for timing delays
@@ -222,11 +222,11 @@ export function ChatPanel({
               type="button"
               variant="outline"
               size="icon"
-              className="absolute -top-10 right-0 z-20 size-8 rounded-full shadow-md"
+              className="absolute -top-10 right-0 z-20 size-8 rounded-full border border-border"
               onClick={handleScrollToBottom}
               title="Scroll to bottom"
             >
-              <ChevronDown size={16} />
+              <Icon icon="solar:alt-arrow-down-bold" className="size-4" />
             </Button>
           </div>
         )}
@@ -356,7 +356,7 @@ export function ChatPanel({
                   type="button"
                   disabled={isLoading}
                 >
-                  <MessageCirclePlus className="size-4 group-hover:rotate-12 transition-all" />
+                  <Icon icon="solar:chat-round-bold" className="size-4" />
                 </Button>
               )}
               <Button
@@ -377,9 +377,9 @@ export function ChatPanel({
                 }
               >
                 {isLoading ? (
-                  <Square className="size-4 md:size-5" />
+                  <Icon icon="solar:stop-bold" className="size-4 md:size-5" />
                 ) : (
-                  <ArrowUp className="size-4 md:size-5" />
+                  <Icon icon="solar:arrow-up-bold" className="size-4 md:size-5" />
                 )}
               </Button>
             </div>

@@ -1,7 +1,7 @@
 'use client'
 
 import { UseChatHelpers } from '@ai-sdk/react'
-import { AlertCircle, Check, ExternalLink, Globe } from 'lucide-react'
+import { Icon } from '@iconify/react'
 
 import { SearchResults as SearchResultsType } from '@/lib/types'
 import type { ToolPart, UIDataTypes, UIMessage, UITools } from '@/lib/types/ai'
@@ -88,7 +88,7 @@ export function FetchSection({
       isLoading={isLoading && isToolLoading}
       label={
         <div className="flex items-center gap-2 min-w-0 overflow-hidden">
-          <Globe className="h-4 w-4 shrink-0 text-muted-foreground" />
+          <Icon icon="solar:global-bold" className="h-4 w-4 shrink-0 text-muted-foreground" />
           <span className="truncate block min-w-0 max-w-full">
             {getPageTitle()}
           </span>
@@ -97,7 +97,7 @@ export function FetchSection({
       meta={
         displayStatus === 'success' && contentLength ? (
           <>
-            <Check size={16} className="text-green-500" />
+            <Icon icon="solar:check-bold" className="size-4 text-green-500" />
             <span>
               {contentLength > 1000
                 ? `${Math.round(contentLength / 1000)}k chars`
@@ -106,7 +106,7 @@ export function FetchSection({
           </>
         ) : displayStatus === 'error' ? (
           <>
-            <AlertCircle size={16} className="text-destructive" />
+            <Icon icon="solar:danger-circle-bold" className="size-4 text-destructive" />
             <span>{error}</span>
           </>
         ) : isToolLoading ? (
@@ -148,7 +148,7 @@ export function FetchSection({
               className="shrink-0 p-1 hover:bg-accent rounded transition-colors"
               aria-label="Open in new tab"
             >
-              <ExternalLink className="h-4 w-4 text-muted-foreground" />
+              <Icon icon="solar:arrow-right-up-bold" className="h-4 w-4 text-muted-foreground" />
             </button>
           )}
         </div>

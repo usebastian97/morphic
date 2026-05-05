@@ -1,6 +1,6 @@
 'use client'
 
-import { User2 } from 'lucide-react'
+import { Icon } from '@iconify/react'
 
 import { useCurrentUserImage } from '@/hooks/use-current-user-image'
 import { useCurrentUserName } from '@/hooks/use-current-user-name'
@@ -21,7 +21,7 @@ export const CurrentUserAvatar = () => {
       {profileImage && <AvatarImage src={profileImage} alt={initials} />}
       <AvatarFallback>
         {initials === '?' ? (
-          <User2 size={16} className="text-muted-foreground" />
+          <Icon icon="solar:user-rounded-bold" className="size-4 text-muted-foreground" />
         ) : (
           initials
         )}

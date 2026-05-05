@@ -26,59 +26,54 @@ const steps = [
 
 export function HowItWorksSection() {
   return (
-    <section id="how-it-works" className="px-6 py-24">
-      <div className="mx-auto max-w-6xl">
-        {/* Header */}
-        <div className="mb-16 text-center">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+    <section id="how-it-works" className="bg-muted px-6 py-[80px]">
+      <div className="mx-auto max-w-[1200px]">
+        {/* Section label */}
+        <div className="mb-4 flex justify-center">
+          <span className="text-[11px] font-semibold uppercase tracking-[0.88px] text-muted-foreground">
             How it works
-          </p>
-          <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            From question to answer in seconds.
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl text-base text-muted-foreground">
-            No hallucinations, no guesswork. Every answer is traceable back to
-            real sources on the live web.
-          </p>
+          </span>
         </div>
 
+        {/* Section head */}
+        <h2 className="mx-auto mb-4 max-w-2xl text-center text-[26px] sm:text-[36px] font-normal leading-[1.2] tracking-[-0.72px] text-foreground">
+          From question to answer in seconds.
+        </h2>
+        <p className="mx-auto mb-14 max-w-xl text-center text-[16px] leading-[1.5] text-muted-foreground">
+          No hallucinations, no guesswork. Every answer is traceable back to
+          real sources on the live web.
+        </p>
+
         {/* Steps */}
-        <div className="relative">
+        <div className="relative grid gap-6 lg:grid-cols-3">
           {/* Connector line — desktop only */}
-          <div className="absolute top-12 left-0 right-0 hidden h-px bg-gradient-to-r from-transparent via-border to-transparent lg:block" />
+          <div
+            className="absolute top-[52px] left-[calc(16.67%+24px)] right-[calc(16.67%+24px)] hidden h-px bg-border lg:block"
+            aria-hidden="true"
+          />
 
-          <div className="grid gap-8 lg:grid-cols-3">
-            {steps.map((step, i) => (
-              <div
-                key={step.number}
-                className="relative flex flex-col items-center text-center"
-              >
-                {/* Step indicator */}
-                <div className="relative mb-6 flex size-24 items-center justify-center">
-                  {/* Glassmorphism ring */}
-                  <div className="absolute inset-0 rounded-full border border-border/60 bg-card/60 backdrop-blur-sm" />
-                  {/* Number badge */}
-                  <div className="absolute -top-1 -right-1 z-10 flex size-6 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
-                    {i + 1}
-                  </div>
-                  <Icon
-                    icon={step.icon}
-                    className="relative z-10 size-8 text-foreground/70"
-                  />
-                </div>
-
-                <span className="mb-1 text-xs font-semibold tabular-nums text-muted-foreground/60">
-                  STEP {step.number}
+          {steps.map((step, i) => (
+            <div key={step.number} className="rounded-[12px] border border-border bg-card p-6">
+              {/* Step circle */}
+              <div className="relative mb-6 inline-flex size-[52px] items-center justify-center rounded-full border border-border bg-background">
+                <Icon icon={step.icon} className="size-6 text-foreground" />
+                {/* Number badge */}
+                <span className="absolute -top-1 -right-1 flex size-5 items-center justify-center rounded-full bg-primary text-[10px] font-semibold text-primary-foreground">
+                  {i + 1}
                 </span>
-                <h3 className="mb-2 text-lg font-semibold text-foreground">
-                  {step.title}
-                </h3>
-                <p className="text-sm text-muted-foreground leading-relaxed max-w-xs mx-auto">
-                  {step.description}
-                </p>
               </div>
-            ))}
-          </div>
+
+              <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.88px] text-muted-foreground">
+                Step {step.number}
+              </p>
+              <h3 className="mb-2 text-[18px] font-semibold leading-[1.4] text-foreground">
+                {step.title}
+              </h3>
+              <p className="text-[14px] leading-[1.5] text-muted-foreground">
+                {step.description}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
     </section>

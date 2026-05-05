@@ -1,35 +1,35 @@
 'use client'
 
-import { useCallback, useState, useTransition } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
+import { useCallback, useState, useTransition } from 'react'
 
-import { MoreHorizontal, Trash2 } from 'lucide-react'
+import { Icon } from '@iconify/react'
 import { toast } from 'sonner'
 
 import { deleteChat } from '@/lib/actions/chat'
 import { Chat as DBChat } from '@/lib/supabase/types'
 
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle
 } from '@/components/ui/alert-dialog'
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import {
-  SidebarMenuAction,
-  SidebarMenuButton,
-  SidebarMenuItem
+    SidebarMenuAction,
+    SidebarMenuButton,
+    SidebarMenuItem
 } from '@/components/ui/sidebar'
 
 import { Spinner } from '../ui/spinner'
@@ -131,7 +131,7 @@ export function ChatMenuItem({ chat }: ChatMenuItemProps) {
       <DropdownMenu open={isMenuOpen} onOpenChange={handleMenuOpenChange}>
         <DropdownMenuTrigger asChild>
           <SidebarMenuAction className="size-7 p-1 mr-1">
-            <MoreHorizontal size={16} />
+            <Icon icon="solar:menu-dots-bold" className="size-4" />
             <span className="sr-only">Chat Actions</span>
           </SidebarMenuAction>
         </DropdownMenuTrigger>
@@ -144,7 +144,7 @@ export function ChatMenuItem({ chat }: ChatMenuItemProps) {
               setIsAlertOpen(true)
             }}
           >
-            <Trash2 size={14} />
+            <Icon icon="solar:trash-bin-trash-bold" className="size-3.5" />
             Delete Chat
           </DropdownMenuItem>
         </DropdownMenuContent>

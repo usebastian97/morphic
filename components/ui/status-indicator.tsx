@@ -1,21 +1,21 @@
 import { ReactNode } from 'react'
 
-import { LucideIcon } from 'lucide-react'
+import { Icon } from '@iconify/react'
 
 interface StatusIndicatorProps {
-  icon: LucideIcon
+  icon: string
   iconClassName?: string
   children?: ReactNode
 }
 
 export function StatusIndicator({
-  icon: Icon,
+  icon,
   iconClassName,
   children
 }: StatusIndicatorProps) {
   return (
     <span className="flex items-center gap-1 text-muted-foreground text-xs">
-      <Icon size={16} className={iconClassName} />
+      <Icon icon={icon} className={`size-4 ${iconClassName ?? ''}`} />
       {children && <span>{children}</span>}
     </span>
   )

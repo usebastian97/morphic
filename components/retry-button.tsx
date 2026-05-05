@@ -1,6 +1,6 @@
 'use client'
 
-import { RotateCcw } from 'lucide-react'
+import { Icon } from '@iconify/react'
 
 import { Button } from './ui/button'
 
@@ -22,7 +22,7 @@ export const RetryButton: React.FC<RetryButtonProps> = ({
       onClick={() => reload()}
       aria-label={`Retry from message ${messageId}`}
     >
-      <RotateCcw className="size-4" />
+      <Icon icon="solar:refresh-bold" className="size-4" />
       <span className="sr-only">Retry</span>
     </Button>
   )

@@ -4,19 +4,19 @@ import { useCallback, useState } from 'react'
 
 import type { ReasoningPart } from '@ai-sdk/provider-utils'
 import { UseChatHelpers } from '@ai-sdk/react'
-import { ChevronDown, Waypoints } from 'lucide-react'
+import { Icon } from '@iconify/react'
 
 import type { ToolPart, UIDataTypes, UIMessage, UITools } from '@/lib/types/ai'
 import type { DynamicToolPart } from '@/lib/types/dynamic-tools'
 import { cn } from '@/lib/utils'
 
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger
-} from './ui/collapsible'
 import { ReasoningSection } from './reasoning-section'
 import { ToolSection } from './tool-section'
+import {
+    Collapsible,
+    CollapsibleContent,
+    CollapsibleTrigger
+} from './ui/collapsible'
 
 // Message part types
 type TextPart = {
@@ -379,11 +379,12 @@ export function ResearchProcessSection({
                   type="button"
                   className="flex items-center px-1 py-0.5 gap-2 text-sm rounded-lg group"
                 >
-                  <Waypoints className="size-4 text-muted-foreground group-hover:text-muted-foreground/70" />
+                  <Icon icon="solar:routing-bold" className="size-4 text-muted-foreground group-hover:text-muted-foreground/70" />
                   <span className="font-medium text-muted-foreground group-hover:text-muted-foreground/70">
                     Research Process ({totalParts} steps)
                   </span>
-                  <ChevronDown
+                  <Icon
+                    icon="solar:alt-arrow-down-bold"
                     className={cn(
                       'size-4 text-muted-foreground group-hover:text-muted-foreground/70 transition-transform duration-200',
                       isParentOpen && 'rotate-180'

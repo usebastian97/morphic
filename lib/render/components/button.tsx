@@ -6,6 +6,8 @@ import { cn } from '@/lib/utils'
 
 import { Button as UIButton } from '@/components/ui/button'
 
+import { Icon } from '@iconify/react'
+
 import { type CatalogType, iconMap } from './shared'
 
 /**
@@ -15,7 +17,7 @@ import { type CatalogType, iconMap } from './shared'
  */
 export const Button: ComponentFn<CatalogType, 'Button'> = ({ props, on }) => {
   const { text, icon, variant = 'link' } = props
-  const Icon = icon ? iconMap[icon] : null
+  const iconName = icon ? iconMap[icon] : null
   const handle = on('press')
 
   // For the link variant, tweak layout/color so it reads as an inline
@@ -32,7 +34,7 @@ export const Button: ComponentFn<CatalogType, 'Button'> = ({ props, on }) => {
       onClick={handle.emit}
       className={cn('gap-2', linkOverride)}
     >
-      {Icon && <Icon className="size-4 shrink-0" />}
+      {iconName && <Icon icon={iconName} className="size-4 shrink-0" />}
       {text}
     </UIButton>
   )

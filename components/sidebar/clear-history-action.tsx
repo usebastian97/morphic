@@ -1,29 +1,29 @@
 'use client'
 
-import { useCallback, useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
+import { useCallback, useState, useTransition } from 'react'
 
-import { MoreHorizontal, Trash2 } from 'lucide-react'
+import { Icon } from '@iconify/react'
 import { toast } from 'sonner'
 
 import { clearChats } from '@/lib/actions/chat'
 
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger
 } from '@/components/ui/alert-dialog'
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { SidebarGroupAction } from '@/components/ui/sidebar'
 import { Spinner } from '@/components/ui/spinner'
@@ -77,7 +77,7 @@ export function ClearHistoryAction({ empty }: ClearHistoryActionProps) {
     <DropdownMenu open={isMenuOpen} onOpenChange={handleMenuOpenChange}>
       <DropdownMenuTrigger asChild>
         <SidebarGroupAction disabled={empty} className="static size-7 p-1">
-          <MoreHorizontal size={16} />
+          <Icon icon="solar:menu-dots-bold" className="size-4" />
           <span className="sr-only">History Actions</span>
         </SidebarGroupAction>
       </DropdownMenuTrigger>
@@ -92,7 +92,7 @@ export function ClearHistoryAction({ empty }: ClearHistoryActionProps) {
                 event.preventDefault()
               }}
             >
-              <Trash2 size={14} /> Clear History
+              <Icon icon="solar:trash-bin-trash-bold" className="size-3.5" /> Clear History
             </DropdownMenuItem>
           </AlertDialogTrigger>
 
