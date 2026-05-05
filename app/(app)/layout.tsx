@@ -40,7 +40,7 @@ export default async function AppLayout({
   return (
     <div className="fixed inset-0 flex flex-col overflow-hidden">
       <SidebarProvider defaultOpen={false}>
-        {userId && <AppSidebar />}
+        {userId && <AppSidebar user={user} />}
         <KeyboardShortcutHandler />
         <div className="flex flex-col flex-1 min-w-0">
           <Header user={user} />

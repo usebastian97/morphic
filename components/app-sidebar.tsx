@@ -1,26 +1,34 @@
-import { Suspense } from 'react'
 import Link from 'next/link'
+import { Suspense } from 'react'
 
-import { Plus } from 'lucide-react'
+import { Icon } from '@iconify/react'
+import { User } from '@supabase/supabase-js'
 
 import { cn } from '@/lib/utils'
 
 import {
-  Sidebar,
-  SidebarContent,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarRail,
-  SidebarTrigger
+    Sidebar,
+    SidebarContent,
+    SidebarFooter,
+    SidebarHeader,
+    SidebarMenu,
+    SidebarMenuButton,
+    SidebarMenuItem,
+    SidebarRail,
+    SidebarSeparator,
+    SidebarTrigger
 } from '@/components/ui/sidebar'
 
 import { ChatHistorySection } from './sidebar/chat-history-section'
 import { ChatHistorySkeleton } from './sidebar/chat-history-skeleton'
+import { SidebarUserMenu } from './sidebar/sidebar-user-menu'
 import { IconLogo } from './ui/icons'
 
-export default function AppSidebar() {
+interface AppSidebarProps {
+  user?: User | null
+}
+
+export default function AppSidebar({ user }: AppSidebarProps) {
   return (
     <Sidebar side="left" variant="sidebar" collapsible="offcanvas">
       <SidebarHeader className="flex flex-row justify-between items-center">
@@ -35,7 +43,7 @@ export default function AppSidebar() {
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
               <Link href="/chat" className="flex items-center gap-2">
-                <Plus className="size-4" />
+                <Icon icon="solar:add-circle-bold" className="size-4" />
                 <span>New</span>
               </Link>
             </SidebarMenuButton>
@@ -47,6 +55,14 @@ export default function AppSidebar() {
           </Suspense>
         </div>
       </SidebarContent>
+      {user && (
+        <>
+          <SidebarSeparator />
+          <SidebarFooter>
+            <SidebarUserMenu user={user} />
+          </SidebarFooter>
+        </>
+      )}
       <SidebarRail />
     </Sidebar>
   )

@@ -2,27 +2,27 @@
 
 import { useRouter } from 'next/navigation'
 
+import { Icon } from '@iconify/react'
 import { User } from '@supabase/supabase-js'
-import { Link2, LogOut, Palette } from 'lucide-react'
 
 import { createClient } from '@/lib/supabase/client'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuTrigger
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuSub,
+    DropdownMenuSubContent,
+    DropdownMenuSubTrigger,
+    DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 
-import { Button } from './ui/button'
 import { ExternalLinkItems } from './external-link-items'
 import { ThemeMenuItems } from './theme-menu-items'
+import { Button } from './ui/button'
 
 interface UserMenuProps {
   user: User
@@ -80,7 +80,7 @@ export default function UserMenu({ user }: UserMenuProps) {
         <DropdownMenuSeparator />
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>
-            <Palette className="mr-2 h-4 w-4" />
+            <Icon icon="solar:palette-bold" className="mr-2 h-4 w-4" />
             <span>Theme</span>
           </DropdownMenuSubTrigger>
           <DropdownMenuSubContent>
@@ -89,7 +89,7 @@ export default function UserMenu({ user }: UserMenuProps) {
         </DropdownMenuSub>
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>
-            <Link2 className="mr-2 h-4 w-4" />
+            <Icon icon="solar:link-bold" className="mr-2 h-4 w-4" />
             <span>Links</span>
           </DropdownMenuSubTrigger>
           <DropdownMenuSubContent>
@@ -98,7 +98,7 @@ export default function UserMenu({ user }: UserMenuProps) {
         </DropdownMenuSub>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleLogout}>
-          <LogOut className="mr-2 h-4 w-4" />
+          <Icon icon="solar:logout-2-bold" className="mr-2 h-4 w-4" />
           <span>Logout</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
