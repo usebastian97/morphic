@@ -10,7 +10,6 @@ import {
     useState
 } from 'react'
 
-
 import { Icon } from '@iconify/react'
 
 import { SearchResultImage } from '@/lib/types'

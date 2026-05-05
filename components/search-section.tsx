@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils'
 
 import { useArtifact } from '@/components/artifact/artifact-context'
 
+import { StatusIndicator } from './ui/status-indicator'
 import { CollapsibleMessage } from './collapsible-message'
 import { SearchSkeleton } from './default-skeleton'
 import ProcessHeader from './process-header'
@@ -16,7 +17,6 @@ import { SearchResults } from './search-results'
 import { SearchResultsImageSection } from './search-results-image'
 import { Section } from './section'
 import { SourceFavicons } from './source-favicons'
-import { StatusIndicator } from './ui/status-indicator'
 import {
     createVideoSearchResults,
     VideoSearchResults

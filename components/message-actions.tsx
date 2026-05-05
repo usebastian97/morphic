@@ -12,9 +12,10 @@ import type { UIDataTypes, UIMessage, UITools } from '@/lib/types/ai'
 import { cn } from '@/lib/utils'
 import { processCitations } from '@/lib/utils/citation'
 
+import { ExportPDFButton } from './artifact/export-pdf-button'
+import { Button } from './ui/button'
 import { ChatShare } from './chat-share'
 import { RetryButton } from './retry-button'
-import { Button } from './ui/button'
 
 interface MessageActionsProps {
   message: string
@@ -116,6 +117,7 @@ export function MessageActions({
       >
         <Icon icon="solar:copy-bold" className="size-3.5" />
       </Button>
+      <ExportPDFButton messageId={messageId} />
       {traceId && (
         <>
           {(feedbackScore === null || feedbackScore === 1) && (

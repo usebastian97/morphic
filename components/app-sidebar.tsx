@@ -1,5 +1,5 @@
-import Link from 'next/link'
 import { Suspense } from 'react'
+import Link from 'next/link'
 
 import { Icon } from '@iconify/react'
 import { User } from '@supabase/supabase-js'

@@ -6,10 +6,10 @@ import { Icon } from '@iconify/react'
 
 import { cn } from '@/lib/utils'
 
-import { ToolBadge } from './tool-badge'
 import { Badge } from './ui/badge'
 import { Separator } from './ui/separator'
 import { StatusIndicator } from './ui/status-indicator'
+import { ToolBadge } from './tool-badge'
 
 type SectionProps = {
   children: React.ReactNode

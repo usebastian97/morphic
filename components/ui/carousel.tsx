@@ -255,9 +255,9 @@ const CarouselNext = React.forwardRef<
 CarouselNext.displayName = 'CarouselNext'
 
 export {
-    Carousel, CarouselContent,
+    Carousel, type CarouselApi,
+CarouselContent,
     CarouselItem,
     CarouselNext,
-    CarouselPrevious, type CarouselApi
-}
+    CarouselPrevious}
 

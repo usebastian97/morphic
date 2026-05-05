@@ -3,11 +3,11 @@
 import { revalidatePath } from 'next/cache'
 
 import { getCurrentUserId } from '@/lib/auth/get-current-user'
-import { createClient } from '@/lib/supabase/server'
 import {
   getUserProfile,
   updateUserProfile
 } from '@/lib/supabase/queries/user-profile'
+import { createClient } from '@/lib/supabase/server'
 import type { ClimateZone, FarmType, UserProfile } from '@/lib/supabase/types'
 
 export async function getProfileAction(): Promise<UserProfile | null> {

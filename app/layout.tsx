@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { JetBrains_Mono as FontMono, Inter as FontSans } from 'next/font/google'
+import { Inter as FontSans,JetBrains_Mono as FontMono } from 'next/font/google'
 
 import { Analytics } from '@vercel/analytics/next'
 

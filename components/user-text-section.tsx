@@ -7,8 +7,8 @@ import { Icon } from '@iconify/react'
 
 import { cn } from '@/lib/utils'
 
-import { CollapsibleMessage } from './collapsible-message'
 import { Button } from './ui/button'
+import { CollapsibleMessage } from './collapsible-message'
 
 interface UserTextSectionProps {
   content: string

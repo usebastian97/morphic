@@ -20,9 +20,9 @@ import {
     DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 
+import { Button } from './ui/button'
 import { ExternalLinkItems } from './external-link-items'
 import { ThemeMenuItems } from './theme-menu-items'
-import { Button } from './ui/button'
 
 interface UserMenuProps {
   user: User

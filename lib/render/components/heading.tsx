@@ -1,8 +1,7 @@
 'use client'
 
-import type { ComponentFn } from '@json-render/react'
-
 import { Icon } from '@iconify/react'
+import type { ComponentFn } from '@json-render/react'
 
 import { type CatalogType, iconMap } from './shared'
 

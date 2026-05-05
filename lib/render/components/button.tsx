@@ -1,12 +1,11 @@
 'use client'
 
+import { Icon } from '@iconify/react'
 import type { ComponentFn } from '@json-render/react'
 
 import { cn } from '@/lib/utils'
 
 import { Button as UIButton } from '@/components/ui/button'
-
-import { Icon } from '@iconify/react'
 
 import { type CatalogType, iconMap } from './shared'
 

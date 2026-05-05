@@ -10,13 +10,13 @@ import type { ToolPart, UIDataTypes, UIMessage, UITools } from '@/lib/types/ai'
 import type { DynamicToolPart } from '@/lib/types/dynamic-tools'
 import { cn } from '@/lib/utils'
 
-import { ReasoningSection } from './reasoning-section'
-import { ToolSection } from './tool-section'
 import {
     Collapsible,
     CollapsibleContent,
     CollapsibleTrigger
 } from './ui/collapsible'
+import { ReasoningSection } from './reasoning-section'
+import { ToolSection } from './tool-section'
 
 // Message part types
 type TextPart = {

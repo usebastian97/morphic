@@ -6,9 +6,8 @@ import { Icon } from '@iconify/react'
 import { toast } from 'sonner'
 
 import {
-  updateProfileAction,
-  type ProfileUpdatePayload
-} from '@/lib/actions/profile'
+  type ProfileUpdatePayload,
+  updateProfileAction} from '@/lib/actions/profile'
 import type { ClimateZone, FarmType, UserProfile } from '@/lib/supabase/types'
 import { cn } from '@/lib/utils'
 
