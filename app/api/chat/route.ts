@@ -32,6 +32,19 @@ export async function POST(req: Request) {
     const body = await req.json()
     const { message, messages, chatId, trigger, messageId, isNewChat } = body
 
+    // ── MOCK MODE ───────────────────────────────────────────────────────────
+    // Intercepts ALL chat requests and returns a canned streaming response.
+    // No AI calls, no DB writes, no auth required.
+    // To disable: remove ENABLE_MOCK_CHAT from .env.local (or set it to false).
+    // To permanently remove: delete lib/mock/ and this block.
+    if (process.env.ENABLE_MOCK_CHAT === 'true') {
+      const { createMockChatStreamResponse } = await import(
+        '@/lib/mock/create-mock-chat-stream-response'
+      )
+      return createMockChatStreamResponse(body)
+    }
+    // ────────────────────────────────────────────────────────────────────────
+
     perfLog(
       `API Route - Start: chatId=${chatId}, trigger=${trigger}, isNewChat=${isNewChat}`
     )

@@ -287,3 +287,28 @@ Use Jina for enhanced content extraction:
 ```bash
 JINA_API_KEY=[YOUR_API_KEY]
 ```
+
+---
+
+## Development Utilities
+
+### Mock Chat Mode
+
+For UI development and demos, enable mock chat to simulate streaming AI responses without consuming real tokens, touching the database, or requiring auth:
+
+```bash
+ENABLE_MOCK_CHAT=true
+```
+
+When set, every `POST /api/chat` request is intercepted before auth or AI logic runs. The server returns a fully-compatible AI SDK streaming response — including a simulated tool (search) call and a canned text answer. Responses cycle through a small set of agriculture-themed answers to exercise different UI states.
+
+**This variable must never be set in production.** It bypasses all rate-limiting, authentication, and persistence.
+
+**Removal instructions** (to permanently remove from the codebase):
+1. Delete `lib/mock/` directory
+2. Remove the `ENABLE_MOCK_CHAT` guard block from `app/api/chat/route.ts`
+3. Remove this entry and the `.env.local` comment
+
+| Variable | Default | Description |
+|---|---|---|
+| `ENABLE_MOCK_CHAT` | `false` | Intercept chat requests with a mock stream |
