@@ -138,7 +138,7 @@ export function Step2({ data, setData }: StepProps) {
               key={crop}
               type="button"
               onClick={() => addCrop(crop)}
-              className="rounded-md border border-border px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:border-emerald-700/40 hover:bg-emerald-50 hover:text-foreground dark:hover:bg-emerald-950/20"
+              className="rounded-full border border-input bg-background px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:border-muted-foreground/40 hover:text-foreground"
             >
               {crop}
             </button>

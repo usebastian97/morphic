@@ -1,18 +1,18 @@
 'use client'
-import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 
 import { createClient } from '@/lib/supabase/client'
 import { cn } from '@/lib/utils/index'
 
 import { Button } from '@/components/ui/button'
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle
 } from '@/components/ui/card'
 import { IconLogo } from '@/components/ui/icons'
 import { Input } from '@/components/ui/input'
@@ -52,7 +52,7 @@ export function SignUpForm({
           data: {
             full_name: trimmedFullName
           },
-          emailRedirectTo: `${window.location.origin}/`
+          emailRedirectTo: `${window.location.origin}/auth/confirm?next=/onboarding`
         }
       })
       if (error) throw error
@@ -68,7 +68,13 @@ export function SignUpForm({
         }
       }
 
-      router.push('/auth/sign-up-success')
+      // If Supabase auto-confirmed the account (email confirmation disabled),
+      // go straight to onboarding. Otherwise show the "check your email" page.
+      if (data.session) {
+        router.push('/onboarding')
+      } else {
+        router.push('/auth/sign-up-success')
+      }
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : 'An error occurred')
     } finally {

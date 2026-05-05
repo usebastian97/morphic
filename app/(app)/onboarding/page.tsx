@@ -1,7 +1,7 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useEffect, useMemo, useState } from 'react'
 
 import { Icon } from '@iconify/react'
 import { toast } from 'sonner'
@@ -182,63 +182,85 @@ export default function OnboardingPage() {
   }
 
   return (
-    <div className="mx-auto flex min-h-svh w-full max-w-3xl flex-col px-6 py-8 sm:px-8">
-      <div className="mb-8 flex items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <span className="rounded-md bg-emerald-700 p-2 text-white">
-            <Icon icon="solar:leaf-bold" className="size-5" />
+    <div className="flex min-h-svh flex-col items-center bg-background px-4 py-10">
+      {/* Brand header */}
+      <div className="mb-5 flex w-full max-w-2xl items-center justify-between">
+        <div className="flex items-center gap-2.5">
+          <span className="rounded-lg bg-emerald-700 p-1.5 text-white">
+            <Icon icon="solar:leaf-bold" className="size-4" />
           </span>
           <span className="font-semibold">AgriEvidence</span>
         </div>
-        <div className="text-sm text-muted-foreground">
-          Step {step} of {TOTAL_STEPS}
-        </div>
+        <span className="text-sm text-muted-foreground">
+          {step} / {TOTAL_STEPS}
+        </span>
       </div>
 
-      <div className="mb-8 flex gap-2" aria-hidden="true">
+      {/* Step progress bar */}
+      <div className="mb-5 flex w-full max-w-2xl gap-1.5" aria-hidden="true">
         {Array.from({ length: TOTAL_STEPS }, (_, index) => index + 1).map(
           stepNumber => (
             <div
               key={stepNumber}
               className={cn(
-                'h-2 flex-1 rounded-full transition-colors',
-                stepNumber <= step ? 'bg-emerald-700' : 'bg-muted'
+                'h-1 flex-1 rounded-full transition-colors duration-300',
+                stepNumber <= step ? 'bg-emerald-700' : 'bg-muted-foreground/20'
               )}
             />
           )
         )}
       </div>
 
-      <div className="flex-1">{activeStep}</div>
+      {/* Step content — matches chat panel container */}
+      <div className="relative flex w-full max-w-2xl flex-col gap-4 rounded-3xl border border-input bg-muted p-6 transition-shadow">
+        {activeStep}
 
-      {validationMessage && (
-        <p className="mt-6 rounded-md border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
-          {validationMessage}
-        </p>
-      )}
+        {validationMessage && (
+          <p className="rounded-xl border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
+            {validationMessage}
+          </p>
+        )}
+      </div>
 
-      <div className="mt-8 flex items-center justify-between gap-3 border-t border-border pt-6">
+      {/* Navigation */}
+      <div className="mt-4 flex w-full max-w-2xl items-center justify-between px-1">
         <Button
           type="button"
           variant="outline"
+          size="sm"
           onClick={goBack}
           disabled={step === 1 || isSaving}
-          className={cn(step === 1 && 'invisible')}
+          className={cn('rounded-full gap-1.5', step === 1 && 'invisible')}
         >
+          <Icon icon="solar:alt-arrow-left-bold" className="size-3.5" />
           Back
         </Button>
 
         {step < TOTAL_STEPS ? (
-          <Button type="button" onClick={goNext}>
+          <Button
+            type="button"
+            size="sm"
+            onClick={goNext}
+            className="rounded-full gap-1.5"
+          >
             Continue
+            <Icon icon="solar:alt-arrow-right-bold" className="size-3.5" />
           </Button>
         ) : (
-          <Button type="button" onClick={finishOnboarding} disabled={isSaving}>
-            {isSaving && (
+          <Button
+            type="button"
+            size="sm"
+            onClick={finishOnboarding}
+            disabled={isSaving}
+            className="rounded-full gap-1.5"
+          >
+            {isSaving ? (
               <Icon
                 icon="solar:refresh-bold"
-                className="mr-2 size-4 animate-spin"
+                className="size-3.5 animate-spin"
               />
+            ) : (
+              <Icon icon="solar:magnifer-bold" className="size-3.5" />
             )}
             {isSaving ? 'Saving...' : 'Start searching'}
           </Button>

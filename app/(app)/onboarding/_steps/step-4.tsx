@@ -9,19 +9,19 @@ import { cn } from '@/lib/utils'
 
 import { Button } from '@/components/ui/button'
 import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList
 } from '@/components/ui/command'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger
+    Popover,
+    PopoverContent,
+    PopoverTrigger
 } from '@/components/ui/popover'
 
 import type { StepProps } from './types'
@@ -506,21 +506,16 @@ export function Step4({ data, setData }: StepProps) {
                     }))
                   }
                   className={cn(
-                    'rounded-lg border p-4 text-left transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring',
+                    'rounded-2xl border bg-background p-4 text-left transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
                     selected
-                      ? 'border-emerald-700 bg-emerald-700 text-white shadow-sm'
-                      : 'border-border bg-card hover:border-emerald-700/40 hover:bg-emerald-50 dark:hover:bg-emerald-950/20'
+                      ? 'border-emerald-700 bg-emerald-700/10 ring-1 ring-emerald-700/20'
+                      : 'border-input hover:border-muted-foreground/40'
                   )}
                 >
                   <span className="block text-sm font-medium">
                     {option.label}
                   </span>
-                  <span
-                    className={cn(
-                      'mt-1 block text-sm',
-                      selected ? 'text-white/80' : 'text-muted-foreground'
-                    )}
-                  >
+                  <span className="mt-1 block text-sm text-muted-foreground">
                     {option.description}
                   </span>
                 </button>
@@ -530,15 +525,10 @@ export function Step4({ data, setData }: StepProps) {
         </div>
       </div>
 
-      <details className="rounded-lg border border-emerald-700/20 bg-emerald-50/70 p-4 text-sm text-emerald-950 dark:bg-emerald-950/20 dark:text-emerald-50">
-        <summary className="cursor-pointer font-medium">
-          Why do we ask this?
-        </summary>
-        <p className="mt-2 text-emerald-950/80 dark:text-emerald-50/80">
-          Region and climate improve search relevance significantly, especially
-          for pest pressure, water management, and regulated products.
-        </p>
-      </details>
+      <p className="text-sm text-muted-foreground">
+        Region and climate improve search relevance for pest pressure, water
+        management, and regulated products.
+      </p>
     </section>
   )
 }

@@ -84,16 +84,16 @@ export function Step3({ data, setData }: StepProps) {
 
         <div className="grid gap-2">
           <Label>Unit</Label>
-          <div className="grid grid-cols-2 rounded-md border border-input bg-background p-1">
+          <div className="flex gap-1.5 rounded-full border border-input bg-background p-1 w-fit">
             {(['hectares', 'acres'] as FarmSizeUnit[]).map(unit => (
               <button
                 key={unit}
                 type="button"
                 onClick={() => updateUnit(unit)}
                 className={cn(
-                  'h-8 rounded-sm px-3 text-sm font-medium transition-colors',
+                  'rounded-full px-4 py-1.5 text-sm font-medium transition-colors',
                   data.farmSizeUnit === unit
-                    ? 'bg-emerald-700 text-white'
+                    ? 'bg-emerald-700 text-white shadow-sm'
                     : 'text-muted-foreground hover:text-foreground'
                 )}
               >
@@ -104,15 +104,10 @@ export function Step3({ data, setData }: StepProps) {
         </div>
       </div>
 
-      <details className="rounded-lg border border-emerald-700/20 bg-emerald-50/70 p-4 text-sm text-emerald-950 dark:bg-emerald-950/20 dark:text-emerald-50">
-        <summary className="cursor-pointer font-medium">
-          Why do we ask this?
-        </summary>
-        <p className="mt-2 text-emerald-950/80 dark:text-emerald-50/80">
-          Some studies are most useful at a specific production scale. We store
-          the value in hectares so comparisons stay consistent.
-        </p>
-      </details>
+      <p className="text-sm text-muted-foreground">
+        Farm size helps calibrate recommendations between smallholder and
+        commercial scale. Values are stored in hectares for consistency.
+      </p>
     </section>
   )
 }

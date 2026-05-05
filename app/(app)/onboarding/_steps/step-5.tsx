@@ -3,13 +3,12 @@
 import type { ClimateZone, FarmType } from '@/lib/supabase/types'
 
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue
 } from '@/components/ui/select'
 
 import type { StepProps } from './types'
@@ -173,11 +172,11 @@ export function Step5({ data, setData, onEdit }: Step5Props) {
         </Select>
       </div>
 
-      <Card className="rounded-lg">
-        <CardHeader>
-          <CardTitle className="text-lg">Your profile summary</CardTitle>
-        </CardHeader>
-        <CardContent>
+      <div className="rounded-2xl border border-input bg-background">
+        <div className="px-4 pt-4 pb-3 border-b border-input">
+          <p className="text-sm font-medium">Your profile summary</p>
+        </div>
+        <div className="px-4 py-1">
           {summary.map(item => (
             <SummaryRow
               key={item.label}
@@ -187,8 +186,8 @@ export function Step5({ data, setData, onEdit }: Step5Props) {
               onEdit={onEdit}
             />
           ))}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </section>
   )
 }

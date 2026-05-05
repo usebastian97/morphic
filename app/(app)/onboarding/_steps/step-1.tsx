@@ -85,7 +85,7 @@ export function Step1({ data, setData }: StepProps) {
         </p>
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div className="grid gap-2.5 sm:grid-cols-2">
         {FARM_TYPE_OPTIONS.map(option => {
           const selected = data.farmTypes.includes(option.value)
 
@@ -96,19 +96,19 @@ export function Step1({ data, setData }: StepProps) {
               aria-pressed={selected}
               onClick={() => toggleFarmType(option.value)}
               className={cn(
-                'rounded-lg border p-4 text-left transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring',
+                'rounded-2xl border bg-background p-4 text-left transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
                 selected
-                  ? 'border-emerald-700 bg-emerald-700 text-white shadow-sm'
-                  : 'border-border bg-card hover:border-emerald-700/40 hover:bg-emerald-50 dark:hover:bg-emerald-950/20'
+                  ? 'border-emerald-700 bg-emerald-700/10 ring-1 ring-emerald-700/20'
+                  : 'border-input hover:border-muted-foreground/40'
               )}
             >
               <div className="flex items-start gap-3">
                 <span
                   className={cn(
-                    'mt-0.5 rounded-md p-2',
+                    'mt-0.5 rounded-xl p-2',
                     selected
-                      ? 'bg-white/15 text-white'
-                      : 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-300'
+                      ? 'bg-emerald-700 text-white'
+                      : 'bg-muted text-emerald-700 dark:text-emerald-400'
                   )}
                 >
                   <Icon icon={option.icon} className="size-5" />
@@ -117,12 +117,7 @@ export function Step1({ data, setData }: StepProps) {
                   <span className="block text-sm font-medium">
                     {option.label}
                   </span>
-                  <span
-                    className={cn(
-                      'block text-sm',
-                      selected ? 'text-white/80' : 'text-muted-foreground'
-                    )}
-                  >
+                  <span className="block text-sm text-muted-foreground">
                     {option.description}
                   </span>
                 </span>
@@ -132,15 +127,10 @@ export function Step1({ data, setData }: StepProps) {
         })}
       </div>
 
-      <details className="rounded-lg border border-emerald-700/20 bg-emerald-50/70 p-4 text-sm text-emerald-950 dark:bg-emerald-950/20 dark:text-emerald-50">
-        <summary className="cursor-pointer font-medium">
-          Why do we ask this?
-        </summary>
-        <p className="mt-2 text-emerald-950/80 dark:text-emerald-50/80">
-          Search ranking can favor sources, terms, and regulatory notes that
-          match the kind of operation you run.
-        </p>
-      </details>
+      <p className="text-sm text-muted-foreground">
+        Search ranking will favor sources and regulatory notes that match your
+        operation type. You can update this later.
+      </p>
     </section>
   )
 }
