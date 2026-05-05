@@ -102,7 +102,7 @@ Label thresholds: `≥70` → High · `≥45` → Moderate · `≥20` → Low ·
 
 ---
 
-### 1.2 Export Response as Cited PDF
+### ✅ 1.2 Export Response as Cited PDF *(Completed 2026-05-05)*
 
 **Type:** Demo wow  
 **Effort:** ~3 days

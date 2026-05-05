@@ -13,6 +13,15 @@ _Changes merged to `dev` but not yet reflected in a tagged release._
 
 ### Added
 
+- **Export Response as Cited PDF** *(Sprint 1.2)* — "Download as PDF" button on every assistant response
+  - `lib/supabase/queries/export-message.ts` — `getMessageExportData()` fetches the assistant message, its text/source parts, the preceding user query, and enriches each cited source with trust score and type from the curated `sources` table; exports `MessageExportData` and `ExportSource` interfaces
+  - `app/api/messages/[messageId]/export-pdf/route.ts` — RLS-enforced GET endpoint returning `{ data: MessageExportData }`; mirrors `evidence-score` route pattern
+  - `lib/export/generate-pdf.tsx` — `generateAndDownloadPDF()` builds a structured A4 PDF using `@react-pdf/renderer` (dynamically imported to avoid SSR), with Header (logo + date), Query, Answer (markdown stripped), Evidence Score, Sources (numbered with type/trust/snippet/URL), and Footer (disclaimer + page numbers)
+  - `lib/hooks/use-export-pdf.ts` — `useExportPdf(messageId)` hook: fetch → generate → `toast.success`/`toast.error` → `track('pdf_export', { messageId, label })`
+  - `components/artifact/export-pdf-button.tsx` — `solar:file-download-bold` icon button with Radix Tooltip, spinner (`solar:refresh-bold animate-spin`) during generation, and `aria-label="Download as PDF"`
+  - `components/message-actions.tsx` — added `<ExportPDFButton messageId={messageId} />` between the copy button and feedback buttons
+  - Installed `@react-pdf/renderer@4.5.1`
+
 - **Evidence Scoring system** — automatic trustworthiness rating (0–100) for every assistant message
   - `lib/agri/evidence-score.ts` — pure scoring function (`computeEvidenceScore`, `getScoreColor`); types: `EvidenceScore`, `EvidenceBreakdown`, `CuratedSource`
   - `lib/agri/evidence-score.test.ts` — 6 Vitest unit tests covering all label tiers, fallback penalty, empty parts, and colour helpers
