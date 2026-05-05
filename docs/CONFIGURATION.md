@@ -9,6 +9,7 @@ This guide covers the optional features and their configuration in Morphic.
 - [Search Providers](#search-providers)
 - [Authentication](#authentication)
 - [Guest Mode](#guest-mode)
+- [Evidence Scoring](#evidence-scoring)
 - [Other Features](#other-features)
 
 ## Database
@@ -235,6 +236,22 @@ Rate limiting only applies when `MORPHIC_CLOUD_DEPLOYMENT=true`.
 | Personal/Local | `ENABLE_AUTH=false` (anonymous mode)         |
 | Public Demo    | `ENABLE_GUEST_CHAT=true` with rate limiting  |
 | Production     | `ENABLE_AUTH=true` (Supabase authentication) |
+
+## Evidence Scoring
+
+Evidence Scoring is **enabled automatically** — no configuration is required. After every assistant message is saved, `persist-stream-results.ts` fires-and-forgets a score computation using the active `sources` rows.
+
+The system requires:
+1. A populated `sources` table in Supabase (see [Database Schema — Curated Sources](DATABASE_SCHEMA.md#curated-sources-005))
+2. A `SUPABASE_SERVICE_ROLE_KEY` environment variable so the admin client can write back to `messages.metadata` without RLS restrictions
+
+```bash
+SUPABASE_SERVICE_ROLE_KEY=[YOUR_SUPABASE_SERVICE_ROLE_KEY]
+```
+
+> **Note**: Without a service-role key, score persistence will fail silently (errors are logged to console but do not break streaming). Scores will return `null` from the API endpoint.
+
+The curated sources cache TTL is hard-coded at 10 minutes and is not configurable via environment variables.
 
 ## Other Features
 

@@ -2,14 +2,15 @@ import { UseChatHelpers } from '@ai-sdk/react'
 
 import type { SearchResultItem } from '@/lib/types'
 import type {
-  UIDataTypes,
-  UIMessage,
-  UIMessageMetadata,
-  UITools
+    UIDataTypes,
+    UIMessage,
+    UIMessageMetadata,
+    UITools
 } from '@/lib/types/ai'
 import type { DynamicToolPart } from '@/lib/types/dynamic-tools'
 
 import { AnswerSection } from './answer-section'
+import { EvidenceScoreBadge } from './artifact/evidence-score-badge'
 import { DynamicToolDisplay } from './dynamic-tool-display'
 import ResearchProcessSection from './research-process-section'
 import { UserFileSection } from './user-file-section'
@@ -176,6 +177,20 @@ export function RenderMessage({
   })
   // Flush tail (no subsequent text)
   flushBuffer('tail')
+
+  // Show evidence score badge below assistant message when sources are present
+  const hasSourceParts = message.parts?.some(
+    (p: any) => p.type === 'source-url' || p.type === 'source-document'
+  )
+  if (hasSourceParts) {
+    elements.push(
+      <EvidenceScoreBadge
+        key={`${messageId}-evidence-score`}
+        messageId={messageId}
+        className="mt-1"
+      />
+    )
+  }
 
   return <>{elements}</>
 }

@@ -95,12 +95,14 @@ app/
     feedback/     # User feedback submission
     upload/       # File upload to R2/S3
     advanced-search/ # Advanced search API
+    messages/
+      [messageId]/evidence-score/ # GET — retrieve evidence score for a message
   auth/           # Auth callback / Supabase redirects
 
 lib/
   actions/        # Next.js Server Actions (chat, feedback)
   agents/         # AI agent definitions (researcher, title-generator)
-  agri/           # AgriEvidence-specific: query-enricher, user context formatting
+  agri/           # AgriEvidence-specific: query-enricher, user context, evidence scoring
   analytics/      # Event tracking (Vercel Analytics)
   auth/           # getCurrentUser / getCurrentUserId helpers
   config/         # Model config, search modes, cookie helpers
@@ -173,6 +175,7 @@ scripts/          # CLI utilities (chat-cli.ts)
 - `lib/streaming/create-chat-stream-response.ts` handles persistent chat sessions (saves to Supabase)
 - `lib/streaming/create-ephemeral-chat-stream-response.ts` handles anonymous/guest sessions (no persistence)
 - Parts (text, reasoning, tool outputs, file refs, source URLs) are stored individually in the `parts` table
+- After a response is persisted, `lib/streaming/helpers/persist-stream-results.ts` triggers a fire-and-forget **evidence score computation** and writes the result into `messages.metadata.evidence_score`
 
 ### 5. Authentication & Multi-tenancy
 
@@ -235,11 +238,26 @@ scripts/          # CLI utilities (chat-cli.ts)
 - `/onboarding` collects farm type, crops/products, farm size, country/region/climate, and preferred language, then updates `user_profiles` once with `onboarding_completed = true`
 - Profile context personalises both the Researcher system prompt and DeepSeek V4 Flash query enrichment for authenticated chat requests
 
-### 14. Title Generation
+### 14. Evidence Scoring
+
+Every assistant message that contains cited sources receives an **Evidence Score** — a 0–100 trustworthiness rating computed automatically after the response is streamed and saved.
+
+- **Algorithm** (`lib/agri/evidence-score.ts`):
+  - `base = (peer_reviewed * 40 + government * 25) / total_sources`, capped at 75
+  - `trust_bonus = (avg_curated_trust / 100) * 20` — reward for high-trust curated sources
+  - `fallback_penalty = 10` — applied when any search fell back to open-web results
+  - `overall = clamp(round(base + trust_bonus − fallback_penalty), 0, 100)`
+  - Labels: **High** (≥ 70), **Moderate** (≥ 45), **Low** (≥ 20), **Insufficient** (< 20)
+- **Curated source cache** (`lib/agri/curated-sources-cache.ts`): module-level 10-minute TTL cache of active `sources` rows (only `domain`, `source_type`, `trust_score` fields)
+- **Persistence**: score is merged into `messages.metadata.evidence_score` via `createAdminClient()` (service-role, bypasses RLS) in `persist-stream-results.ts` — fire-and-forget, errors swallowed
+- **API**: `GET /api/messages/[messageId]/evidence-score` returns `{ score: EvidenceScore | null }` using an RLS-enforced server Supabase client
+- **UI**: `components/artifact/evidence-score-badge.tsx` — client component rendered below assistant messages with `source-url` or `source-document` parts. Uses a custom polling hook (2-second intervals, 10-second max) and a Radix `HoverCard` breakdown. Icon set: Iconify Solar shields
+
+### 15. Title Generation
 
 - `lib/agents/title-generator.ts` auto-generates descriptive chat titles from the first user message
 
-### 15. Sharing
+### 16. Sharing
 
 - Chats with `visibility = 'public'` are accessible by anyone with the link (enforced by RLS policy `chats_select_own_or_public`)
 

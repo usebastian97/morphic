@@ -60,6 +60,36 @@ Individual messages within a chat (user turns and AI turns).
 
 **Grants**: `authenticated` (select, insert, update, delete), `anon` (select)
 
+**`metadata` JSONB shape**
+
+The `metadata` column is written by `persist-stream-results.ts` and may contain:
+
+```jsonc
+{
+  "traceId": "string",        // Langfuse trace ID (optional)
+  "searchMode": "quick | adaptive",
+  "modelId": "string",
+  "evidence_score": {
+    "overall": 58,            // 0–100 integer
+    "label": "Moderate",      // "High" | "Moderate" | "Low" | "Insufficient"
+    "computed_at": "2026-05-05T12:00:00.000Z",
+    "breakdown": {
+      "peer_reviewed_count": 4,
+      "government_count": 1,
+      "web_general_count": 2,
+      "total_sources": 7,
+      "avg_curated_trust": 82,   // null if no sources matched curated list
+      "used_fallback": false,
+      "primary_source_type": "peer_reviewed"
+                              // "peer_reviewed" | "government" | "mixed"
+                              // | "web_general" | "none"
+    }
+  }
+}
+```
+
+`evidence_score` is written asynchronously after the message is saved (service-role client, fire-and-forget). It will be absent until the computation completes (typically < 500 ms). The GET endpoint `/api/messages/[messageId]/evidence-score` returns `{ score: null }` until it is available.
+
 ---
 
 ### `parts`

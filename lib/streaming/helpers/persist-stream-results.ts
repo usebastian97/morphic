@@ -1,12 +1,48 @@
 import { UIMessage } from 'ai'
 
 import { createChatWithFirstMessage, upsertMessage } from '@/lib/actions/chat'
+import { getCuratedSources } from '@/lib/agri/curated-sources-cache'
+import { computeEvidenceScore } from '@/lib/agri/evidence-score'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { updateChatTitle } from '@/lib/supabase/queries/chat'
 import { SearchMode } from '@/lib/types/search'
 import { perfTime } from '@/lib/utils/perf-logging'
 import { retryDatabaseOperation } from '@/lib/utils/retry'
 
 const DEFAULT_CHAT_TITLE = 'Untitled'
+
+/**
+ * Computes and persists the evidence score for a saved assistant message.
+ * Runs fire-and-forget — never throws; errors are logged and swallowed.
+ */
+async function computeAndPersistEvidenceScore(
+  message: UIMessage
+): Promise<void> {
+  try {
+    const [curatedSources] = await Promise.all([getCuratedSources()])
+    const score = computeEvidenceScore(message.parts ?? [], curatedSources)
+
+    const supabase = createAdminClient()
+
+    const existingMetadata =
+      typeof message.metadata === 'object' && message.metadata !== null
+        ? (message.metadata as Record<string, unknown>)
+        : {}
+
+    const mergedMetadata = { ...existingMetadata, evidence_score: score }
+
+    const { error } = await supabase
+      .from('messages')
+      .update({ metadata: mergedMetadata })
+      .eq('id', message.id)
+
+    if (error) {
+      console.error('[EvidenceScore] Failed to persist score:', error)
+    }
+  } catch (err) {
+    console.error('[EvidenceScore] Unexpected error computing score:', err)
+  }
+}
 
 export async function persistStreamResults(
   responseMessage: UIMessage,
@@ -83,6 +119,8 @@ export async function persistStreamResults(
   try {
     await upsertMessage(chatId, responseMessage, userId)
     perfTime('upsertMessage (AI response) completed', saveStart)
+    // Fire-and-forget evidence score computation (non-blocking)
+    void computeAndPersistEvidenceScore(responseMessage)
   } catch (error) {
     console.error('Error saving message:', error)
     try {
@@ -91,6 +129,8 @@ export async function persistStreamResults(
         'save message'
       )
       perfTime('upsertMessage (AI response) completed after retry', saveStart)
+      // Fire-and-forget evidence score computation (non-blocking, after retry)
+      void computeAndPersistEvidenceScore(responseMessage)
     } catch (retryError) {
       console.error('Failed to save after retries:', retryError)
       // Don't throw here to avoid breaking the stream
