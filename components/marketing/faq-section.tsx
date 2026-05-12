@@ -6,24 +6,24 @@ import { Icon } from '@iconify/react'
 
 const faqs = [
   {
-    q: 'Is Morphic free to use?',
-    a: 'Morphic is open-source and free to self-host. You only pay for the API keys of the AI providers you choose (OpenAI, Anthropic, Google, etc.). The Morphic cloud deployment may have its own pricing tier.'
+    q: 'What is SwissTaxSearch?',
+    a: 'SwissTaxSearch is an AI research app for current Swiss tax information. It searches official federal, cantonal, municipal, legal, statistics, and tax authority sources, then returns cited answers.'
   },
   {
-    q: 'What AI models are supported?',
-    a: 'Morphic supports OpenAI (GPT-4o, o-series), Anthropic (Claude), Google (Gemini), and more. You can configure any combination and switch between them per-session. See the models.json config for the full list.'
+    q: 'Is this tax advice?',
+    a: 'No. SwissTaxSearch helps you find and understand official sources, but important decisions should still be checked against the cited authority or a qualified Swiss tax professional.'
   },
   {
-    q: 'Can I self-host Morphic?',
-    a: "Yes. Morphic ships with a Docker Compose setup that includes the app, PostgreSQL, Redis, and SearXNG for self-hosted search. Run docker compose up -d and you're live in minutes."
+    q: 'Which sources are searched?',
+    a: 'The active search tool is constrained to official Swiss federal, cantonal, and municipal domains from the Supabase source catalogue plus static Swiss government fallbacks.'
   },
   {
     q: 'Is my data private?',
-    a: 'When self-hosted, your data stays entirely on your infrastructure. Chat history is stored in your PostgreSQL database. Morphic never sends your conversations to any external service beyond the AI provider you configure.'
+    a: 'When self-hosted, your data stays on your infrastructure. Chat history is stored in PostgreSQL, and AI/search requests use the providers you configure.'
   },
   {
-    q: 'How does Morphic compare to ChatGPT or Perplexity?',
-    a: "Morphic is fully open-source and self-hostable, unlike both. It focuses on transparent, cited answers with a generative UI — you can see exactly which sources informed each answer, and you're not locked into a single AI provider."
+    q: 'What do Speed and Quality modes do?',
+    a: 'Speed mode uses fewer credits for fast official-source answers. Quality mode uses more credits for deeper reasoning across the same official Swiss tax source policy.'
   }
 ]
 

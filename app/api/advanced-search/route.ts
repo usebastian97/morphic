@@ -2,11 +2,17 @@ import { NextResponse } from 'next/server'
 
 import { Redis } from '@upstash/redis'
 import http from 'http'
-import { Agent } from 'http'
 import https from 'https'
 import { JSDOM, VirtualConsole } from 'jsdom'
 import { createClient } from 'redis'
 
+import {
+  getHostname,
+  isOfficialSwissTaxUrl,
+  normalizeDomain,
+  uniqueDomains
+} from '@/lib/swiss-tax/official-domain-policy'
+import { getOfficialSwissTaxDomains } from '@/lib/tools/swiss-tax-search'
 import {
   SearchResultItem,
   SearXNGResponse,
@@ -141,9 +147,22 @@ export async function POST(request: Request) {
   const SEARXNG_DEFAULT_DEPTH = process.env.SEARXNG_DEFAULT_DEPTH || 'basic'
 
   try {
-    const cacheKey = `search:${query}:${maxResults}:${searchDepth}:${
-      Array.isArray(includeDomains) ? includeDomains.join(',') : ''
-    }:${Array.isArray(excludeDomains) ? excludeDomains.join(',') : ''}`
+    const officialDomains = await getOfficialSwissTaxDomains()
+    const requestedIncludeDomains = Array.isArray(includeDomains)
+      ? uniqueDomains(includeDomains)
+      : []
+    const requestedExcludeDomains = Array.isArray(excludeDomains)
+      ? uniqueDomains(excludeDomains)
+      : []
+    const allowedIncludeDomains = requestedIncludeDomains.filter(domain =>
+      officialDomains.includes(domain)
+    )
+    const includeDomainFilter =
+      allowedIncludeDomains.length > 0 ? allowedIncludeDomains : officialDomains
+
+    const cacheKey = `search:${query}:${maxResults}:${searchDepth}:${includeDomainFilter.join(
+      ','
+    )}:${requestedExcludeDomains.join(',')}`
 
     // Try to get cached results
     const cachedResults = await getCachedResults(cacheKey)
@@ -156,8 +175,9 @@ export async function POST(request: Request) {
       query,
       Math.min(maxResults, SEARXNG_MAX_RESULTS),
       searchDepth || SEARXNG_DEFAULT_DEPTH,
-      Array.isArray(includeDomains) ? includeDomains : [],
-      Array.isArray(excludeDomains) ? excludeDomains : []
+      includeDomainFilter,
+      requestedExcludeDomains,
+      officialDomains
     )
 
     // Cache the results
@@ -185,7 +205,8 @@ async function advancedSearchXNGSearch(
   maxResults: number = 10,
   searchDepth: 'basic' | 'advanced' = 'advanced',
   includeDomains: string[] = [],
-  excludeDomains: string[] = []
+  excludeDomains: string[] = [],
+  officialDomains: string[] = includeDomains
 ): Promise<SearXNGSearchResults> {
   const apiUrl = process.env.SEARXNG_API_URL
   if (!apiUrl) {
@@ -242,18 +263,14 @@ async function advancedSearchXNGSearch(
       (result: SearXNGResult) => result && !result.img_src
     )
 
-    // Apply domain filtering manually
-    if (includeDomains.length > 0 || excludeDomains.length > 0) {
-      generalResults = generalResults.filter(result => {
-        const domain = new URL(result.url).hostname
-        return (
-          (includeDomains.length === 0 ||
-            includeDomains.some(d => domain.includes(d))) &&
-          (excludeDomains.length === 0 ||
-            !excludeDomains.some(d => domain.includes(d)))
-        )
-      })
-    }
+    generalResults = generalResults.filter(result =>
+      shouldKeepOfficialResult(
+        result.url,
+        includeDomains,
+        excludeDomains,
+        officialDomains
+      )
+    )
 
     if (searchDepth === 'advanced') {
       const crawledResults = await Promise.all(
@@ -280,6 +297,14 @@ async function advancedSearchXNGSearch(
 
     const imageResults = (data.results || [])
       .filter((result: SearXNGResult) => result && result.img_src)
+      .filter((result: SearXNGResult) =>
+        shouldKeepOfficialResult(
+          result.url,
+          includeDomains,
+          excludeDomains,
+          officialDomains
+        )
+      )
       .slice(0, maxResults)
 
     return {
@@ -297,7 +322,7 @@ async function advancedSearchXNGSearch(
           return imgSrc.startsWith('http') ? imgSrc : `${apiUrl}${imgSrc}`
         })
         .filter(Boolean),
-      number_of_results: data.number_of_results || generalResults.length
+      number_of_results: generalResults.length
     }
   } catch (error) {
     console.error('SearchXNG API error:', error)
@@ -308,6 +333,35 @@ async function advancedSearchXNGSearch(
       number_of_results: 0
     }
   }
+}
+
+function shouldKeepOfficialResult(
+  url: string,
+  includeDomains: string[],
+  excludeDomains: string[],
+  officialDomains: readonly string[]
+): boolean {
+  if (!isOfficialSwissTaxUrl(url, officialDomains)) return false
+
+  const hostname = getHostname(url)
+  if (!hostname) return false
+
+  return (
+    (includeDomains.length === 0 ||
+      matchesAnyDomain(hostname, includeDomains)) &&
+    (excludeDomains.length === 0 || !matchesAnyDomain(hostname, excludeDomains))
+  )
+}
+
+function matchesAnyDomain(
+  hostname: string,
+  domains: readonly string[]
+): boolean {
+  return domains.some(domain => {
+    const normalized = normalizeDomain(domain)
+    if (!normalized) return false
+    return hostname === normalized || hostname.endsWith(`.${normalized}`)
+  })
 }
 
 async function crawlPage(

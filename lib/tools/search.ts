@@ -7,7 +7,7 @@ import { createSwissTaxSearchTool } from './swiss-tax-search'
 
 /**
  * Creates the SwissTaxSearch tool using Parallel Search while preserving
- * Morphic's existing tool name, schema, streaming states, and result shape.
+ * the existing tool name, schema, streaming states, and result shape.
  */
 export function createSearchTool(
   fullModel: string,

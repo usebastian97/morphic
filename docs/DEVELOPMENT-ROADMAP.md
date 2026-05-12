@@ -12,6 +12,8 @@
 - [x] Rebuilt onboarding and profile UI for Swiss tax context
 - [x] Added runtime subscription credit preflight and post-save credit deduction
 - [x] Updated subscription documentation while preserving the same plan economics
+- [x] Rebranded live app metadata, shell, auth copy, chat starters, README, and marketing pages to SwissTaxSearch
+- [x] Constrained the legacy `/api/advanced-search` route to official Swiss tax domains
 
 ## In Progress
 
@@ -19,7 +21,7 @@
 - [ ] Add unit tests for `lib/swiss-tax/official-domain-policy.ts`
 - [ ] Add unit tests for `lib/swiss-tax/official-source-score.ts`
 - [ ] Add integration coverage for credit preflight and `deduct_credits()` handling
-- [ ] Review all marketing copy and landing pages for SwissTaxSearch positioning
+- [x] Review all marketing copy and landing pages for SwissTaxSearch positioning
 
 ## Next Milestones
 

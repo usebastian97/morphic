@@ -4,23 +4,23 @@ const steps = [
   {
     number: '01',
     icon: 'solar:chat-round-bold',
-    title: 'Ask any question',
+    title: 'Ask a Swiss tax question',
     description:
-      'Type your question naturally — Morphic understands context, follow-ups, and complex multi-part queries.'
+      'Ask about federal tax, cantonal rules, VAT/MWST, deductions, forms, deadlines, or official tax news.'
   },
   {
     number: '02',
     icon: 'solar:magnifer-bold',
-    title: 'AI searches the web',
+    title: 'Search official sources',
     description:
-      'Morphic dispatches live web searches, evaluates source quality, and synthesizes the most relevant information in real time.'
+      'The search tool queries official Swiss federal, cantonal, municipal, legal, and tax authority domains only.'
   },
   {
     number: '03',
     icon: 'solar:document-text-bold',
-    title: 'Get a structured answer',
+    title: 'Get a cited answer',
     description:
-      'Receive a clear, cited response with inline sources, related images, follow-up questions, and a full research trail.'
+      'Receive a clear response with inline citations, jurisdiction notes, source coverage, and exportable research context.'
   }
 ]
 
@@ -37,11 +37,11 @@ export function HowItWorksSection() {
 
         {/* Section head */}
         <h2 className="mx-auto mb-4 max-w-2xl text-center text-[26px] sm:text-[36px] font-normal leading-[1.2] tracking-[-0.72px] text-foreground">
-          From question to answer in seconds.
+          From tax question to official answer.
         </h2>
         <p className="mx-auto mb-14 max-w-xl text-center text-[16px] leading-[1.5] text-muted-foreground">
-          No hallucinations, no guesswork. Every answer is traceable back to
-          real sources on the live web.
+          Every answer is traceable back to official Swiss sources, with clear
+          notes when coverage is federal-only, canton-specific, or incomplete.
         </p>
 
         {/* Steps */}

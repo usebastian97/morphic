@@ -3,27 +3,27 @@ import { Icon } from '@iconify/react'
 const features = [
   {
     icon: 'solar:magnifer-bold',
-    title: 'Real-time Web Search',
+    title: 'Official-only search',
     description:
-      'Every answer is grounded in live search results. Morphic queries the web at the moment you ask, not from a stale training snapshot.'
+      'Every search is constrained to Swiss federal, cantonal, municipal, legal, statistics, and official tax authority domains.'
   },
   {
-    icon: 'solar:magic-stick-bold',
-    title: 'Generative UI',
+    icon: 'solar:map-point-bold',
+    title: 'Canton-aware context',
     description:
-      "Answers aren't walls of text. Morphic renders structured responses — with sources, follow-up questions, and rich components — in real time."
+      'Profiles can capture canton, municipality, taxpayer type, and language so answers highlight the right jurisdiction.'
   },
   {
-    icon: 'solar:layers-bold',
-    title: 'Multiple AI Providers',
+    icon: 'solar:document-text-bold',
+    title: 'Source-backed answers',
     description:
-      'Switch between OpenAI, Anthropic, Google, and more. Bring your own API keys and stay in control of which models power your searches.'
+      'Responses include inline citations, official-source coverage scores, source breakdowns, and PDF exports for later review.'
   },
   {
     icon: 'solar:code-bold',
-    title: 'Fully Open Source',
+    title: 'Self-hostable stack',
     description:
-      'Every line is on GitHub under the MIT license. Self-host it in minutes with Docker, or deploy to Vercel with a single click.'
+      'Run the app with your own Supabase database, Redis cache, DeepSeek models, Parallel Search key, and Docker services.'
   }
 ]
 
@@ -40,11 +40,12 @@ export function FeaturesSection() {
 
         {/* Section head — weight 400, not bold */}
         <h2 className="mx-auto mb-4 max-w-2xl text-center text-[26px] sm:text-[36px] font-normal leading-[1.2] tracking-[-0.72px] text-foreground">
-          Built for answers, not just chat.
+          Built for Swiss tax research.
         </h2>
         <p className="mx-auto mb-14 max-w-xl text-center text-[16px] leading-[1.5] text-muted-foreground">
-          Morphic combines a powerful search engine with a generative UI
-          framework to give you answers you can actually trust and trace.
+          SwissTaxSearch combines real-time retrieval with structured answers
+          for tax rates, forms, deadlines, official news, and jurisdiction
+          comparisons.
         </p>
 
         {/* Feature cards — hairline bordered, white on cream */}

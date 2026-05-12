@@ -32,6 +32,8 @@ The app is now Swiss tax focused:
 
 Open-web fallback is disabled. If official coverage is thin, the assistant must say that clearly.
 
+The legacy `/api/advanced-search` SearXNG route is also filtered through the official Swiss tax domain policy before returning or crawling results, so exposed search utilities cannot bypass the product-level official-source constraint.
+
 ## Fetch Flow
 
 `lib/tools/fetch.ts` only fetches direct URLs that match the official Swiss tax/government domain policy. Non-official URLs are rejected with a clear error.

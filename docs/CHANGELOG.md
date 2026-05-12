@@ -30,6 +30,9 @@ _Changes merged to `dev` but not yet reflected in a tagged release._
 
 ### Changed
 
+- **SwissTaxSearch product surface cleanup** — updated live metadata, app shell, auth modals, footer disclaimer, chat starter prompts, marketing page copy, feedback copy, README headline, and `.env.local.example` search guidance to use SwissTaxSearch positioning.
+- **Official-only legacy search guard** — `app/api/advanced-search/route.ts` now loads the official Swiss tax domain policy and filters SearXNG text/image results to official Swiss sources before returning or crawling them.
+
 - **Product domain pivot** — renamed active behavior from AgriEvidence agriculture search to SwissTaxSearch official Swiss tax search
   - `lib/agents/prompts/search-mode-prompts.ts` — rewritten for official Swiss tax answers, jurisdiction applicability, and non-advice caveats
   - `lib/agents/researcher.ts` — injects Swiss tax profile context instead of agricultural context
@@ -121,7 +124,7 @@ _Commit `eea6858` — merged to `main`_
 
 ## Upstream Base — Morphic Open Source
 
-The AgriEvidence fork is based on the open-source [Morphic](https://github.com/miurla/morphic) project.
+The SwissTaxSearch fork is based on the open-source [Morphic](https://github.com/miurla/morphic) project.
 Upstream changes (Morphic `main` branch, pre-fork) include:
 
 | Commit    | Description                                                      |

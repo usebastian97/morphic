@@ -9,23 +9,25 @@ export function HeroSection() {
         {/* Section label */}
         <div className="mb-6 flex justify-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-[10px] py-[4px] text-[11px] font-semibold uppercase tracking-[0.88px] text-muted-foreground">
-            <Icon icon="solar:code-bold" className="size-3" />
-            Open Source · MIT License
+            <Icon icon="solar:shield-check-bold" className="size-3" />
+            Official Swiss sources only
           </span>
         </div>
 
         {/* Display headline — weight 400, editorial */}
         <h1 className="mx-auto max-w-3xl text-center text-[32px] sm:text-[56px] lg:text-[72px] font-normal leading-[1.1] tracking-[-2.16px] text-foreground">
-          The AI answer engine
+          SwissTaxSearch
           <br />
-          <span className="text-muted-foreground">that shows its work.</span>
+          <span className="text-muted-foreground">
+            for official tax answers.
+          </span>
         </h1>
 
         {/* Subhead */}
         <p className="mx-auto mt-6 max-w-xl text-center text-[16px] leading-[1.5] text-muted-foreground">
-          Morphic searches the web in real time, reasons through results, and
-          delivers structured answers with cited sources — powered by the AI
-          model you choose.
+          Search federal, cantonal, and municipal Swiss tax websites in real
+          time, with cited answers that show the jurisdiction, date, and source
+          behind every claim.
         </p>
 
         {/* CTAs */}
@@ -34,7 +36,7 @@ export function HeroSection() {
             href="/chat"
             className="inline-flex items-center gap-2 rounded-[8px] bg-foreground px-[20px] py-[12px] text-[14px] font-medium leading-none text-background hover:bg-foreground/90 transition-colors"
           >
-            Start searching
+            Search Swiss taxes
             <Icon icon="solar:alt-arrow-right-bold" className="size-4" />
           </Link>
           <Link
@@ -44,7 +46,7 @@ export function HeroSection() {
             className="inline-flex items-center gap-2 rounded-[8px] border border-border bg-card px-[20px] py-[12px] text-[14px] font-medium leading-none text-foreground hover:bg-accent transition-colors"
           >
             <Icon icon="solar:code-bold" className="size-4" />
-            View on GitHub
+            View source
           </Link>
         </div>
 
@@ -57,7 +59,7 @@ export function HeroSection() {
               <span className="size-2.5 rounded-full bg-border" />
               <span className="size-2.5 rounded-full bg-border" />
               <span className="ml-3 text-[11px] font-medium uppercase tracking-[0.88px] text-muted-foreground">
-                Morphic
+                SwissTaxSearch
               </span>
             </div>
 
@@ -70,7 +72,7 @@ export function HeroSection() {
                   className="size-4 shrink-0 text-muted-foreground"
                 />
                 <span className="truncate text-foreground">
-                  How does quantum entanglement work?
+                  What changed for VAT/MWST in Switzerland this year?
                 </span>
                 <div className="ml-auto flex items-center gap-1 shrink-0">
                   <div className="size-2 rounded-full bg-primary animate-pulse" />
@@ -80,16 +82,16 @@ export function HeroSection() {
               {/* AI timeline pills */}
               <div className="mt-4 flex flex-wrap gap-2">
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-[#dfa88f] px-[10px] py-[4px] text-[11px] font-semibold uppercase tracking-[0.88px] text-[#26251e]">
-                  Thinking
+                  Checking scope
                 </span>
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-[#9fc9a2] px-[10px] py-[4px] text-[11px] font-semibold uppercase tracking-[0.88px] text-[#26251e]">
                   Searching
                 </span>
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-[#9fbbe0] px-[10px] py-[4px] text-[11px] font-semibold uppercase tracking-[0.88px] text-[#26251e]">
-                  Reading
+                  Reading laws
                 </span>
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-[#c0a8dd] px-[10px] py-[4px] text-[11px] font-semibold uppercase tracking-[0.88px] text-[#26251e]">
-                  Composing
+                  Citing
                 </span>
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-[#c08532] px-[10px] py-[4px] text-[11px] font-semibold uppercase tracking-[0.88px] text-white">
                   Done
@@ -105,7 +107,7 @@ export function HeroSection() {
 
               {/* Source pills */}
               <div className="mt-4 flex gap-2 flex-wrap">
-                {['arxiv.org', 'nature.com', 'phys.org'].map(s => (
+                {['estv.admin.ch', 'fedlex.admin.ch', 'zh.ch'].map(s => (
                   <span
                     key={s}
                     className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-2.5 py-1 text-[11px] text-muted-foreground"
@@ -121,7 +123,7 @@ export function HeroSection() {
 
         {/* Trust line */}
         <p className="mt-8 text-center text-[13px] text-muted-foreground/70">
-          Open-source · Self-hostable · No vendor lock-in
+          Official sources · Canton-aware · Self-hostable
         </p>
       </div>
     </section>

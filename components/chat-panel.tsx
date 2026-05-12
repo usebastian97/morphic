@@ -187,7 +187,7 @@ export function ChatPanel({
         <div className="mb-6 md:mb-10 flex flex-col items-center gap-2 md:gap-4">
           <IconBlinkingLogo className="size-12" />
           <h1 className="text-xl md:text-2xl font-medium text-foreground">
-            What would you like to know?
+            What Swiss tax question can I help with?
           </h1>
         </div>
       )}
@@ -261,7 +261,11 @@ export function ChatPanel({
             onCompositionEnd={handleCompositionEnd}
             onFocus={() => setIsInputFocused(true)}
             onBlur={() => setIsInputFocused(false)}
-            placeholder={messages.length > 0 ? 'Reply...' : 'Ask anything...'}
+            placeholder={
+              messages.length > 0
+                ? 'Reply...'
+                : 'Ask about Swiss taxes, forms, deadlines, or cantons...'
+            }
             spellCheck={false}
             value={input}
             disabled={isLoading || isToolInvocationInProgress()}

@@ -46,7 +46,7 @@ The legacy `type="general"` and `type="optimized"` tool inputs remain for compat
 
 Search is official-only. Domains come from `official_sources` plus static Swiss federal/cantonal fallback domains in `lib/swiss-tax/official-domain-policy.ts`.
 
-SearXNG, Tavily, Exa, Firecrawl, Brave, and Jina helpers remain in the repository for upstream Morphic compatibility and non-active utility code, but they are not the SwissTaxSearch AI tool path.
+SearXNG, Tavily, Exa, Firecrawl, Brave, and Jina helpers remain in the repository for upstream Morphic compatibility and utility code, but they are not the SwissTaxSearch AI tool path. The standalone `/api/advanced-search` SearXNG route is constrained to official Swiss tax domains before returning results.
 
 ## Models
 

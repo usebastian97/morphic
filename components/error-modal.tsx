@@ -70,7 +70,7 @@ export function ErrorModal({
       case 'rate-limit':
         return 'Rate Limit Exceeded'
       case 'auth':
-        return 'Continue with Morphic'
+        return 'Continue with SwissTaxSearch'
       case 'forbidden':
         return 'Access Denied'
       default:
@@ -88,7 +88,7 @@ export function ErrorModal({
       case 'auth':
         return (
           error.message ||
-          'To use Morphic, sign in to your account or create a new one.'
+          'To search official Swiss tax sources, sign in to your account or create a new one.'
         )
       case 'forbidden':
         return 'You do not have permission to access this resource.'

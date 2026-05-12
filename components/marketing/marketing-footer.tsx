@@ -14,11 +14,11 @@ export function MarketingFooter() {
             <Link href="/" className="flex items-center gap-2">
               <IconLogo className="size-5 text-primary" />
               <span className="text-[14px] font-medium text-foreground">
-                Morphic
+                SwissTaxSearch
               </span>
             </Link>
             <p className="text-[14px] leading-[1.5] text-muted-foreground max-w-[240px]">
-              A fully open-source AI-powered answer engine with a generative UI.
+              Real-time AI search across official Swiss tax sources.
             </p>
           </div>
 
@@ -32,7 +32,7 @@ export function MarketingFooter() {
                 href="/chat"
                 className="text-[14px] text-muted-foreground hover:text-foreground transition-colors"
               >
-                Try it now
+                Search now
               </Link>
               <Link
                 href="#features"
@@ -59,7 +59,7 @@ export function MarketingFooter() {
                 className="flex items-center gap-1.5 text-[14px] text-muted-foreground hover:text-foreground transition-colors"
               >
                 <Icon icon="solar:code-bold" className="size-3.5" />
-                GitHub
+                Source
               </Link>
               <Link
                 href="https://github.com/miurla/morphic/blob/main/README.md"
@@ -85,8 +85,8 @@ export function MarketingFooter() {
         {/* Bottom bar */}
         <div className="mt-12 flex flex-col items-center justify-between gap-2 border-t border-border pt-6 md:flex-row">
           <p className="text-[13px] text-muted-foreground">
-            © {new Date().getFullYear()} Morphic. Open-source under the MIT
-            License.
+            © {new Date().getFullYear()} SwissTaxSearch. Open-source under the
+            MIT License.
           </p>
           <p className="text-[13px] text-muted-foreground">
             Built with Next.js · Vercel AI SDK · Tailwind CSS

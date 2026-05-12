@@ -20,7 +20,7 @@ export function MarketingNav() {
         <Link href="/" className="flex items-center gap-2 select-none">
           <IconLogo className="size-5 text-primary" />
           <span className="text-[14px] font-medium text-foreground tracking-tight">
-            Morphic
+            SwissTaxSearch
           </span>
         </Link>
 
@@ -45,7 +45,7 @@ export function MarketingNav() {
             className="text-[14px] font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5"
           >
             <Icon icon="solar:code-bold" className="size-3.5" />
-            GitHub
+            Source
           </Link>
         </nav>
 
@@ -71,7 +71,7 @@ export function MarketingNav() {
                 href="/chat"
                 className="inline-flex items-center gap-1.5 rounded-[8px] bg-primary px-[18px] py-[10px] text-[14px] font-medium leading-none text-primary-foreground hover:bg-[#d04200] transition-colors"
               >
-                Get started
+                Search taxes
                 <Icon icon="solar:alt-arrow-right-bold" className="size-3.5" />
               </Link>
             </>
@@ -119,7 +119,7 @@ export function MarketingNav() {
             className="text-[14px] font-medium text-muted-foreground hover:text-foreground transition-colors py-2 flex items-center gap-1.5"
           >
             <Icon icon="solar:code-bold" className="size-3.5" />
-            GitHub
+            Source
           </Link>
           <div className="pt-2 border-t border-border flex flex-col gap-2">
             {hasUser ? (
@@ -145,7 +145,7 @@ export function MarketingNav() {
                   className="inline-flex items-center justify-center gap-1.5 rounded-[8px] bg-primary px-[18px] py-[10px] text-[14px] font-medium leading-none text-primary-foreground hover:bg-[#d04200] transition-colors"
                   onClick={() => setMobileOpen(false)}
                 >
-                  Get started
+                  Search taxes
                   <Icon
                     icon="solar:alt-arrow-right-bold"
                     className="size-3.5"
