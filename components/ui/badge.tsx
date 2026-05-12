@@ -10,14 +10,11 @@ const badgeVariants = cva(
     variants: {
       variant: {
         // Default badge-pill — surface-strong background
-        default:
-          'border-transparent bg-secondary text-secondary-foreground',
+        default: 'border-transparent bg-secondary text-secondary-foreground',
         // Secondary alias for default (backwards compatibility)
-        secondary:
-          'border-transparent bg-secondary text-secondary-foreground',
+        secondary: 'border-transparent bg-secondary text-secondary-foreground',
         // Primary — Cursor Orange pill
-        primary:
-          'border-transparent bg-primary text-primary-foreground',
+        primary: 'border-transparent bg-primary text-primary-foreground',
         destructive:
           'border-transparent bg-destructive text-destructive-foreground',
         outline: 'border-border text-foreground bg-transparent'

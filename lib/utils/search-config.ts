@@ -31,14 +31,14 @@ export function supportsMultimediaContentTypes(): boolean {
  * Gets the appropriate search type description based on available providers
  */
 export function getSearchTypeDescription(): string {
-  return 'Search type is preserved for compatibility. AgriEvidence uses Parallel Search for both general and optimized searches, returning agricultural evidence snippets with trusted-source metadata.'
+  return 'Search type is preserved for compatibility. SwissTaxSearch uses Parallel Search for both general and optimized searches, returning official Swiss tax snippets with official-source metadata.'
 }
 
 /**
  * Gets the tool description based on available providers
  */
 export function getSearchToolDescription(): string {
-  return 'Search the live web with Parallel for agricultural evidence. The tool enriches the user query, prioritizes trusted agricultural domains from Supabase, falls back to open-web results when needed, and returns provenance metadata.'
+  return 'Search official Swiss federal, cantonal, and municipal tax websites with Parallel. The tool enriches the user query, restricts results to official Swiss tax domains from Supabase, and returns provenance metadata.'
 }
 
 /**
@@ -46,11 +46,11 @@ export function getSearchToolDescription(): string {
  */
 export function getContentTypesGuidance(): string {
   return `- **type="general" and type="optimized":**
-  - Both use Parallel Search with AgriEvidence query enrichment
-  - Returns LLM-optimized snippets for agricultural evidence synthesis
-  - Trusted-domain results from the Supabase sources table are preferred
-  - Open-web fallback results are included only when trusted coverage is thin
-  - Video/image content_types are ignored by the AgriEvidence search provider`
+  - Both use Parallel Search with SwissTaxSearch query enrichment
+  - Returns LLM-optimized snippets from official Swiss tax websites
+  - Official federal, cantonal, and municipal domains from Supabase are required
+  - Open-web fallback is disabled; insufficient official coverage must be stated clearly
+  - Video/image content_types are ignored by the SwissTaxSearch provider`
 }
 
 /**
@@ -58,10 +58,10 @@ export function getContentTypesGuidance(): string {
  */
 export function getSearchStrategyGuidance(): string {
   return `Search strategy:
-- Use search for every agricultural information request before answering
-- Let the tool enrich the user query into scientific agricultural search queries
-- Prefer trusted-source results in the returned metadata
-- Use open-web fallback results only to fill gaps, and lower confidence accordingly`
+- Use search for every Swiss tax information request before answering
+- Let the tool enrich the user query into official Swiss tax search queries
+- Use only official federal, cantonal, and municipal source results
+- If official coverage is thin, state the limitation instead of using open-web fallback`
 }
 
 /**

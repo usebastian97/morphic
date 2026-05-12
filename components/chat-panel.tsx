@@ -379,7 +379,10 @@ export function ChatPanel({
                 {isLoading ? (
                   <Icon icon="solar:stop-bold" className="size-4 md:size-5" />
                 ) : (
-                  <Icon icon="solar:arrow-up-bold" className="size-4 md:size-5" />
+                  <Icon
+                    icon="solar:arrow-up-bold"
+                    className="size-4 md:size-5"
+                  />
                 )}
               </Button>
             </div>

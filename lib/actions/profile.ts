@@ -8,7 +8,12 @@ import {
   updateUserProfile
 } from '@/lib/supabase/queries/user-profile'
 import { createClient } from '@/lib/supabase/server'
-import type { ClimateZone, FarmType, UserProfile } from '@/lib/supabase/types'
+import type {
+  CantonCode,
+  PreferredLanguage,
+  TaxpayerType,
+  UserProfile
+} from '@/lib/supabase/types'
 
 export async function getProfileAction(): Promise<UserProfile | null> {
   const userId = await getCurrentUserId()
@@ -21,13 +26,10 @@ export async function getProfileAction(): Promise<UserProfile | null> {
 export type ProfileUpdatePayload = {
   fullName: string
   bio: string
-  farmTypes: FarmType[]
-  primaryCrops: string[]
-  farmSizeHa: number | null
-  countryCode: string
-  region: string
-  climateZone: ClimateZone | ''
-  preferredLanguage: string
+  cantonCode: CantonCode | ''
+  municipality: string
+  taxpayerType: TaxpayerType
+  preferredLanguage: PreferredLanguage
 }
 
 export async function updateProfileAction(
@@ -42,12 +44,10 @@ export async function updateProfileAction(
     await updateUserProfile(supabase, userId, {
       fullName: payload.fullName.trim() || null,
       bio: payload.bio.trim() || null,
-      farmTypes: payload.farmTypes,
-      primaryCrops: payload.primaryCrops,
-      farmSizeHa: payload.farmSizeHa,
-      countryCode: payload.countryCode || null,
-      region: payload.region.trim() || null,
-      climateZone: payload.climateZone || null
+      cantonCode: payload.cantonCode || null,
+      municipality: payload.municipality.trim() || null,
+      taxpayerType: payload.taxpayerType,
+      preferredLanguage: payload.preferredLanguage
     })
 
     revalidatePath('/profile')

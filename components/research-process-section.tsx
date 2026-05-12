@@ -11,9 +11,9 @@ import type { DynamicToolPart } from '@/lib/types/dynamic-tools'
 import { cn } from '@/lib/utils'
 
 import {
-    Collapsible,
-    CollapsibleContent,
-    CollapsibleTrigger
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger
 } from './ui/collapsible'
 import { ReasoningSection } from './reasoning-section'
 import { ToolSection } from './tool-section'
@@ -379,7 +379,10 @@ export function ResearchProcessSection({
                   type="button"
                   className="flex items-center px-1 py-0.5 gap-2 text-sm rounded-lg group"
                 >
-                  <Icon icon="solar:routing-bold" className="size-4 text-muted-foreground group-hover:text-muted-foreground/70" />
+                  <Icon
+                    icon="solar:routing-bold"
+                    className="size-4 text-muted-foreground group-hover:text-muted-foreground/70"
+                  />
                   <span className="font-medium text-muted-foreground group-hover:text-muted-foreground/70">
                     Research Process ({totalParts} steps)
                   </span>

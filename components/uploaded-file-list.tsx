@@ -42,7 +42,10 @@ export const UploadedFileList = React.memo(function UploadedFileList({
               {/* Spinner overlay while uploading */}
               {it.status === 'uploading' && (
                 <div className="absolute inset-0 bg-black/40 flex items-center justify-center z-10">
-                  <Icon icon="solar:refresh-bold" className="animate-spin text-white size-5" />
+                  <Icon
+                    icon="solar:refresh-bold"
+                    className="animate-spin text-white size-5"
+                  />
                 </div>
               )}
 

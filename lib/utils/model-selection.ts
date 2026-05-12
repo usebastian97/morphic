@@ -41,7 +41,7 @@ const DEEPSEEK_PRO_THINKING_MODEL: Model = {
   provider: 'DeepSeek',
   providerId: 'deepseek',
   contextWindow: DEEPSEEK_CONTEXT_WINDOW,
-  recommendedFor: 'Quality mode, complex agricultural queries, synthesis tasks',
+  recommendedFor: 'Quality mode, complex Swiss tax queries, synthesis tasks',
   default: true,
   providerOptions: {
     deepseek: {

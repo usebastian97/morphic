@@ -6,8 +6,8 @@ import Image from 'next/image'
 import { Icon } from '@iconify/react'
 
 import {
-    MODEL_SELECTION_COOKIE,
-    serializeModelSelectionCookie
+  MODEL_SELECTION_COOKIE,
+  serializeModelSelectionCookie
 } from '@/lib/config/model-selection-cookie'
 import { ModelSelectorData } from '@/lib/types/model-selector'
 import { Model } from '@/lib/types/models'
@@ -16,12 +16,12 @@ import { setCookie } from '@/lib/utils/cookies'
 
 import { Button } from './ui/button'
 import {
-    Command,
-    CommandEmpty,
-    CommandGroup,
-    CommandInput,
-    CommandItem,
-    CommandList
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList
 } from './ui/command'
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 

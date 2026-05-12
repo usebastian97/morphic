@@ -26,7 +26,12 @@ export function InspectorPanel() {
         }
       case 'tool-todoWrite':
         return {
-          icon: <Icon icon="solar:checklist-minimalistic-bold" className="size-[18px]" />,
+          icon: (
+            <Icon
+              icon="solar:checklist-minimalistic-bold"
+              className="size-[18px]"
+            />
+          ),
           title: 'Todo List'
         }
       case 'reasoning':

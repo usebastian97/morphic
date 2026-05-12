@@ -19,36 +19,23 @@ import { Step5 } from './_steps/step-5'
 import type { OnboardingData } from './_steps/types'
 
 const TOTAL_STEPS = 5
-const SUPPORTED_LANGUAGES = [
-  'en',
-  'es',
-  'fr',
-  'pt',
-  'ar',
-  'hi',
-  'sw',
-  'ro',
-  'de',
-  'it'
-]
+const SUPPORTED_LANGUAGES = ['de', 'fr', 'it', 'en']
 
 const initialData: OnboardingData = {
-  farmTypes: [],
-  primaryCrops: [],
-  farmSizeInput: '',
-  farmSizeUnit: 'hectares',
-  farmSizeHa: null,
-  countryCode: '',
-  region: '',
-  climateZone: '',
-  preferredLanguage: 'en'
+  taxpayerType: 'individual',
+  cantonCode: '',
+  municipality: '',
+  preferredLanguage: 'en',
+  bio: ''
 }
 
-function getBrowserLanguage(): string {
+function getBrowserLanguage(): OnboardingData['preferredLanguage'] {
   if (typeof navigator === 'undefined') return 'en'
 
   const language = navigator.language.split('-')[0]?.toLowerCase() ?? 'en'
-  return SUPPORTED_LANGUAGES.includes(language) ? language : 'en'
+  return SUPPORTED_LANGUAGES.includes(language)
+    ? (language as OnboardingData['preferredLanguage'])
+    : 'en'
 }
 
 export default function OnboardingPage() {
@@ -117,13 +104,8 @@ export default function OnboardingPage() {
   }, [data, step])
 
   const validateCurrentStep = () => {
-    if (step === 1 && data.farmTypes.length === 0) {
-      setValidationMessage('Select at least one farm type to continue.')
-      return false
-    }
-
-    if (step === 4 && !data.countryCode) {
-      setValidationMessage('Select your country to continue.')
+    if (step === 2 && !data.cantonCode) {
+      setValidationMessage('Select a canton to continue.')
       return false
     }
 
@@ -159,13 +141,11 @@ export default function OnboardingPage() {
       const { error } = await supabase
         .from('user_profiles')
         .update({
-          farm_types: data.farmTypes,
-          primary_crops: data.primaryCrops,
-          farm_size_ha: data.farmSizeHa,
-          country_code: data.countryCode,
-          region: data.region.trim() || null,
-          climate_zone: data.climateZone || null,
+          taxpayer_type: data.taxpayerType,
+          canton_code: data.cantonCode || null,
+          municipality: data.municipality.trim() || null,
           preferred_language: data.preferredLanguage,
+          bio: data.bio.trim() || null,
           onboarding_completed: true
         })
         .eq('id', user.id)
@@ -186,10 +166,10 @@ export default function OnboardingPage() {
       {/* Brand header */}
       <div className="mb-5 flex w-full max-w-2xl items-center justify-between">
         <div className="flex items-center gap-2.5">
-          <span className="rounded-lg bg-emerald-700 p-1.5 text-white">
-            <Icon icon="solar:leaf-bold" className="size-4" />
+          <span className="rounded-lg bg-red-700 p-1.5 text-white">
+            <Icon icon="solar:documents-bold" className="size-4" />
           </span>
-          <span className="font-semibold">AgriEvidence</span>
+          <span className="font-semibold">SwissTaxSearch</span>
         </div>
         <span className="text-sm text-muted-foreground">
           {step} / {TOTAL_STEPS}
@@ -204,7 +184,7 @@ export default function OnboardingPage() {
               key={stepNumber}
               className={cn(
                 'h-1 flex-1 rounded-full transition-colors duration-300',
-                stepNumber <= step ? 'bg-emerald-700' : 'bg-muted-foreground/20'
+                stepNumber <= step ? 'bg-red-700' : 'bg-muted-foreground/20'
               )}
             />
           )
@@ -212,7 +192,7 @@ export default function OnboardingPage() {
       </div>
 
       {/* Step content — matches chat panel container */}
-      <div className="relative flex w-full max-w-2xl flex-col gap-4 rounded-3xl border border-input bg-muted p-6 transition-shadow">
+      <div className="relative flex w-full max-w-2xl flex-col gap-4 rounded-lg border border-input bg-muted p-6 transition-shadow">
         {activeStep}
 
         {validationMessage && (
@@ -241,7 +221,7 @@ export default function OnboardingPage() {
             type="button"
             size="sm"
             onClick={goNext}
-            className="rounded-full gap-1.5"
+            className="gap-1.5 rounded-full bg-red-700 text-white hover:bg-red-800"
           >
             Continue
             <Icon icon="solar:alt-arrow-right-bold" className="size-3.5" />
@@ -252,7 +232,7 @@ export default function OnboardingPage() {
             size="sm"
             onClick={finishOnboarding}
             disabled={isSaving}
-            className="rounded-full gap-1.5"
+            className="gap-1.5 rounded-full bg-red-700 text-white hover:bg-red-800"
           >
             {isSaving ? (
               <Icon

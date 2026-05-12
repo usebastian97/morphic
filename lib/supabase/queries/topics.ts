@@ -10,7 +10,7 @@ type DB = SupabaseClient
 
 export async function getRootTopics(db: DB): Promise<Topic[]> {
   const { data, error } = await db
-    .from('topics')
+    .from('tax_topics')
     .select('*')
     .is('parent_id', null)
     .eq('is_active', true)
@@ -25,7 +25,7 @@ export async function getTopicChildren(
   parentId: string
 ): Promise<Topic[]> {
   const { data, error } = await db
-    .from('topics')
+    .from('tax_topics')
     .select('*')
     .eq('parent_id', parentId)
     .eq('is_active', true)
@@ -40,7 +40,7 @@ export async function getTopicBySlug(
   slug: string
 ): Promise<Topic | null> {
   const { data, error } = await db
-    .from('topics')
+    .from('tax_topics')
     .select('*')
     .eq('slug', slug)
     .single()
@@ -52,7 +52,7 @@ export async function getTopicBySlug(
 
 export async function getAllTopics(db: DB): Promise<Topic[]> {
   const { data, error } = await db
-    .from('topics')
+    .from('tax_topics')
     .select('*')
     .eq('is_active', true)
     .order('sort_order')
@@ -77,7 +77,7 @@ export async function tagChatWithTopics(
   }))
 
   const { error } = await db
-    .from('chat_topics')
+    .from('chat_tax_topics')
     .upsert(rows, { onConflict: 'chat_id,topic_id' })
 
   if (error) throw error
@@ -88,7 +88,7 @@ export async function getChatTopicIds(
   chatId: string
 ): Promise<string[]> {
   const { data, error } = await db
-    .from('chat_topics')
+    .from('chat_tax_topics')
     .select('topic_id')
     .eq('chat_id', chatId)
 

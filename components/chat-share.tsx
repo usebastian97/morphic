@@ -11,13 +11,13 @@ import { cn } from '@/lib/utils'
 
 import { Button } from './ui/button'
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger
 } from './ui/dialog'
 import { Spinner } from './ui/spinner'
 

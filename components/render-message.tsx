@@ -2,10 +2,10 @@ import { UseChatHelpers } from '@ai-sdk/react'
 
 import type { SearchResultItem } from '@/lib/types'
 import type {
-    UIDataTypes,
-    UIMessage,
-    UIMessageMetadata,
-    UITools
+  UIDataTypes,
+  UIMessage,
+  UIMessageMetadata,
+  UITools
 } from '@/lib/types/ai'
 import type { DynamicToolPart } from '@/lib/types/dynamic-tools'
 

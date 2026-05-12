@@ -1,7 +1,7 @@
 import { stepCountIs, ToolLoopAgent } from 'ai'
 
-import { buildUserAgriculturalContextBlock } from '@/lib/agri/user-context'
 import type { UserProfile } from '@/lib/supabase/types'
+import { buildUserTaxContextBlock } from '@/lib/swiss-tax/user-context'
 import type { ResearcherTools } from '@/lib/types/agent'
 import { type Model } from '@/lib/types/models'
 
@@ -76,7 +76,7 @@ export function createResearcher({
       ...todoTools
     } as ResearcherTools
 
-    const userContextBlock = buildUserAgriculturalContextBlock(userProfile)
+    const userContextBlock = buildUserTaxContextBlock(userProfile)
     const instructions = `${userContextBlock ? `${userContextBlock}\n\n` : ''}${systemPrompt}\nCurrent date and time: ${currentDate}`
 
     // Create ToolLoopAgent with all configuration

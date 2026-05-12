@@ -32,31 +32,79 @@ export const Section: React.FC<SectionProps> = ({
   let type: 'text' | 'badge' = 'text'
   switch (title) {
     case 'Images':
-      icon = <Icon icon="solar:gallery-bold" className={iconClassName} style={{ fontSize: iconSize }} />
+      icon = (
+        <Icon
+          icon="solar:gallery-bold"
+          className={iconClassName}
+          style={{ fontSize: iconSize }}
+        />
+      )
       break
     case 'Videos':
-      icon = <Icon icon="solar:video-library-bold" className={iconClassName} style={{ fontSize: iconSize }} />
+      icon = (
+        <Icon
+          icon="solar:video-library-bold"
+          className={iconClassName}
+          style={{ fontSize: iconSize }}
+        />
+      )
       type = 'badge'
       break
     case 'Sources':
-      icon = <Icon icon="solar:document-text-bold" className={iconClassName} style={{ fontSize: iconSize }} />
+      icon = (
+        <Icon
+          icon="solar:document-text-bold"
+          className={iconClassName}
+          style={{ fontSize: iconSize }}
+        />
+      )
       type = 'badge'
       break
     case 'Answer':
-      icon = <Icon icon="solar:book-bookmark-bold" className={iconClassName} style={{ fontSize: iconSize }} />
+      icon = (
+        <Icon
+          icon="solar:book-bookmark-bold"
+          className={iconClassName}
+          style={{ fontSize: iconSize }}
+        />
+      )
       break
     case 'Related':
-      icon = <Icon icon="solar:restart-bold" className={iconClassName} style={{ fontSize: iconSize }} />
+      icon = (
+        <Icon
+          icon="solar:restart-bold"
+          className={iconClassName}
+          style={{ fontSize: iconSize }}
+        />
+      )
       break
     case 'Follow-up':
-      icon = <Icon icon="solar:chat-round-dots-bold" className={iconClassName} style={{ fontSize: iconSize }} />
+      icon = (
+        <Icon
+          icon="solar:chat-round-dots-bold"
+          className={iconClassName}
+          style={{ fontSize: iconSize }}
+        />
+      )
       break
     case 'Content':
-      icon = <Icon icon="solar:file-bold" className={iconClassName} style={{ fontSize: iconSize }} />
+      icon = (
+        <Icon
+          icon="solar:file-bold"
+          className={iconClassName}
+          style={{ fontSize: iconSize }}
+        />
+      )
       type = 'badge'
       break
     default:
-      icon = <Icon icon="solar:magnifer-bold" className={iconClassName} style={{ fontSize: iconSize }} />
+      icon = (
+        <Icon
+          icon="solar:magnifer-bold"
+          className={iconClassName}
+          style={{ fontSize: iconSize }}
+        />
+      )
   }
 
   return (
@@ -109,7 +157,10 @@ export function ToolArgsSection({
       </div>
       {number && number > 0 && (
         <div className="shrink-0">
-          <StatusIndicator icon="solar:check-bold" iconClassName="text-green-500">
+          <StatusIndicator
+            icon="solar:check-bold"
+            iconClassName="text-green-500"
+          >
             {number} results
           </StatusIndicator>
         </div>

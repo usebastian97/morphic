@@ -21,7 +21,10 @@ export const CurrentUserAvatar = () => {
       {profileImage && <AvatarImage src={profileImage} alt={initials} />}
       <AvatarFallback>
         {initials === '?' ? (
-          <Icon icon="solar:user-rounded-bold" className="size-4 text-muted-foreground" />
+          <Icon
+            icon="solar:user-rounded-bold"
+            className="size-4 text-muted-foreground"
+          />
         ) : (
           initials
         )}

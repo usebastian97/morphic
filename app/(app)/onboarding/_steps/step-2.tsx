@@ -1,153 +1,63 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import type { CantonCode } from '@/lib/supabase/types'
 
-import { Icon } from '@iconify/react'
-
-import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 
-import type { StepProps } from './types'
+import { CANTON_LABELS, type StepProps } from './types'
 
-const SUGGESTED_CROPS = [
-  'Wheat',
-  'Corn',
-  'Maize',
-  'Rice',
-  'Soybean',
-  'Sunflower',
-  'Rapeseed',
-  'Canola',
-  'Potato',
-  'Tomato',
-  'Cotton',
-  'Sugar Beet',
-  'Sugar Cane',
-  'Barley',
-  'Oats',
-  'Sorghum',
-  'Chickpea',
-  'Lentil',
-  'Onion',
-  'Garlic',
-  'Pepper',
-  'Cucumber',
-  'Lettuce',
-  'Spinach',
-  'Apple',
-  'Grape',
-  'Olive',
-  'Coffee',
-  'Cocoa',
-  'Tea'
-]
+const CANTON_OPTIONS = Object.entries(CANTON_LABELS) as [CantonCode, string][]
 
 export function Step2({ data, setData }: StepProps) {
-  const [draft, setDraft] = useState('')
-
-  const filteredSuggestions = useMemo(() => {
-    const query = draft.trim().toLowerCase()
-    if (!query) return SUGGESTED_CROPS.slice(0, 8)
-
-    return SUGGESTED_CROPS.filter(
-      crop =>
-        crop.toLowerCase().includes(query) &&
-        !data.primaryCrops.some(
-          selected => selected.toLowerCase() === crop.toLowerCase()
-        )
-    ).slice(0, 8)
-  }, [data.primaryCrops, draft])
-
-  const addCrop = (cropName: string) => {
-    const normalized = cropName.trim().replace(/\s+/g, ' ')
-    if (!normalized) return
-
-    setData(current => {
-      if (
-        current.primaryCrops.some(
-          crop => crop.toLowerCase() === normalized.toLowerCase()
-        )
-      ) {
-        return current
-      }
-
-      return {
-        ...current,
-        primaryCrops: [...current.primaryCrops, normalized]
-      }
-    })
-    setDraft('')
-  }
-
-  const removeCrop = (cropName: string) => {
-    setData(current => ({
-      ...current,
-      primaryCrops: current.primaryCrops.filter(crop => crop !== cropName)
-    }))
-  }
-
   return (
     <section className="space-y-6">
       <div className="space-y-2">
         <h1 className="text-3xl font-semibold tracking-normal">
-          What are your main crops or products?
+          Which Swiss jurisdiction matters most?
         </h1>
         <p className="text-muted-foreground">
-          This helps us surface the most relevant research for what you grow.
+          Swiss tax rules often differ by canton and sometimes by municipality.
         </p>
       </div>
 
-      <div className="space-y-3">
-        <Input
-          value={draft}
-          placeholder="Type a crop or product, then press Enter"
-          onChange={event => setDraft(event.target.value)}
-          onKeyDown={event => {
-            if (event.key === 'Enter' || event.key === ',') {
-              event.preventDefault()
-              addCrop(draft)
+      <div className="grid gap-4 sm:grid-cols-[180px_1fr]">
+        <div className="grid gap-2">
+          <Label htmlFor="canton">Canton</Label>
+          <select
+            id="canton"
+            value={data.cantonCode}
+            onChange={event =>
+              setData(current => ({
+                ...current,
+                cantonCode: event.target.value as CantonCode
+              }))
             }
-          }}
-        />
-
-        {data.primaryCrops.length > 0 && (
-          <div className="flex flex-wrap gap-2">
-            {data.primaryCrops.map(crop => (
-              <Badge
-                key={crop}
-                variant="secondary"
-                className="gap-1 rounded-md py-1 pr-1"
-              >
-                {crop}
-                <button
-                  type="button"
-                  onClick={() => removeCrop(crop)}
-                  className="rounded-sm p-0.5 hover:bg-background/70"
-                  aria-label={`Remove ${crop}`}
-                >
-                  <Icon icon="solar:close-circle-bold" className="size-4" />
-                </button>
-              </Badge>
+            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-xs transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+          >
+            <option value="">Select canton</option>
+            {CANTON_OPTIONS.map(([code, label]) => (
+              <option key={code} value={code}>
+                {code} - {label}
+              </option>
             ))}
-          </div>
-        )}
-
-        <div className="flex flex-wrap gap-2">
-          {filteredSuggestions.map(crop => (
-            <button
-              key={crop}
-              type="button"
-              onClick={() => addCrop(crop)}
-              className="rounded-full border border-input bg-background px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:border-muted-foreground/40 hover:text-foreground"
-            >
-              {crop}
-            </button>
-          ))}
+          </select>
         </div>
 
-        <p className="text-sm text-muted-foreground">
-          You can update this later in your profile.
-        </p>
+        <div className="grid gap-2">
+          <Label htmlFor="municipality">Municipality</Label>
+          <Input
+            id="municipality"
+            placeholder="e.g. Zurich, Lausanne, Lugano"
+            value={data.municipality}
+            onChange={event =>
+              setData(current => ({
+                ...current,
+                municipality: event.target.value
+              }))
+            }
+          />
+        </div>
       </div>
     </section>
   )

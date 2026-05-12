@@ -13,7 +13,9 @@ export function MarketingFooter() {
           <div className="flex flex-col gap-3">
             <Link href="/" className="flex items-center gap-2">
               <IconLogo className="size-5 text-primary" />
-              <span className="text-[14px] font-medium text-foreground">Morphic</span>
+              <span className="text-[14px] font-medium text-foreground">
+                Morphic
+              </span>
             </Link>
             <p className="text-[14px] leading-[1.5] text-muted-foreground max-w-[240px]">
               A fully open-source AI-powered answer engine with a generative UI.
@@ -23,20 +25,33 @@ export function MarketingFooter() {
           {/* Link columns */}
           <div className="flex flex-wrap gap-x-12 gap-y-6">
             <div className="flex flex-col gap-3">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.88px] text-muted-foreground">Product</p>
-              <Link href="/chat" className="text-[14px] text-muted-foreground hover:text-foreground transition-colors">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.88px] text-muted-foreground">
+                Product
+              </p>
+              <Link
+                href="/chat"
+                className="text-[14px] text-muted-foreground hover:text-foreground transition-colors"
+              >
                 Try it now
               </Link>
-              <Link href="#features" className="text-[14px] text-muted-foreground hover:text-foreground transition-colors">
+              <Link
+                href="#features"
+                className="text-[14px] text-muted-foreground hover:text-foreground transition-colors"
+              >
                 Features
               </Link>
-              <Link href="#how-it-works" className="text-[14px] text-muted-foreground hover:text-foreground transition-colors">
+              <Link
+                href="#how-it-works"
+                className="text-[14px] text-muted-foreground hover:text-foreground transition-colors"
+              >
                 How it works
               </Link>
             </div>
 
             <div className="flex flex-col gap-3">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.88px] text-muted-foreground">Open Source</p>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.88px] text-muted-foreground">
+                Open Source
+              </p>
               <Link
                 href="https://github.com/miurla/morphic"
                 target="_blank"
@@ -70,7 +85,8 @@ export function MarketingFooter() {
         {/* Bottom bar */}
         <div className="mt-12 flex flex-col items-center justify-between gap-2 border-t border-border pt-6 md:flex-row">
           <p className="text-[13px] text-muted-foreground">
-            © {new Date().getFullYear()} Morphic. Open-source under the MIT License.
+            © {new Date().getFullYear()} Morphic. Open-source under the MIT
+            License.
           </p>
           <p className="text-[13px] text-muted-foreground">
             Built with Next.js · Vercel AI SDK · Tailwind CSS

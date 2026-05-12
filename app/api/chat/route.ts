@@ -4,11 +4,13 @@ import { cookies } from 'next/headers'
 import { loadChat } from '@/lib/actions/chat'
 import { calculateConversationTurn, trackChatEvent } from '@/lib/analytics'
 import { getCurrentUserId } from '@/lib/auth/get-current-user'
-import { checkAndEnforceAdaptiveLimit } from '@/lib/rate-limit/adaptive-limit'
-import { checkAndEnforceOverallChatLimit } from '@/lib/rate-limit/chat-limits'
 import { checkAndEnforceGuestLimit } from '@/lib/rate-limit/guest-limit'
 import { createChatStreamResponse } from '@/lib/streaming/create-chat-stream-response'
 import { createEphemeralChatStreamResponse } from '@/lib/streaming/create-ephemeral-chat-stream-response'
+import {
+  createCreditLimitResponse,
+  getSearchCreditCharge
+} from '@/lib/subscriptions/credits'
 import { getUserProfile } from '@/lib/supabase/queries/user-profile'
 import { createClient } from '@/lib/supabase/server'
 import { SearchMode } from '@/lib/types/search'
@@ -149,19 +151,24 @@ export async function POST(req: Request) {
       )
     }
 
-    if (!isGuest) {
-      const overallLimitResponse = await checkAndEnforceOverallChatLimit(userId)
-      if (overallLimitResponse) return overallLimitResponse
+    const creditCharge = getSearchCreditCharge(searchMode)
+    const supabase = !isGuest ? await createClient() : null
 
-      if (searchMode === 'adaptive') {
-        const adaptiveLimitResponse = await checkAndEnforceAdaptiveLimit(userId)
-        if (adaptiveLimitResponse) return adaptiveLimitResponse
-      }
+    if (!isGuest && !isAnonymousModeUser && supabase) {
+      const creditLimitResponse = await createCreditLimitResponse({
+        db: supabase,
+        userId,
+        charge: creditCharge
+      })
+      if (creditLimitResponse) return creditLimitResponse
     }
 
     const userProfile =
       !isGuest && !isAnonymousModeUser
-        ? await getUserProfile(await createClient(), userId).catch(error => {
+        ? await getUserProfile(
+            supabase ?? (await createClient()),
+            userId
+          ).catch(error => {
             console.warn('[Chat] Failed to fetch user profile:', error)
             return null
           })
@@ -190,7 +197,8 @@ export async function POST(req: Request) {
           abortSignal,
           isNewChat,
           searchMode,
-          userProfile
+          userProfile,
+          creditCharge: isAnonymousModeUser ? null : creditCharge
         })
 
     perfTime('createChatStreamResponse resolved', streamStart)

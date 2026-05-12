@@ -13,8 +13,8 @@
  */
 import { NextResponse } from 'next/server'
 
-import type { EvidenceScore } from '@/lib/agri/evidence-score'
 import { createClient } from '@/lib/supabase/server'
+import type { EvidenceScore } from '@/lib/swiss-tax/official-source-score'
 
 export async function GET(
   _request: Request,

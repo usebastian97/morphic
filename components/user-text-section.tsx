@@ -155,11 +155,13 @@ export const UserTextSection: React.FC<UserTextSectionProps> = ({
               >
                 {isExpanded ? (
                   <span className="inline-flex items-center gap-0.5">
-                    Show less <Icon icon="solar:alt-arrow-up-bold" className="size-3" />
+                    Show less{' '}
+                    <Icon icon="solar:alt-arrow-up-bold" className="size-3" />
                   </span>
                 ) : (
                   <span className="inline-flex items-center gap-0.5">
-                    Show more <Icon icon="solar:alt-arrow-down-bold" className="size-3" />
+                    Show more{' '}
+                    <Icon icon="solar:alt-arrow-down-bold" className="size-3" />
                   </span>
                 )}
               </button>

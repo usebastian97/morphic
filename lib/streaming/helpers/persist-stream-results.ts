@@ -1,10 +1,14 @@
 import { UIMessage } from 'ai'
 
 import { createChatWithFirstMessage, upsertMessage } from '@/lib/actions/chat'
-import { getCuratedSources } from '@/lib/agri/curated-sources-cache'
-import { computeEvidenceScore } from '@/lib/agri/evidence-score'
+import {
+  deductCreditsAfterSuccess,
+  type SearchCreditCharge
+} from '@/lib/subscriptions/credits'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { updateChatTitle } from '@/lib/supabase/queries/chat'
+import { computeEvidenceScore } from '@/lib/swiss-tax/official-source-score'
+import { getOfficialSources } from '@/lib/swiss-tax/official-sources-cache'
 import { SearchMode } from '@/lib/types/search'
 import { perfTime } from '@/lib/utils/perf-logging'
 import { retryDatabaseOperation } from '@/lib/utils/retry'
@@ -19,8 +23,8 @@ async function computeAndPersistEvidenceScore(
   message: UIMessage
 ): Promise<void> {
   try {
-    const [curatedSources] = await Promise.all([getCuratedSources()])
-    const score = computeEvidenceScore(message.parts ?? [], curatedSources)
+    const officialSources = await getOfficialSources()
+    const score = computeEvidenceScore(message.parts ?? [], officialSources)
 
     const supabase = createAdminClient()
 
@@ -55,7 +59,8 @@ export async function persistStreamResults(
   initialSavePromise?: Promise<
     Awaited<ReturnType<typeof createChatWithFirstMessage>>
   >,
-  initialUserMessage?: UIMessage
+  initialUserMessage?: UIMessage,
+  creditCharge?: SearchCreditCharge | null
 ) {
   // Attach metadata to the response message
   responseMessage.metadata = {
@@ -119,6 +124,14 @@ export async function persistStreamResults(
   try {
     await upsertMessage(chatId, responseMessage, userId)
     perfTime('upsertMessage (AI response) completed', saveStart)
+    if (creditCharge) {
+      await deductCreditsAfterSuccess({
+        userId,
+        charge: creditCharge,
+        chatId,
+        messageId: responseMessage.id
+      })
+    }
     // Fire-and-forget evidence score computation (non-blocking)
     void computeAndPersistEvidenceScore(responseMessage)
   } catch (error) {
@@ -129,6 +142,14 @@ export async function persistStreamResults(
         'save message'
       )
       perfTime('upsertMessage (AI response) completed after retry', saveStart)
+      if (creditCharge) {
+        await deductCreditsAfterSuccess({
+          userId,
+          charge: creditCharge,
+          chatId,
+          messageId: responseMessage.id
+        })
+      }
       // Fire-and-forget evidence score computation (non-blocking, after retry)
       void computeAndPersistEvidenceScore(responseMessage)
     } catch (retryError) {

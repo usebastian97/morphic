@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to the AgriEvidence / Morphic codebase are documented here.
+All notable changes to the SwissTaxSearch / Morphic codebase are documented here.
 
 This project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) conventions.
 Versions on the `dev` branch are tagged by date until a formal release cycle is established.
@@ -13,23 +13,36 @@ _Changes merged to `dev` but not yet reflected in a tagged release._
 
 ### Added
 
-- **Export Response as Cited PDF** *(Sprint 1.2)* — "Download as PDF" button on every assistant response
-  - `lib/supabase/queries/export-message.ts` — `getMessageExportData()` fetches the assistant message, its text/source parts, the preceding user query, and enriches each cited source with trust score and type from the curated `sources` table; exports `MessageExportData` and `ExportSource` interfaces
-  - `app/api/messages/[messageId]/export-pdf/route.ts` — RLS-enforced GET endpoint returning `{ data: MessageExportData }`; mirrors `evidence-score` route pattern
-  - `lib/export/generate-pdf.tsx` — `generateAndDownloadPDF()` builds a structured A4 PDF using `@react-pdf/renderer` (dynamically imported to avoid SSR), with Header (logo + date), Query, Answer (markdown stripped), Evidence Score, Sources (numbered with type/trust/snippet/URL), and Footer (disclaimer + page numbers)
-  - `lib/hooks/use-export-pdf.ts` — `useExportPdf(messageId)` hook: fetch → generate → `toast.success`/`toast.error` → `track('pdf_export', { messageId, label })`
-  - `components/artifact/export-pdf-button.tsx` — `solar:file-download-bold` icon button with Radix Tooltip, spinner (`solar:refresh-bold animate-spin`) during generation, and `aria-label="Download as PDF"`
-  - `components/message-actions.tsx` — added `<ExportPDFButton messageId={messageId} />` between the copy button and feedback buttons
-  - Installed `@react-pdf/renderer@4.5.1`
-
-- **Evidence Scoring system** — automatic trustworthiness rating (0–100) for every assistant message
-  - `lib/agri/evidence-score.ts` — pure scoring function (`computeEvidenceScore`, `getScoreColor`); types: `EvidenceScore`, `EvidenceBreakdown`, `CuratedSource`
-  - `lib/agri/evidence-score.test.ts` — 6 Vitest unit tests covering all label tiers, fallback penalty, empty parts, and colour helpers
-  - `lib/agri/curated-sources-cache.ts` — module-level 10-minute TTL cache for active `sources` rows (no DB hit per request)
+- **SwissTaxSearch domain baseline** — destructive Supabase reset migration for the new official Swiss tax product scope
+  - `supabase/migrations/001_swisstaxsearch_schema.sql` — creates Swiss tax profile, canton, official source, tax topic, analytics, alert, subscription, and credit ledger tables
+  - `supabase/seed/swiss_cantons.sql`, `supabase/seed/tax_topics.sql`, `supabase/seed/official_sources.sql` — seed the new Swiss tax reference data
+  - `lib/swiss-tax/*` — query enrichment, official domain policy, official source cache, profile context, and official-source evidence scoring
+  - `lib/tools/swiss-tax-search.ts` — Parallel Search implementation constrained to official Swiss federal, cantonal, and municipal domains
+  - `lib/subscriptions/credits.ts` — credit costs, authenticated preflight checks, and post-save credit deduction helpers
+- **Export Response as Cited PDF** _(Sprint 1.2)_ — "Download as PDF" button on every assistant response
+  - `lib/supabase/queries/export-message.ts` — `getMessageExportData()` fetches the assistant message, source parts, preceding user query, and official source metadata
+  - `app/api/messages/[messageId]/export-pdf/route.ts` — RLS-enforced export endpoint
+  - `lib/export/generate-pdf.tsx`, `lib/hooks/use-export-pdf.ts`, and `components/artifact/export-pdf-button.tsx` — client-side PDF generation and download UI
+- **Evidence Scoring system** — automatic official-source trust rating for every assistant message
   - `GET /api/messages/[messageId]/evidence-score` — RLS-enforced endpoint returning `{ score: EvidenceScore | null }`
-  - `components/artifact/evidence-score-badge.tsx` — client badge component with `useEvidenceScore` polling hook (2 s intervals, 10 s timeout), Radix `HoverCard` breakdown, Iconify Solar shield icons, full light/dark mode, and `aria-label`
-- Score written to `messages.metadata.evidence_score` (JSONB) as a fire-and-forget step inside `persist-stream-results.ts` immediately after `upsertMessage()` succeeds
-- Documentation: `docs/DATABASE_SCHEMA.md` — `metadata` JSONB shape for `messages`; `docs/CONFIGURATION.md` — Evidence Scoring section; `docs/PROJECT_OVERVIEW.md` — Feature 14 write-up
+  - `components/artifact/evidence-score-badge.tsx` — client badge with polling and HoverCard breakdown
+  - Score is written to `messages.metadata.evidence_score` after `upsertMessage()` succeeds
+
+### Changed
+
+- **Product domain pivot** — renamed active behavior from AgriEvidence agriculture search to SwissTaxSearch official Swiss tax search
+  - `lib/agents/prompts/search-mode-prompts.ts` — rewritten for official Swiss tax answers, jurisdiction applicability, and non-advice caveats
+  - `lib/agents/researcher.ts` — injects Swiss tax profile context instead of agricultural context
+  - `lib/tools/fetch.ts` — rejects non-official Swiss tax/government URLs
+  - `components/profile/profile-form.tsx` and `app/(app)/onboarding/*` — collect canton, municipality, taxpayer type, preferred language, and optional tax research notes
+  - `components/artifact/evidence-score-badge.tsx`, `lib/export/generate-pdf.tsx`, and export helpers — display official-source scoring and SwissTaxSearch copy
+  - `app/api/chat/route.ts` and `lib/streaming/helpers/persist-stream-results.ts` — replaced authenticated Redis daily caps with credit preflight and post-save credit deduction
+
+### Removed
+
+- Deleted obsolete agriculture modules under `lib/agri/` and the old `lib/tools/agri-search.ts` provider.
+- Deleted old AgriEvidence migration files and agriculture seed files in favor of the single SwissTaxSearch baseline migration and seed set.
+- Deleted outdated AgriEvidence roadmap and GTM documents from `docs/`.
 
 ---
 
@@ -111,17 +124,17 @@ _Commit `eea6858` — merged to `main`_
 The AgriEvidence fork is based on the open-source [Morphic](https://github.com/miurla/morphic) project.
 Upstream changes (Morphic `main` branch, pre-fork) include:
 
-| Commit | Description |
-|---|---|
-| `b4fef07` | chore: bump Next.js to 16.2.3 |
-| `8db7272` | fix: align upload client MIME types with server allow-list |
-| `c212932` | feat: add keyboard shortcuts dialog (⌘/) |
-| `73b8d36` | feat: enlarge image carousel dialog, dark floating style |
-| `d2886aa` | feat: inline image groups via spec blocks |
-| `0905c5c` | refactor: generalise spec components to Heading and Button |
-| `1df54d8` | fix: offset chat section scroll target for mobile header |
-| `20bad58` | fix: exclude instagram.com from Tavily results in Cloud |
+| Commit    | Description                                                      |
+| --------- | ---------------------------------------------------------------- |
+| `b4fef07` | chore: bump Next.js to 16.2.3                                    |
+| `8db7272` | fix: align upload client MIME types with server allow-list       |
+| `c212932` | feat: add keyboard shortcuts dialog (⌘/)                         |
+| `73b8d36` | feat: enlarge image carousel dialog, dark floating style         |
+| `d2886aa` | feat: inline image groups via spec blocks                        |
+| `0905c5c` | refactor: generalise spec components to Heading and Button       |
+| `1df54d8` | fix: offset chat section scroll target for mobile header         |
+| `20bad58` | fix: exclude instagram.com from Tavily results in Cloud          |
 | `9b4d1b9` | feat: footer message with typewriter tips next to assistant logo |
-| `1a3eeef` | feat: show "Reply..." placeholder for follow-up messages |
-| `07963f8` | feat: per-user daily limit for adaptive search mode |
-| `0f852c6` | fix: increase max HTTP header size for development server |
+| `1a3eeef` | feat: show "Reply..." placeholder for follow-up messages         |
+| `07963f8` | feat: per-user daily limit for adaptive search mode              |
+| `0f852c6` | fix: increase max HTTP header size for development server        |

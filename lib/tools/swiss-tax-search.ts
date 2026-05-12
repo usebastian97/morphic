@@ -1,45 +1,31 @@
 import { tool } from 'ai'
 import Parallel from 'parallel-web'
 
-import { enrichQuery } from '@/lib/agri/query-enricher'
 import { getSearchSchemaForModel } from '@/lib/schema/search'
 import { getAllSources } from '@/lib/supabase/queries/sources'
 import { createClient } from '@/lib/supabase/server'
 import type { UserProfile } from '@/lib/supabase/types'
+import {
+  filterOfficialUrls,
+  STATIC_OFFICIAL_SWISS_TAX_DOMAINS,
+  uniqueDomains
+} from '@/lib/swiss-tax/official-domain-policy'
+import { enrichQuery } from '@/lib/swiss-tax/query-enricher'
 import { SearchResultItem, SearchResults } from '@/lib/types'
 import { getSearchToolDescription } from '@/lib/utils/search-config'
 
-const TRUSTED_DOMAINS_CACHE_TTL_MS = 10 * 60 * 1000
+const OFFICIAL_DOMAINS_CACHE_TTL_MS = 10 * 60 * 1000
 const TARGET_RESULT_COUNT = 8
-const FALLBACK_THRESHOLD = 4
 const PARALLEL_DOMAIN_LIMIT = 200
-
-type SourceType = 'trusted' | 'open'
-
-type AgriSearchResultItem = SearchResultItem & {
-  sourceType: SourceType
-}
 
 type ParallelSearchResponse = Awaited<ReturnType<Parallel['search']>>
 
-let trustedDomainsCache:
+let officialDomainsCache:
   | {
       expiresAt: number
       domains: string[]
     }
   | undefined
-
-function normalizeDomain(domain: string): string | null {
-  const normalized = domain
-    .trim()
-    .toLowerCase()
-    .replace(/^https?:\/\//, '')
-    .replace(/^www\./, '')
-    .split('/')[0]
-    ?.split(':')[0]
-
-  return normalized || null
-}
 
 function normalizeUrl(url: string): string {
   try {
@@ -52,32 +38,9 @@ function normalizeUrl(url: string): string {
   }
 }
 
-function getHostname(url: string): string | null {
-  try {
-    return new URL(url).hostname.replace(/^www\./, '').toLowerCase()
-  } catch {
-    return null
-  }
-}
-
-function isTrustedUrl(url: string, trustedDomains: string[]): boolean {
-  const hostname = getHostname(url)
-  if (!hostname) return false
-
-  return trustedDomains.some(
-    domain => hostname === domain || hostname.endsWith(`.${domain}`)
-  )
-}
-
-function uniqueDomains(domains: string[]): string[] {
-  return Array.from(
-    new Set(domains.map(normalizeDomain).filter((d): d is string => !!d))
-  )
-}
-
 function createObjective(query: string): string {
   const compactQuery = query.trim().replace(/\s+/g, ' ').slice(0, 500)
-  return `Find evidence-based agricultural sources that answer this user question: "${compactQuery}". Prioritize peer-reviewed research, university extension guidance, government or regulatory agencies, and international agricultural research institutes. Capture practical crop, region, climate, season, soil, and regulatory caveats when available.`
+  return `Find official Swiss federal, cantonal, or municipal tax sources that answer this user question: "${compactQuery}". Use only official government, tax authority, legal database, official news, statistics, or tax form pages. Capture federal/canton applicability, dates, forms, deadlines, and legal basis when available.`
 }
 
 function createParallelClient(): Parallel {
@@ -89,33 +52,36 @@ function createParallelClient(): Parallel {
   return new Parallel({ apiKey, timeout: 15000, maxRetries: 1 })
 }
 
-export async function getTrustedAgriDomains(): Promise<string[]> {
+export async function getOfficialSwissTaxDomains(): Promise<string[]> {
   const now = Date.now()
-  if (trustedDomainsCache && trustedDomainsCache.expiresAt > now) {
-    return trustedDomainsCache.domains
+  if (officialDomainsCache && officialDomainsCache.expiresAt > now) {
+    return officialDomainsCache.domains
   }
 
   try {
     const db = await createClient()
     const sources = await getAllSources(db)
-    const domains = uniqueDomains(sources.map(source => source.domain)).slice(
-      0,
-      PARALLEL_DOMAIN_LIMIT
-    )
+    const domains = uniqueDomains([
+      ...STATIC_OFFICIAL_SWISS_TAX_DOMAINS,
+      ...sources.map(source => source.domain)
+    ]).slice(0, PARALLEL_DOMAIN_LIMIT)
 
-    trustedDomainsCache = {
+    officialDomainsCache = {
       domains,
-      expiresAt: now + TRUSTED_DOMAINS_CACHE_TTL_MS
+      expiresAt: now + OFFICIAL_DOMAINS_CACHE_TTL_MS
     }
 
     return domains
   } catch (error) {
-    console.warn('[AgriSearch] Failed to fetch trusted domains:', error)
-    trustedDomainsCache = {
-      domains: [],
-      expiresAt: now + TRUSTED_DOMAINS_CACHE_TTL_MS
+    console.warn('[SwissTaxSearch] Failed to fetch official domains:', error)
+    const fallbackDomains = uniqueDomains([
+      ...STATIC_OFFICIAL_SWISS_TAX_DOMAINS
+    ])
+    officialDomainsCache = {
+      domains: fallbackDomains,
+      expiresAt: now + OFFICIAL_DOMAINS_CACHE_TTL_MS
     }
-    return []
+    return fallbackDomains
   }
 }
 
@@ -153,9 +119,7 @@ async function runParallelSearch({
     advanced_settings: {
       max_results: maxResults,
       source_policy: {
-        ...(cappedIncludeDomains.length > 0
-          ? { include_domains: cappedIncludeDomains }
-          : {}),
+        include_domains: cappedIncludeDomains,
         ...(cappedExcludeDomains.length > 0
           ? { exclude_domains: cappedExcludeDomains }
           : {})
@@ -164,36 +128,26 @@ async function runParallelSearch({
   })
 }
 
-function mapParallelResults({
-  response,
-  trustedDomains,
-  sourceType
-}: {
+function mapParallelResults(
   response: ParallelSearchResponse
-  trustedDomains: string[]
-  sourceType: SourceType
-}): AgriSearchResultItem[] {
+): SearchResultItem[] {
   return response.results.map(result => {
     const published = result.publish_date
       ? `Published: ${result.publish_date}\n\n`
       : ''
     const content = `${published}${result.excerpts.join('\n\n')}`.trim()
-    const actualSourceType = isTrustedUrl(result.url, trustedDomains)
-      ? 'trusted'
-      : sourceType
 
     return {
       title: result.title || result.url,
       url: result.url,
-      content,
-      sourceType: actualSourceType
+      content
     }
   })
 }
 
-function mergeResults(items: AgriSearchResultItem[]): AgriSearchResultItem[] {
+function mergeResults(items: SearchResultItem[]): SearchResultItem[] {
   const seenUrls = new Set<string>()
-  const merged: AgriSearchResultItem[] = []
+  const merged: SearchResultItem[] = []
 
   for (const item of items) {
     const normalizedUrl = normalizeUrl(item.url)
@@ -218,7 +172,7 @@ function createCitationMap(
   )
 }
 
-export async function runAgriSearch({
+export async function runSwissTaxSearch({
   query,
   maxResults = TARGET_RESULT_COUNT,
   searchDepth = 'basic',
@@ -238,11 +192,15 @@ export async function runAgriSearch({
   userProfile?: UserProfile | null
 }): Promise<SearchResults> {
   const client = createParallelClient()
-  const trustedDomains = await getTrustedAgriDomains()
-  const additionalIncludeDomains = uniqueDomains(includeDomains)
-  const excludeDomainFilter = uniqueDomains(excludeDomains)
+  const officialDomains = await getOfficialSwissTaxDomains()
+  const requestedOfficialDomains = uniqueDomains(includeDomains).filter(
+    domain => officialDomains.includes(domain)
+  )
   const includeDomainFilter =
-    trustedDomains.length > 0 ? trustedDomains : additionalIncludeDomains
+    requestedOfficialDomains.length > 0
+      ? requestedOfficialDomains
+      : officialDomains
+  const excludeDomainFilter = uniqueDomains(excludeDomains)
   const objective = createObjective(query)
   const mode = searchDepth === 'advanced' ? 'advanced' : 'basic'
   const targetResults = Math.min(
@@ -251,7 +209,7 @@ export async function runAgriSearch({
   )
   const enrichedQueries = await enrichQuery(query, userProfile)
 
-  const primaryResponses = await Promise.all(
+  const responses = await Promise.all(
     enrichedQueries.map(enrichedQuery =>
       runParallelSearch({
         client,
@@ -266,63 +224,13 @@ export async function runAgriSearch({
     )
   )
 
-  const primaryItems = primaryResponses.flatMap(response =>
-    mapParallelResults({
-      response,
-      trustedDomains,
-      sourceType: includeDomainFilter.length > 0 ? 'trusted' : 'open'
-    })
-  )
-  let mergedItems = mergeResults(primaryItems)
-  let trustedResults = mergedItems.filter(
-    item => item.sourceType === 'trusted'
-  ).length
-
-  const fallbackResponses: ParallelSearchResponse[] = []
-  if (
-    trustedDomains.length > 0 &&
-    trustedResults < FALLBACK_THRESHOLD &&
-    mergedItems.length < targetResults
-  ) {
-    const neededResults = targetResults - mergedItems.length
-    fallbackResponses.push(
-      ...(await Promise.all(
-        enrichedQueries.map(enrichedQuery =>
-          runParallelSearch({
-            client,
-            query: enrichedQuery,
-            objective,
-            mode,
-            includeDomains: [],
-            excludeDomains: excludeDomainFilter,
-            maxResults: neededResults,
-            clientModel: modelId.replace(/^[^:]+:/, '')
-          })
-        )
-      ))
-    )
-
-    const fallbackItems = fallbackResponses.flatMap(response =>
-      mapParallelResults({ response, trustedDomains, sourceType: 'open' })
-    )
-    mergedItems = mergeResults([...mergedItems, ...fallbackItems])
-    trustedResults = mergedItems.filter(
-      item => item.sourceType === 'trusted'
-    ).length
-  }
-
-  const results = mergedItems
-    .slice(0, targetResults)
-    .map(({ sourceType: _sourceType, ...result }) => result)
-  const searchIds = [...primaryResponses, ...fallbackResponses].map(
-    response => response.search_id
-  )
+  const allItems = responses.flatMap(mapParallelResults)
+  const officialItems = filterOfficialUrls(allItems, includeDomainFilter)
+  const nonOfficialResults = allItems.length - officialItems.length
+  const results = mergeResults(officialItems).slice(0, targetResults)
+  const searchIds = responses.map(response => response.search_id)
   const sessionIds = Array.from(
-    new Set(
-      [...primaryResponses, ...fallbackResponses].map(
-        response => response.session_id
-      )
-    )
+    new Set(responses.map(response => response.session_id))
   )
 
   return {
@@ -334,17 +242,19 @@ export async function runAgriSearch({
     ...(toolCallId ? { toolCallId } : {}),
     metadata: {
       provider: 'parallel',
+      sourcePolicy: 'official_swiss_tax_only',
       enrichedQueries,
-      trustedDomainsCount: trustedDomains.length,
-      trustedResults,
-      openWebResults: results.length - trustedResults,
+      officialDomainsCount: includeDomainFilter.length,
+      officialResults: results.length,
+      nonOfficialResults,
+      openWebResults: 0,
       searchIds,
       sessionIds
     }
   }
 }
 
-export function createAgriSearchTool(
+export function createSwissTaxSearchTool(
   fullModel: string,
   userProfile?: UserProfile | null
 ) {
@@ -366,7 +276,7 @@ export function createAgriSearchTool(
         query
       }
 
-      const searchResult = await runAgriSearch({
+      const searchResult = await runSwissTaxSearch({
         query,
         maxResults: max_results,
         searchDepth: search_depth as 'basic' | 'advanced',

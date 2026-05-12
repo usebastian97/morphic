@@ -79,7 +79,7 @@
   --sidebar-ring: #26251e;
 
   /* Typography */
-  --font-sans: Inter, system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-sans: Inter, system-ui, 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --font-serif: Georgia, serif;
   --font-mono: 'JetBrains Mono', 'Cascadia Code', 'Fira Code', monospace;
 

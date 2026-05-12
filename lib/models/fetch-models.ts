@@ -402,7 +402,7 @@ export async function fetchDeepSeekModels(): Promise<Model[]> {
       providerId: 'deepseek',
       contextWindow: DEEPSEEK_CONTEXT_WINDOW,
       recommendedFor:
-        'Quality mode, complex agricultural queries, synthesis tasks',
+        'Quality mode, complex Swiss tax queries, synthesis tasks',
       default: true
     }
   ]

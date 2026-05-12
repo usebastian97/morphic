@@ -3,20 +3,20 @@ import { UIToolInvocation } from 'ai'
 import type { UserProfile } from '@/lib/supabase/types'
 import { SearchResults } from '@/lib/types'
 
-import { createAgriSearchTool } from './agri-search'
+import { createSwissTaxSearchTool } from './swiss-tax-search'
 
 /**
- * Creates the AgriEvidence search tool using Parallel Search while preserving
+ * Creates the SwissTaxSearch tool using Parallel Search while preserving
  * Morphic's existing tool name, schema, streaming states, and result shape.
  */
 export function createSearchTool(
   fullModel: string,
   userProfile?: UserProfile | null
 ) {
-  return createAgriSearchTool(fullModel, userProfile)
+  return createSwissTaxSearchTool(fullModel, userProfile)
 }
 
-// Default export for backward compatibility, using the AgriEvidence default model.
+// Default export for backward compatibility, using the SwissTaxSearch default model.
 export const searchTool = createSearchTool('deepseek:deepseek-v4-pro')
 
 // Export type for UI tool invocation.

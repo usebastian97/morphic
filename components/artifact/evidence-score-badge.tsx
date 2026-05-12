@@ -6,8 +6,8 @@
  * computed.  Hides itself if no score arrives within the timeout.
  *
  * On hover it expands a Radix UI HoverCard showing the full breakdown:
- * peer-reviewed count, government count, web-general count, average trust
- * score, and a fallback warning when applicable.
+ * federal count, cantonal count, municipal count, average official trust
+ * score, and a non-official warning when applicable.
  */
 'use client'
 
@@ -16,8 +16,8 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { Icon } from '@iconify/react'
 import * as HoverCardPrimitive from '@radix-ui/react-hover-card'
 
-import type { EvidenceScore } from '@/lib/agri/evidence-score'
-import { getScoreColor } from '@/lib/agri/evidence-score'
+import type { EvidenceScore } from '@/lib/swiss-tax/official-source-score'
+import { getScoreColor } from '@/lib/swiss-tax/official-source-score'
 import { cn } from '@/lib/utils'
 
 // ─── Props ────────────────────────────────────────────────────────────────────
@@ -269,7 +269,12 @@ export function EvidenceScoreBadge({
           <div className="flex items-center gap-2 mb-3">
             <Icon icon={icon} className={cn('size-4', colors.iconText)} />
             <div>
-              <p className={cn('text-sm font-semibold leading-none', colors.text)}>
+              <p
+                className={cn(
+                  'text-sm font-semibold leading-none',
+                  colors.text
+                )}
+              >
                 Evidence Score: {score.label}
               </p>
               <p className="text-xs text-muted-foreground mt-0.5">
@@ -291,36 +296,37 @@ export function EvidenceScoreBadge({
           {/* Source breakdown */}
           <div className="space-y-1.5 text-xs">
             <p className="font-medium text-foreground mb-1">Source breakdown</p>
+            <BreakdownRow label="Federal" value={breakdown.federal_count} />
+            <BreakdownRow label="Cantonal" value={breakdown.cantonal_count} />
+            <BreakdownRow label="Municipal" value={breakdown.municipal_count} />
             <BreakdownRow
-              label="Peer-reviewed / Database"
-              value={breakdown.peer_reviewed_count}
+              label="Legal / forms / news"
+              value={
+                breakdown.legal_or_form_count + breakdown.official_news_count
+              }
             />
             <BreakdownRow
-              label="Government / Extension"
-              value={breakdown.government_count}
+              label="Non-official"
+              value={breakdown.non_official_count}
             />
-            <BreakdownRow
-              label="General web"
-              value={breakdown.web_general_count}
-            />
-            {breakdown.avg_curated_trust !== null && (
+            {breakdown.avg_official_trust !== null && (
               <BreakdownRow
-                label="Avg. curated trust"
-                value={`${breakdown.avg_curated_trust}/100`}
+                label="Avg. official trust"
+                value={`${breakdown.avg_official_trust}/100`}
               />
             )}
           </div>
 
           {/* Fallback warning */}
-          {breakdown.used_fallback && (
+          {breakdown.used_non_official_results && (
             <div className="mt-3 flex items-start gap-1.5 rounded-md bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 px-2 py-1.5">
               <Icon
                 icon="solar:danger-triangle-bold"
                 className="size-3.5 mt-0.5 shrink-0 text-amber-600 dark:text-amber-400"
               />
               <p className="text-xs text-amber-700 dark:text-amber-400 leading-snug">
-                Open-web fallback results were included — curated coverage was
-                limited for this query.
+                Non-official results were detected. Treat this answer as lower
+                confidence until an official source confirms it.
               </p>
             </div>
           )}

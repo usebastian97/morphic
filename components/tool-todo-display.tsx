@@ -74,7 +74,10 @@ export function ToolTodoDisplay({
       isLoading={isLoading}
       label={
         <span className="inline-flex items-center gap-2 min-w-0 overflow-hidden">
-          <Icon icon="solar:checklist-minimalistic-bold" className="size-4 text-muted-foreground shrink-0" />
+          <Icon
+            icon="solar:checklist-minimalistic-bold"
+            className="size-4 text-muted-foreground shrink-0"
+          />
           <span className="truncate">
             {state === 'output-available' && output
               ? output.message || 'Updated tasks'

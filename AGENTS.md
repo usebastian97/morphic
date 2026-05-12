@@ -86,10 +86,10 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=[your-supabase-anon-key]
    - Database actions in `/lib/actions/chat-db.ts`
 
 4. **Search System**
-   - Primary provider: Parallel Search for AgriEvidence agricultural retrieval
+   - Primary provider: Parallel Search for SwissTaxSearch official Swiss tax retrieval
    - Query enrichment uses DeepSeek V4 Flash before sending searches to Parallel
-   - Trusted agricultural domains are loaded from Supabase `sources` and open-web fallback is used when coverage is thin
-   - URL-specific search capabilities
+   - Official Swiss federal, cantonal, and municipal domains are loaded from Supabase `official_sources`
+   - Open-web fallback is disabled; non-official URLs are rejected by the fetch tool
    - Configurable search depth and result limits
 
 5. **Component Organization** (`/components`)
@@ -109,8 +109,8 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=[your-supabase-anon-key]
 ### Required Variables
 
 ```bash
-DEEPSEEK_API_KEY=    # Default AI provider for AgriEvidence
-PARALLEL_API_KEY=    # Default search provider for AgriEvidence
+DEEPSEEK_API_KEY=    # Default AI provider for SwissTaxSearch
+PARALLEL_API_KEY=    # Default search provider for SwissTaxSearch
 DATABASE_URL=        # PostgreSQL connection string
 ```
 

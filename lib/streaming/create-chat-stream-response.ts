@@ -43,7 +43,8 @@ export async function createChatStreamResponse(
     abortSignal,
     isNewChat,
     searchMode,
-    userProfile
+    userProfile,
+    creditCharge
   } = config
 
   // Verify that chatId is provided
@@ -210,7 +211,8 @@ export async function createChatStreamResponse(
             searchMode,
             context.modelId,
             context.pendingInitialSave,
-            context.pendingInitialUserMessage
+            context.pendingInitialUserMessage,
+            creditCharge
           )
         } finally {
           if (langfuse) {

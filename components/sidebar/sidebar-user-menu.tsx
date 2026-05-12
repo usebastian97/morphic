@@ -117,7 +117,10 @@ export function SidebarUserMenu({ user }: SidebarUserMenuProps) {
             <DropdownMenuGroup>
               <DropdownMenuItem asChild>
                 <Link href="/profile">
-                  <Icon icon="solar:user-rounded-bold" className="mr-2 h-4 w-4" />
+                  <Icon
+                    icon="solar:user-rounded-bold"
+                    className="mr-2 h-4 w-4"
+                  />
                   <span>Profile</span>
                 </Link>
               </DropdownMenuItem>

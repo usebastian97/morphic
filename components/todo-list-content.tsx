@@ -35,7 +35,12 @@ export function TodoListContent({
   const getStatusIcon = (status: TodoItem['status']) => {
     switch (status) {
       case 'completed':
-        return <Icon icon="solar:check-bold" className="h-4 w-4 text-green-600 flex-shrink-0" />
+        return (
+          <Icon
+            icon="solar:check-bold"
+            className="h-4 w-4 text-green-600 flex-shrink-0"
+          />
+        )
       case 'in_progress':
         return (
           <div className="relative h-4 w-4 flex items-center justify-center flex-shrink-0">

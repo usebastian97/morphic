@@ -27,7 +27,10 @@ export function ChatError({ error }: ChatErrorProps) {
   return (
     <Card className="border-destructive bg-destructive/10 p-4">
       <div className="flex items-center gap-3">
-        <Icon icon="solar:danger-circle-bold" className="size-5 text-destructive shrink-0" />
+        <Icon
+          icon="solar:danger-circle-bold"
+          className="size-5 text-destructive shrink-0"
+        />
         <p className="text-sm text-destructive">{errorMessage}</p>
       </div>
     </Card>

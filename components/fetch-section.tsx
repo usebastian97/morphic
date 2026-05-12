@@ -88,7 +88,10 @@ export function FetchSection({
       isLoading={isLoading && isToolLoading}
       label={
         <div className="flex items-center gap-2 min-w-0 overflow-hidden">
-          <Icon icon="solar:global-bold" className="h-4 w-4 shrink-0 text-muted-foreground" />
+          <Icon
+            icon="solar:global-bold"
+            className="h-4 w-4 shrink-0 text-muted-foreground"
+          />
           <span className="truncate block min-w-0 max-w-full">
             {getPageTitle()}
           </span>
@@ -106,7 +109,10 @@ export function FetchSection({
           </>
         ) : displayStatus === 'error' ? (
           <>
-            <Icon icon="solar:danger-circle-bold" className="size-4 text-destructive" />
+            <Icon
+              icon="solar:danger-circle-bold"
+              className="size-4 text-destructive"
+            />
             <span>{error}</span>
           </>
         ) : isToolLoading ? (
@@ -148,7 +154,10 @@ export function FetchSection({
               className="shrink-0 p-1 hover:bg-accent rounded transition-colors"
               aria-label="Open in new tab"
             >
-              <Icon icon="solar:arrow-right-up-bold" className="h-4 w-4 text-muted-foreground" />
+              <Icon
+                icon="solar:arrow-right-up-bold"
+                className="h-4 w-4 text-muted-foreground"
+              />
             </button>
           )}
         </div>

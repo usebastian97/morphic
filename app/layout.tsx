@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter as FontSans,JetBrains_Mono as FontMono } from 'next/font/google'
+import { Inter as FontSans, JetBrains_Mono as FontMono } from 'next/font/google'
 
 import { Analytics } from '@vercel/analytics/next'
 
@@ -72,7 +72,13 @@ export default async function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn('font-sans antialiased', fontSans.variable, fontMono.variable)}>
+      <body
+        className={cn(
+          'font-sans antialiased',
+          fontSans.variable,
+          fontMono.variable
+        )}
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

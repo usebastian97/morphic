@@ -24,7 +24,7 @@ An AI-powered search engine with a generative UI.
 - AI-powered search with GenerativeUI
 - Search modes: Speed and Quality
 - DeepSeek V4 defaults with dynamic provider detection for additional models
-- Parallel-backed agricultural evidence search with trusted-source prioritization
+- Parallel-backed official Swiss tax search with federal, cantonal, and municipal source filtering
 - Chat history stored in PostgreSQL
 - Share search results with unique URLs
 - File upload support
@@ -52,7 +52,7 @@ cd morphic
 cp .env.local.example .env.local
 ```
 
-2. Edit `.env.local` and set DeepSeek and Parallel keys for the AgriEvidence defaults:
+2. Edit `.env.local` and set DeepSeek and Parallel keys for the SwissTaxSearch defaults:
 
 ```bash
 DEEPSEEK_API_KEY=your_deepseek_key
@@ -70,7 +70,7 @@ docker compose up -d
 
 4. Visit http://localhost:3000 and select your model from the model selector.
 
-Docker Compose starts PostgreSQL, Redis, SearXNG, and Morphic automatically. AgriEvidence search uses Parallel, so `PARALLEL_API_KEY` is required for live evidence retrieval.
+Docker Compose starts PostgreSQL, Redis, SearXNG, and Morphic automatically. SwissTaxSearch uses Parallel for official Swiss tax retrieval, so `PARALLEL_API_KEY` is required for live search.
 
 See the [Docker Guide](./docs/DOCKER.md) for more options including building from source and file upload configuration.
 

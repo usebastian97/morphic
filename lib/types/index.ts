@@ -14,9 +14,13 @@ export type SearchResults = {
 
 export type SearchResultsMetadata = {
   provider?: string
+  sourcePolicy?: 'official_swiss_tax_only'
   enrichedQueries?: string[]
   trustedDomainsCount?: number
   trustedResults?: number
+  officialDomainsCount?: number
+  officialResults?: number
+  nonOfficialResults?: number
   openWebResults?: number
   searchIds?: string[]
   sessionIds?: string[]

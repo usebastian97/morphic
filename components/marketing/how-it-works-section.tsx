@@ -53,7 +53,10 @@ export function HowItWorksSection() {
           />
 
           {steps.map((step, i) => (
-            <div key={step.number} className="rounded-[12px] border border-border bg-card p-6">
+            <div
+              key={step.number}
+              className="rounded-[12px] border border-border bg-card p-6"
+            >
               {/* Step circle */}
               <div className="relative mb-6 inline-flex size-[52px] items-center justify-center rounded-full border border-border bg-background">
                 <Icon icon={step.icon} className="size-6 text-foreground" />

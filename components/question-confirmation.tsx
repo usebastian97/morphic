@@ -153,9 +153,15 @@ export function QuestionConfirmation({
         </CardTitle>
         <div className="flex items-center justify-start gap-1 w-full">
           {isSkipped ? (
-            <Icon icon="solar:skip-next-bold" className="text-yellow-500 size-4" />
+            <Icon
+              icon="solar:skip-next-bold"
+              className="text-yellow-500 size-4"
+            />
           ) : (
-            <Icon icon="solar:check-circle-bold" className="text-green-500 size-4" />
+            <Icon
+              icon="solar:check-circle-bold"
+              className="text-green-500 size-4"
+            />
           )}
           <h5 className="text-muted-foreground text-xs truncate">
             {updatedQuery()}

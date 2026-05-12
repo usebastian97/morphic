@@ -6,7 +6,7 @@ import { getCurrentUser } from '@/lib/auth/get-current-user'
 import { ProfileForm } from '@/components/profile/profile-form'
 
 export const metadata = {
-  title: 'Profile — AgriEvidence'
+  title: 'Profile - SwissTaxSearch'
 }
 
 export default async function ProfilePage() {
@@ -24,7 +24,7 @@ export default async function ProfilePage() {
           <div>
             <h1 className="text-lg font-semibold tracking-tight">Profile</h1>
             <p className="text-xs text-muted-foreground mt-0.5">
-              Manage your account details and farm preferences.
+              Manage your account details and Swiss tax search context.
             </p>
           </div>
         </div>

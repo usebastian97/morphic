@@ -4,7 +4,7 @@ import * as React from 'react'
 
 import { Icon } from '@iconify/react'
 import useEmblaCarousel, {
-    type UseEmblaCarouselType
+  type UseEmblaCarouselType
 } from 'embla-carousel-react'
 
 import { cn } from '@/lib/utils'
@@ -255,9 +255,10 @@ const CarouselNext = React.forwardRef<
 CarouselNext.displayName = 'CarouselNext'
 
 export {
-    Carousel, type CarouselApi,
-CarouselContent,
-    CarouselItem,
-    CarouselNext,
-    CarouselPrevious}
-
+  Carousel,
+  type CarouselApi,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious
+}

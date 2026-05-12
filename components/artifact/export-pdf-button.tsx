@@ -55,10 +55,7 @@ export function ExportPDFButton({
                 className="size-3.5 animate-spin"
               />
             ) : (
-              <Icon
-                icon="solar:file-download-bold"
-                className="size-3.5"
-              />
+              <Icon icon="solar:file-download-bold" className="size-3.5" />
             )}
           </Button>
         </TooltipPrimitive.Trigger>

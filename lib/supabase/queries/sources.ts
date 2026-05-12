@@ -10,7 +10,7 @@ type DB = SupabaseClient
 
 export async function getAllSources(db: DB): Promise<Source[]> {
   const { data, error } = await db
-    .from('sources')
+    .from('official_sources')
     .select('*')
     .eq('is_active', true)
     .order('trust_score', { ascending: false })
@@ -21,7 +21,7 @@ export async function getAllSources(db: DB): Promise<Source[]> {
 
 export async function getFeaturedSources(db: DB): Promise<Source[]> {
   const { data, error } = await db
-    .from('sources')
+    .from('official_sources')
     .select('*')
     .eq('is_active', true)
     .eq('is_featured', true)
@@ -36,14 +36,14 @@ export async function getSourcesByTopic(
   topicId: string
 ): Promise<Source[]> {
   const { data, error } = await db
-    .from('source_topics')
-    .select('sources(*)')
+    .from('source_tax_topics')
+    .select('official_sources(*)')
     .eq('topic_id', topicId)
 
   if (error) throw error
 
   return (data ?? [])
-    .map((row: any) => row.sources)
+    .map((row: any) => row.official_sources)
     .filter(Boolean)
     .filter((s: any) => s.is_active)
     .map(mapSourceRow)
@@ -55,7 +55,7 @@ export async function getSourceByDomain(
   domain: string
 ): Promise<Source | null> {
   const { data, error } = await db
-    .from('sources')
+    .from('official_sources')
     .select('*')
     .eq('domain', domain)
     .single()

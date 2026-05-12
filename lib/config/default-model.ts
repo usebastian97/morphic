@@ -6,6 +6,6 @@ export const DEFAULT_MODEL: Model = {
   provider: 'DeepSeek',
   providerId: 'deepseek',
   contextWindow: 1000000,
-  recommendedFor: 'Quality mode, complex agricultural queries, synthesis tasks',
+  recommendedFor: 'Quality mode, complex Swiss tax queries, synthesis tasks',
   default: true
 }

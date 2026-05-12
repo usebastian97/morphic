@@ -6,12 +6,12 @@ import { Icon } from '@iconify/react'
 
 import { Button } from '@/components/ui/button'
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
 } from '@/components/ui/dialog'
 
 interface ErrorModalProps {
@@ -41,12 +41,27 @@ export function ErrorModal({
   const getErrorIcon = () => {
     switch (error.type) {
       case 'rate-limit':
-        return <Icon icon="solar:clock-circle-bold" className="size-6 text-yellow-500" />
+        return (
+          <Icon
+            icon="solar:clock-circle-bold"
+            className="size-6 text-yellow-500"
+          />
+        )
       case 'auth':
       case 'forbidden':
-        return <Icon icon="solar:danger-circle-bold" className="size-6 text-red-500" />
+        return (
+          <Icon
+            icon="solar:danger-circle-bold"
+            className="size-6 text-red-500"
+          />
+        )
       default:
-        return <Icon icon="solar:danger-circle-bold" className="size-6 text-orange-500" />
+        return (
+          <Icon
+            icon="solar:danger-circle-bold"
+            className="size-6 text-orange-500"
+          />
+        )
     }
   }
 

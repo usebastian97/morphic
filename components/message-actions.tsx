@@ -130,7 +130,9 @@ export function MessageActions({
             >
               <Icon
                 icon="solar:like-bold"
-                className={feedbackScore === 1 ? 'fill-current size-3.5' : 'size-3.5'}
+                className={
+                  feedbackScore === 1 ? 'fill-current size-3.5' : 'size-3.5'
+                }
               />
             </Button>
           )}
@@ -144,7 +146,9 @@ export function MessageActions({
             >
               <Icon
                 icon="solar:dislike-bold"
-                className={feedbackScore === -1 ? 'fill-current size-3.5' : 'size-3.5'}
+                className={
+                  feedbackScore === -1 ? 'fill-current size-3.5' : 'size-3.5'
+                }
               />
             </Button>
           )}

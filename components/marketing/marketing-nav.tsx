@@ -85,7 +85,11 @@ export function MarketingNav() {
           aria-label="Toggle menu"
         >
           <Icon
-            icon={mobileOpen ? 'solar:close-circle-bold' : 'solar:sidebar-minimalistic-bold'}
+            icon={
+              mobileOpen
+                ? 'solar:close-circle-bold'
+                : 'solar:sidebar-minimalistic-bold'
+            }
             className="size-5"
           />
         </button>
@@ -94,16 +98,59 @@ export function MarketingNav() {
       {/* Mobile menu */}
       {mobileOpen && (
         <div className="md:hidden border-t border-border bg-background px-6 py-4 flex flex-col gap-3">
-          <Link href="#features" className="text-[14px] font-medium text-muted-foreground hover:text-foreground transition-colors py-2" onClick={() => setMobileOpen(false)}>Features</Link>
-          <Link href="#how-it-works" className="text-[14px] font-medium text-muted-foreground hover:text-foreground transition-colors py-2" onClick={() => setMobileOpen(false)}>How it works</Link>
-          <Link href="https://github.com/miurla/morphic" target="_blank" rel="noopener noreferrer" className="text-[14px] font-medium text-muted-foreground hover:text-foreground transition-colors py-2 flex items-center gap-1.5"><Icon icon="solar:code-bold" className="size-3.5" />GitHub</Link>
+          <Link
+            href="#features"
+            className="text-[14px] font-medium text-muted-foreground hover:text-foreground transition-colors py-2"
+            onClick={() => setMobileOpen(false)}
+          >
+            Features
+          </Link>
+          <Link
+            href="#how-it-works"
+            className="text-[14px] font-medium text-muted-foreground hover:text-foreground transition-colors py-2"
+            onClick={() => setMobileOpen(false)}
+          >
+            How it works
+          </Link>
+          <Link
+            href="https://github.com/miurla/morphic"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[14px] font-medium text-muted-foreground hover:text-foreground transition-colors py-2 flex items-center gap-1.5"
+          >
+            <Icon icon="solar:code-bold" className="size-3.5" />
+            GitHub
+          </Link>
           <div className="pt-2 border-t border-border flex flex-col gap-2">
             {hasUser ? (
-              <Link href="/chat" className="inline-flex items-center justify-center gap-1.5 rounded-[8px] bg-primary px-[18px] py-[10px] text-[14px] font-medium leading-none text-primary-foreground hover:bg-[#d04200] transition-colors" onClick={() => setMobileOpen(false)}>Go to app<Icon icon="solar:alt-arrow-right-bold" className="size-3.5" /></Link>
+              <Link
+                href="/chat"
+                className="inline-flex items-center justify-center gap-1.5 rounded-[8px] bg-primary px-[18px] py-[10px] text-[14px] font-medium leading-none text-primary-foreground hover:bg-[#d04200] transition-colors"
+                onClick={() => setMobileOpen(false)}
+              >
+                Go to app
+                <Icon icon="solar:alt-arrow-right-bold" className="size-3.5" />
+              </Link>
             ) : (
               <>
-                <Link href="/auth/login" className="inline-flex items-center justify-center px-3 py-2.5 text-[14px] font-medium text-foreground border border-border rounded-[8px] hover:bg-accent transition-colors" onClick={() => setMobileOpen(false)}>Sign in</Link>
-                <Link href="/chat" className="inline-flex items-center justify-center gap-1.5 rounded-[8px] bg-primary px-[18px] py-[10px] text-[14px] font-medium leading-none text-primary-foreground hover:bg-[#d04200] transition-colors" onClick={() => setMobileOpen(false)}>Get started<Icon icon="solar:alt-arrow-right-bold" className="size-3.5" /></Link>
+                <Link
+                  href="/auth/login"
+                  className="inline-flex items-center justify-center px-3 py-2.5 text-[14px] font-medium text-foreground border border-border rounded-[8px] hover:bg-accent transition-colors"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  Sign in
+                </Link>
+                <Link
+                  href="/chat"
+                  className="inline-flex items-center justify-center gap-1.5 rounded-[8px] bg-primary px-[18px] py-[10px] text-[14px] font-medium leading-none text-primary-foreground hover:bg-[#d04200] transition-colors"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  Get started
+                  <Icon
+                    icon="solar:alt-arrow-right-bold"
+                    className="size-3.5"
+                  />
+                </Link>
               </>
             )}
           </div>

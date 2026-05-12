@@ -9,21 +9,21 @@ import { toast } from 'sonner'
 import { clearChats } from '@/lib/actions/chat'
 
 import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger
 } from '@/components/ui/alert-dialog'
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { SidebarGroupAction } from '@/components/ui/sidebar'
 import { Spinner } from '@/components/ui/spinner'
@@ -92,7 +92,8 @@ export function ClearHistoryAction({ empty }: ClearHistoryActionProps) {
                 event.preventDefault()
               }}
             >
-              <Icon icon="solar:trash-bin-trash-bold" className="size-3.5" /> Clear History
+              <Icon icon="solar:trash-bin-trash-bold" className="size-3.5" />{' '}
+              Clear History
             </DropdownMenuItem>
           </AlertDialogTrigger>
 

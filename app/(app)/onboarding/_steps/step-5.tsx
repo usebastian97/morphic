@@ -1,64 +1,16 @@
 'use client'
 
-import type { ClimateZone, FarmType } from '@/lib/supabase/types'
-
 import { Button } from '@/components/ui/button'
+
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue
-} from '@/components/ui/select'
-
-import type { StepProps } from './types'
-
-const LANGUAGE_OPTIONS = [
-  { code: 'en', label: 'English' },
-  { code: 'es', label: 'Spanish' },
-  { code: 'fr', label: 'French' },
-  { code: 'pt', label: 'Portuguese' },
-  { code: 'ar', label: 'Arabic' },
-  { code: 'hi', label: 'Hindi' },
-  { code: 'sw', label: 'Swahili' },
-  { code: 'ro', label: 'Romanian' },
-  { code: 'de', label: 'German' },
-  { code: 'it', label: 'Italian' }
-]
-
-const FARM_TYPE_LABELS: Record<FarmType, string> = {
-  crop_farming: 'Crop Farming',
-  livestock: 'Livestock',
-  horticulture: 'Horticulture',
-  aquaculture: 'Aquaculture',
-  viticulture: 'Viticulture',
-  agroforestry: 'Agroforestry',
-  beekeeping: 'Beekeeping',
-  mixed: 'Mixed'
-}
-
-const CLIMATE_LABELS: Record<ClimateZone, string> = {
-  tropical: 'Tropical',
-  subtropical: 'Subtropical',
-  temperate: 'Temperate',
-  arid: 'Arid',
-  semi_arid: 'Semi-Arid',
-  mediterranean: 'Mediterranean'
-}
+  CANTON_LABELS,
+  LANGUAGE_LABELS,
+  type StepProps,
+  TAXPAYER_TYPE_LABELS
+} from './types'
 
 type Step5Props = StepProps & {
   onEdit: (step: number) => void
-}
-
-function getCountryName(code: string): string {
-  if (!code) return 'Not provided'
-  return `${new Intl.DisplayNames(['en'], { type: 'region' }).of(code) ?? code} (${code})`
-}
-
-function getLanguageLabel(code: string): string {
-  return (
-    LANGUAGE_OPTIONS.find(language => language.code === code)?.label ?? code
-  )
 }
 
 function SummaryRow({
@@ -81,7 +33,7 @@ function SummaryRow({
       <Button
         type="button"
         variant="link"
-        className="h-auto shrink-0 p-0 text-emerald-700"
+        className="h-auto shrink-0 p-0 text-red-700"
         onClick={() => onEdit(step)}
       >
         Edit
@@ -90,53 +42,34 @@ function SummaryRow({
   )
 }
 
-export function Step5({ data, setData, onEdit }: Step5Props) {
+export function Step5({ data, onEdit }: Step5Props) {
   const summary = [
     {
-      label: 'Farm type',
-      value:
-        data.farmTypes.length > 0
-          ? data.farmTypes
-              .map(farmType => FARM_TYPE_LABELS[farmType])
-              .join(', ')
-          : 'Not provided',
+      label: 'Taxpayer type',
+      value: TAXPAYER_TYPE_LABELS[data.taxpayerType],
       step: 1
     },
     {
-      label: 'Primary crops or products',
-      value:
-        data.primaryCrops.length > 0
-          ? data.primaryCrops.join(', ')
-          : 'Not provided',
+      label: 'Canton',
+      value: data.cantonCode
+        ? `${data.cantonCode} - ${CANTON_LABELS[data.cantonCode]}`
+        : 'Not provided',
       step: 2
     },
     {
-      label: 'Farm size',
-      value:
-        data.farmSizeHa === null
-          ? 'Not provided'
-          : `${data.farmSizeHa.toFixed(2)} ha`,
+      label: 'Municipality',
+      value: data.municipality.trim() || 'Not provided',
+      step: 2
+    },
+    {
+      label: 'Research focus',
+      value: data.bio.trim() || 'Not provided',
       step: 3
     },
     {
-      label: 'Location',
-      value:
-        [data.region.trim(), getCountryName(data.countryCode)]
-          .filter(value => value && value !== 'Not provided')
-          .join(', ') || 'Not provided',
-      step: 4
-    },
-    {
-      label: 'Climate zone',
-      value: data.climateZone
-        ? CLIMATE_LABELS[data.climateZone]
-        : 'Not provided',
-      step: 4
-    },
-    {
       label: 'Preferred language',
-      value: getLanguageLabel(data.preferredLanguage),
-      step: 5
+      value: LANGUAGE_LABELS[data.preferredLanguage],
+      step: 4
     }
   ]
 
@@ -144,36 +77,16 @@ export function Step5({ data, setData, onEdit }: Step5Props) {
     <section className="space-y-6">
       <div className="space-y-2">
         <h1 className="text-3xl font-semibold tracking-normal">
-          Almost done - one last thing.
+          Ready for official Swiss tax search.
         </h1>
         <p className="text-muted-foreground">
-          AgriEvidence can prioritize research results in your preferred
-          language where available.
+          Review the context SwissTaxSearch will use to prioritize official tax
+          sources.
         </p>
       </div>
 
-      <div className="grid gap-2">
-        <Select
-          value={data.preferredLanguage}
-          onValueChange={preferredLanguage =>
-            setData(current => ({ ...current, preferredLanguage }))
-          }
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Choose language" />
-          </SelectTrigger>
-          <SelectContent>
-            {LANGUAGE_OPTIONS.map(language => (
-              <SelectItem key={language.code} value={language.code}>
-                {language.label} ({language.code})
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-
       <div className="rounded-2xl border border-input bg-background">
-        <div className="px-4 pt-4 pb-3 border-b border-input">
+        <div className="border-b border-input px-4 pb-3 pt-4">
           <p className="text-sm font-medium">Your profile summary</p>
         </div>
         <div className="px-4 py-1">

@@ -4,15 +4,15 @@
  * Assembles MessageExportData by fetching:
  * - The assistant message and its parts (text + source parts)
  * - The preceding user query from the same chat
- * - Curated source metadata matched by domain
+ * - Official source metadata matched by domain
  *
  * This module is server-side only. The caller must pass an RLS-enforced
  * Supabase client so ownership is validated before data is returned.
  */
 import type { SupabaseClient } from '@supabase/supabase-js'
 
-import type { EvidenceScore } from '@/lib/agri/evidence-score'
 import type { Source } from '@/lib/supabase/types'
+import type { EvidenceScore } from '@/lib/swiss-tax/official-source-score'
 
 import { getAllSources } from './sources'
 
@@ -27,9 +27,9 @@ export interface ExportSource {
   domain: string
   /** Snippet extracted from the page, if available. */
   snippet: string | null
-  /** Curated source type label for display (e.g. "Research", "Government"). */
+  /** Official source type label for display (e.g. "Tax authority", "Forms"). */
   sourceTypeLabel: string | null
-  /** 0–100 trust score from the curated sources list, or null if not matched. */
+  /** 0-100 trust score from the official sources list, or null if not matched. */
   trustScore: number | null
 }
 
@@ -60,9 +60,12 @@ function extractDomain(url: string): string {
   }
 }
 
-/** Matches a URL's hostname against a curated source domain (handles subdomains). */
+/** Matches a URL's hostname against an official source domain (handles subdomains). */
 function matchesDomain(urlDomain: string, curatedDomain: string): boolean {
-  const norm = curatedDomain.trim().toLowerCase().replace(/^www\./, '')
+  const norm = curatedDomain
+    .trim()
+    .toLowerCase()
+    .replace(/^www\./, '')
   return urlDomain === norm || urlDomain.endsWith(`.${norm}`)
 }
 
@@ -74,12 +77,12 @@ function capitalise(s: string): string {
 /** Builds the display label for a source type. */
 function sourceTypeLabel(sourceType: Source['sourceType']): string {
   const map: Record<Source['sourceType'], string> = {
-    research: 'Research',
-    government: 'Government',
-    extension: 'Extension',
-    news: 'News',
-    database: 'Database',
-    marketplace: 'Marketplace'
+    tax_authority: 'Tax authority',
+    official_portal: 'Official portal',
+    legal_database: 'Legal database',
+    official_news: 'Official news',
+    statistics: 'Statistics',
+    forms: 'Forms'
   }
   return map[sourceType] ?? capitalise(sourceType)
 }
@@ -113,7 +116,8 @@ export async function getMessageExportData(
 
   const chatId = msgRow.chat_id as string
   const metadata = (msgRow.metadata ?? {}) as Record<string, unknown>
-  const evidenceScore = (metadata.evidence_score ?? null) as EvidenceScore | null
+  const evidenceScore = (metadata.evidence_score ??
+    null) as EvidenceScore | null
 
   // ── 2. Fetch parts for this message ───────────────────────────────────────
   const { data: parts, error: partsError } = await supabase
@@ -134,7 +138,11 @@ export async function getMessageExportData(
     .trim()
 
   // ── 3. Collect source URLs from source parts ───────────────────────────────
-  type SourceEntry = { url: string; title: string | null; snippet: string | null }
+  type SourceEntry = {
+    url: string
+    title: string | null
+    snippet: string | null
+  }
   const seen = new Set<string>()
   const rawSources: SourceEntry[] = []
 
@@ -188,13 +196,13 @@ export async function getMessageExportData(
     }
   }
 
-  // ── 5. Match sources against curated list ─────────────────────────────────
+  // ── 5. Match sources against official source list ─────────────────────────
   // getAllSources uses a module-level 10-min TTL cache — safe to call per-request
-  const allCuratedSources = await getAllSources(supabase)
+  const allOfficialSources = await getAllSources(supabase)
 
   const sources: ExportSource[] = rawSources.map((s, i) => {
     const domain = extractDomain(s.url)
-    const match = allCuratedSources.find(cs =>
+    const match = allOfficialSources.find(cs =>
       matchesDomain(domain, cs.domain)
     )
     return {

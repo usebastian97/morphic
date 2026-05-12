@@ -43,7 +43,9 @@ export function useExportPdf(messageId: string): UseExportPdfResult {
       )
 
       if (res.status === 404) {
-        toast.error('Response not found. PDF export is only available for saved messages.')
+        toast.error(
+          'Response not found. PDF export is only available for saved messages.'
+        )
         return
       }
 

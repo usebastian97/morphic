@@ -210,7 +210,10 @@ export function ActionButtons({
                 )}
                 onClick={() => handlePromptClick(prompt)}
               >
-                <Icon icon="solar:magnifer-bold" className="h-3 w-3 text-muted-foreground flex-shrink-0 group-hover:text-foreground" />
+                <Icon
+                  icon="solar:magnifer-bold"
+                  className="h-3 w-3 text-muted-foreground flex-shrink-0 group-hover:text-foreground"
+                />
                 <span className="line-clamp-1">{prompt}</span>
               </button>
             ))}

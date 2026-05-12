@@ -11,25 +11,25 @@ import { deleteChat } from '@/lib/actions/chat'
 import { Chat as DBChat } from '@/lib/supabase/types'
 
 import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle
 } from '@/components/ui/alert-dialog'
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import {
-    SidebarMenuAction,
-    SidebarMenuButton,
-    SidebarMenuItem
+  SidebarMenuAction,
+  SidebarMenuButton,
+  SidebarMenuItem
 } from '@/components/ui/sidebar'
 
 import { Spinner } from '../ui/spinner'

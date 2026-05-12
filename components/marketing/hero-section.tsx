@@ -65,7 +65,10 @@ export function HeroSection() {
             <div className="bg-muted p-4 font-mono text-[13px] leading-[1.5] text-muted-foreground">
               {/* Search bar row */}
               <div className="flex items-center gap-3 rounded-[8px] border border-border bg-card px-4 py-2.5">
-                <Icon icon="solar:magnifer-bold" className="size-4 shrink-0 text-muted-foreground" />
+                <Icon
+                  icon="solar:magnifer-bold"
+                  className="size-4 shrink-0 text-muted-foreground"
+                />
                 <span className="truncate text-foreground">
                   How does quantum entanglement work?
                 </span>
