@@ -1,4 +1,5 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
+
 import {
   mapSearchEventRow,
   mapTrendingQueryRow,
@@ -20,24 +21,30 @@ export async function logSearchEvent(
     | 'userId'
     | 'query'
     | 'chatId'
-    | 'topicIds'
+    | 'taxTopicIds'
     | 'providersUsed'
     | 'resultCount'
     | 'latencyMs'
     | 'countryCode'
+    | 'cantonCode'
+    | 'municipality'
+    | 'taxpayerType'
     | 'platform'
     | 'hasEngagement'
   >
 ): Promise<void> {
-  const { error } = await db.from('search_events').insert({
+  const { error } = await db.from('tax_search_events').insert({
     user_id: event.userId ?? null,
     query: event.query,
     chat_id: event.chatId ?? null,
-    topic_ids: event.topicIds ?? [],
+    tax_topic_ids: event.taxTopicIds ?? [],
     providers_used: event.providersUsed ?? [],
     result_count: event.resultCount ?? null,
     latency_ms: event.latencyMs ?? null,
     country_code: event.countryCode ?? null,
+    canton_code: event.cantonCode ?? null,
+    municipality: event.municipality ?? null,
+    taxpayer_type: event.taxpayerType ?? null,
     platform: event.platform ?? null,
     has_engagement: event.hasEngagement
   })
@@ -51,7 +58,7 @@ export async function getUserSearchHistory(
   limit = 20
 ): Promise<SearchEvent[]> {
   const { data, error } = await db
-    .from('search_events')
+    .from('tax_search_events')
     .select('*')
     .eq('user_id', userId)
     .order('created_at', { ascending: false })
@@ -72,14 +79,14 @@ export async function getTrendingQueries(
   topicId?: string
 ): Promise<TrendingQuery[]> {
   let query = db
-    .from('trending_queries')
+    .from('trending_tax_queries')
     .select('*')
     .eq('period', period)
     .order('query_count', { ascending: false })
     .limit(limit)
 
   if (topicId) {
-    query = query.eq('topic_id', topicId)
+    query = query.eq('tax_topic_id', topicId)
   }
 
   const { data, error } = await query

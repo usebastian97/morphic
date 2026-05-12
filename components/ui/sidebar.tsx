@@ -2,9 +2,9 @@
 
 import * as React from 'react'
 
+import { Icon } from '@iconify/react'
 import { Slot } from '@radix-ui/react-slot'
 import { cva, VariantProps } from 'class-variance-authority'
-import { PanelLeft } from 'lucide-react'
 
 import { cn } from '@/lib/utils/index'
 
@@ -301,7 +301,7 @@ const SidebarTrigger = React.forwardRef<
       }}
       {...props}
     >
-      <PanelLeft size={18} />
+      <Icon icon="solar:sidebar-minimalistic-bold" className="size-[18px]" />
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   )

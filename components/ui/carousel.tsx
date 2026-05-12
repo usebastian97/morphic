@@ -2,10 +2,10 @@
 
 import * as React from 'react'
 
+import { Icon } from '@iconify/react'
 import useEmblaCarousel, {
   type UseEmblaCarouselType
 } from 'embla-carousel-react'
-import { ArrowLeft, ArrowRight } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 
@@ -218,7 +218,7 @@ const CarouselPrevious = React.forwardRef<
       onClick={scrollPrev}
       {...props}
     >
-      <ArrowLeft className="size-4" />
+      <Icon icon="solar:alt-arrow-left-bold" className="size-4" />
       <span className="sr-only">Previous slide</span>
     </Button>
   )
@@ -247,7 +247,7 @@ const CarouselNext = React.forwardRef<
       onClick={scrollNext}
       {...props}
     >
-      <ArrowRight className="size-4" />
+      <Icon icon="solar:alt-arrow-right-bold" className="size-4" />
       <span className="sr-only">Next slide</span>
     </Button>
   )

@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react'
 
 import { UseChatHelpers } from '@ai-sdk/react'
-import { Copy, ThumbsDown, ThumbsUp } from 'lucide-react'
+import { Icon } from '@iconify/react'
 import { toast } from 'sonner'
 
 import { stripSpecBlocks } from '@/lib/render/strip-spec-blocks'
@@ -12,6 +12,7 @@ import type { UIDataTypes, UIMessage, UITools } from '@/lib/types/ai'
 import { cn } from '@/lib/utils'
 import { processCitations } from '@/lib/utils/citation'
 
+import { ExportPDFButton } from './artifact/export-pdf-button'
 import { Button } from './ui/button'
 import { ChatShare } from './chat-share'
 import { RetryButton } from './retry-button'
@@ -114,8 +115,9 @@ export function MessageActions({
         onClick={handleCopy}
         className="rounded-full"
       >
-        <Copy size={14} />
+        <Icon icon="solar:copy-bold" className="size-3.5" />
       </Button>
+      <ExportPDFButton messageId={messageId} />
       {traceId && (
         <>
           {(feedbackScore === null || feedbackScore === 1) && (
@@ -126,9 +128,11 @@ export function MessageActions({
               disabled={isSubmittingFeedback || feedbackScore === 1}
               className="rounded-full"
             >
-              <ThumbsUp
-                size={14}
-                className={feedbackScore === 1 ? 'fill-current' : ''}
+              <Icon
+                icon="solar:like-bold"
+                className={
+                  feedbackScore === 1 ? 'fill-current size-3.5' : 'size-3.5'
+                }
               />
             </Button>
           )}
@@ -140,9 +144,11 @@ export function MessageActions({
               disabled={isSubmittingFeedback || feedbackScore === -1}
               className="rounded-full"
             >
-              <ThumbsDown
-                size={14}
-                className={feedbackScore === -1 ? 'fill-current' : ''}
+              <Icon
+                icon="solar:dislike-bold"
+                className={
+                  feedbackScore === -1 ? 'fill-current size-3.5' : 'size-3.5'
+                }
               />
             </Button>
           )}

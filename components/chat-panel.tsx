@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import Textarea from 'react-textarea-autosize'
 
 import { UseChatHelpers } from '@ai-sdk/react'
-import { ArrowUp, ChevronDown, MessageCirclePlus, Square } from 'lucide-react'
+import { Icon } from '@iconify/react'
 import { toast } from 'sonner'
 
 import { SHORTCUT_EVENTS } from '@/lib/keyboard-shortcuts'
@@ -187,7 +187,7 @@ export function ChatPanel({
         <div className="mb-6 md:mb-10 flex flex-col items-center gap-2 md:gap-4">
           <IconBlinkingLogo className="size-12" />
           <h1 className="text-xl md:text-2xl font-medium text-foreground">
-            What would you like to know?
+            What Swiss tax question can I help with?
           </h1>
         </div>
       )}
@@ -222,11 +222,11 @@ export function ChatPanel({
               type="button"
               variant="outline"
               size="icon"
-              className="absolute -top-10 right-0 z-20 size-8 rounded-full shadow-md"
+              className="absolute -top-10 right-0 z-20 size-8 rounded-full border border-border"
               onClick={handleScrollToBottom}
               title="Scroll to bottom"
             >
-              <ChevronDown size={16} />
+              <Icon icon="solar:alt-arrow-down-bold" className="size-4" />
             </Button>
           </div>
         )}
@@ -246,9 +246,9 @@ export function ChatPanel({
 
         <div
           className={cn(
-            'relative flex flex-col w-full gap-2 bg-muted rounded-3xl border border-input transition-shadow',
+            'relative flex w-full flex-col gap-2 rounded-3xl border border-input bg-muted transition-colors transition-shadow',
             isInputFocused &&
-              'ring-1 ring-ring/20 ring-offset-1 ring-offset-background/50'
+              'border-red-700/40 ring-1 ring-red-700/20 ring-offset-1 ring-offset-background/50'
           )}
         >
           <Textarea
@@ -261,7 +261,11 @@ export function ChatPanel({
             onCompositionEnd={handleCompositionEnd}
             onFocus={() => setIsInputFocused(true)}
             onBlur={() => setIsInputFocused(false)}
-            placeholder={messages.length > 0 ? 'Reply...' : 'Ask anything...'}
+            placeholder={
+              messages.length > 0
+                ? 'Reply...'
+                : 'Ask about Swiss taxes, forms, deadlines, or cantons...'
+            }
             spellCheck={false}
             value={input}
             disabled={isLoading || isToolInvocationInProgress()}
@@ -352,11 +356,11 @@ export function ChatPanel({
                   variant="outline"
                   size="icon"
                   onClick={handleNewChat}
-                  className="shrink-0 size-8 md:size-10 rounded-full group"
+                  className="group size-8 shrink-0 rounded-full border-input bg-background text-red-700 shadow-none hover:border-red-700/40 hover:bg-red-700/10 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 md:size-10"
                   type="button"
                   disabled={isLoading}
                 >
-                  <MessageCirclePlus className="size-4 group-hover:rotate-12 transition-all" />
+                  <Icon icon="solar:chat-round-bold" className="size-4" />
                 </Button>
               )}
               <Button
@@ -364,7 +368,7 @@ export function ChatPanel({
                 size={'icon'}
                 className={cn(
                   isLoading && 'animate-pulse',
-                  'size-8 md:size-10 rounded-full'
+                  'size-8 rounded-full bg-red-700 text-white hover:bg-red-800 active:bg-red-800 md:size-10'
                 )}
                 disabled={
                   (input.length === 0 && !isLoading) || !hasAvailableModels
@@ -377,9 +381,12 @@ export function ChatPanel({
                 }
               >
                 {isLoading ? (
-                  <Square className="size-4 md:size-5" />
+                  <Icon icon="solar:stop-bold" className="size-4 md:size-5" />
                 ) : (
-                  <ArrowUp className="size-4 md:size-5" />
+                  <Icon
+                    icon="solar:arrow-up-bold"
+                    className="size-4 md:size-5"
+                  />
                 )}
               </Button>
             </div>

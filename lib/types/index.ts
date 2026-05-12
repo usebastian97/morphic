@@ -9,6 +9,21 @@ export type SearchResults = {
   query: string
   toolCallId?: string // ID of the search tool call
   citationMap?: Record<number, SearchResultItem> // Maps citation number to search result
+  metadata?: SearchResultsMetadata
+}
+
+export type SearchResultsMetadata = {
+  provider?: string
+  sourcePolicy?: 'official_swiss_tax_only'
+  enrichedQueries?: string[]
+  trustedDomainsCount?: number
+  trustedResults?: number
+  officialDomainsCount?: number
+  officialResults?: number
+  nonOfficialResults?: number
+  openWebResults?: number
+  searchIds?: string[]
+  sessionIds?: string[]
 }
 
 // If include_images_description is true, images are objects with url/description.

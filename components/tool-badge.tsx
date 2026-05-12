@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Link, Search } from 'lucide-react'
+import { Icon } from '@iconify/react'
 
 import { cn } from '@/lib/utils'
 
@@ -19,10 +19,12 @@ export const ToolBadge: React.FC<ToolBadgeProps> = ({
   className,
   isLoading = false
 }) => {
-  const icon: Record<string, React.ReactNode> = {
-    search: <Search size={14} />,
-    fetch: <Link size={14} />
+  const iconMap: Record<string, string> = {
+    search: 'solar:magnifer-bold',
+    fetch: 'solar:link-bold'
   }
+
+  const iconName = iconMap[tool]
 
   return (
     <Badge
@@ -33,7 +35,7 @@ export const ToolBadge: React.FC<ToolBadgeProps> = ({
       )}
       variant={'secondary'}
     >
-      <span className="shrink-0">{icon[tool]}</span>
+      {iconName && <Icon icon={iconName} className="size-3.5 shrink-0" />}
       <span className="ml-1 truncate">{children}</span>
     </Badge>
   )

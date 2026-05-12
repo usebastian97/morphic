@@ -6,24 +6,31 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils/index'
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+  'inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       variant: {
-        default: 'bg-primary text-primary-foreground hover:bg-primary/90',
+        // Primary — Cursor Orange CTA
+        default:
+          'rounded-[8px] bg-primary text-primary-foreground hover:bg-[#d04200] active:bg-[#d04200]',
+        // Ink download button (dark CTA)
+        download:
+          'rounded-[8px] bg-foreground text-background hover:bg-foreground/90',
         destructive:
-          'bg-destructive text-destructive-foreground hover:bg-destructive/90',
+          'rounded-[8px] bg-destructive text-destructive-foreground hover:bg-destructive/90',
+        // Secondary — white card on cream with hairline border
         outline:
-          'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
+          'rounded-[8px] border border-border bg-card text-foreground hover:bg-accent',
         secondary:
-          'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-        ghost: 'hover:bg-accent hover:text-accent-foreground',
+          'rounded-[8px] bg-secondary text-secondary-foreground hover:bg-secondary/80',
+        ghost: 'rounded-[8px] hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline'
       },
       size: {
-        default: 'h-10 px-4 py-2',
-        sm: 'h-9 rounded-md px-3',
-        lg: 'h-11 rounded-md px-8',
+        default:
+          'h-10 px-[18px] py-[10px] text-[14px] font-medium leading-none',
+        sm: 'h-9 px-3 text-[13px]',
+        lg: 'h-11 px-[20px] py-[12px] text-[14px] font-medium leading-none',
         icon: 'size-10'
       }
     },

@@ -147,60 +147,85 @@ export function mapPartRow(row: any): Part {
 }
 
 // ============================================================
-// AgriEvidence – extended types
+// SwissTaxSearch – domain types
 // ============================================================
 
-export type FarmType =
-  | 'crop_farming'
-  | 'livestock'
-  | 'horticulture'
-  | 'aquaculture'
-  | 'viticulture'
-  | 'agroforestry'
-  | 'beekeeping'
-  | 'mixed'
+export type CantonCode =
+  | 'AG'
+  | 'AI'
+  | 'AR'
+  | 'BE'
+  | 'BL'
+  | 'BS'
+  | 'FR'
+  | 'GE'
+  | 'GL'
+  | 'GR'
+  | 'JU'
+  | 'LU'
+  | 'NE'
+  | 'NW'
+  | 'OW'
+  | 'SG'
+  | 'SH'
+  | 'SO'
+  | 'SZ'
+  | 'TG'
+  | 'TI'
+  | 'UR'
+  | 'VD'
+  | 'VS'
+  | 'ZG'
+  | 'ZH'
 
-export type ClimateZone =
-  | 'tropical'
-  | 'subtropical'
-  | 'temperate'
-  | 'arid'
-  | 'semi_arid'
-  | 'mediterranean'
+export type TaxpayerType =
+  | 'individual'
+  | 'self_employed'
+  | 'business'
+  | 'expat'
+  | 'advisor'
+  | 'institution'
 
-export type SubscriptionTier = 'free' | 'pro' | 'enterprise'
+export type PreferredLanguage = 'de' | 'fr' | 'it' | 'en'
+
+export type SubscriptionTier = 'free' | 'pro' | 'plus' | 'max'
+
+export type SwissCanton = {
+  code: CantonCode
+  nameDe: string
+  nameFr: string
+  nameIt: string
+  nameEn: string
+  officialDomain: string
+  taxOfficeUrl: string | null
+  languages: string[]
+  createdAt: Date
+}
 
 export type UserProfile = {
   id: string
   fullName: string | null
   avatarUrl: string | null
   bio: string | null
-  farmTypes: FarmType[]
-  primaryCrops: string[]
-  farmSizeHa: number | null
-  countryCode: string | null
-  region: string | null
-  climateZone: ClimateZone | null
-  preferredLanguage: string
+  cantonCode: CantonCode | null
+  municipality: string | null
+  taxpayerType: TaxpayerType
+  preferredLanguage: PreferredLanguage
   subscriptionTier: SubscriptionTier
-  searchesThisMonth: number
-  monthlySearchLimit: number
   onboardingCompleted: boolean
   lastSeenAt: Date | null
   createdAt: Date
   updatedAt: Date
 }
 
-export type Topic = {
+export type TaxTopic = {
   id: string
   slug: string
   name: string
-  nameEs: string | null
+  nameDe: string | null
   nameFr: string | null
-  namePt: string | null
-  nameAr: string | null
-  nameHi: string | null
-  nameSw: string | null
+  nameIt: string | null
+  nameEn: string | null
   description: string | null
   parentId: string | null
   icon: string | null
@@ -210,21 +235,25 @@ export type Topic = {
   createdAt: Date
 }
 
-export type ChatTopic = {
+export type Topic = TaxTopic
+
+export type ChatTaxTopic = {
   chatId: string
   topicId: string
   confidence: number | null
 }
 
 export type SourceType =
-  | 'research'
-  | 'government'
-  | 'extension'
-  | 'news'
-  | 'database'
-  | 'marketplace'
+  | 'tax_authority'
+  | 'official_portal'
+  | 'legal_database'
+  | 'official_news'
+  | 'statistics'
+  | 'forms'
 
-export type Source = {
+export type JurisdictionLevel = 'federal' | 'canton' | 'municipality'
+
+export type OfficialSource = {
   id: string
   slug: string
   name: string
@@ -232,15 +261,19 @@ export type Source = {
   domain: string
   description: string | null
   logoUrl: string | null
+  jurisdictionLevel: JurisdictionLevel
+  cantonCode: CantonCode | null
+  municipality: string | null
   sourceType: SourceType
   languages: string[]
-  regions: string[]
   trustScore: number
   isActive: boolean
   isFeatured: boolean
   createdAt: Date
   updatedAt: Date
 }
+
+export type Source = OfficialSource
 
 export type Collection = {
   id: string
@@ -271,38 +304,46 @@ export type Bookmark = {
 
 export type TrendingPeriod = 'daily' | 'weekly' | 'monthly'
 
-export type SearchEvent = {
+export type TaxSearchEvent = {
   id: string
   userId: string | null
   query: string
   chatId: string | null
-  topicIds: string[]
+  taxTopicIds: string[]
   providersUsed: string[]
   resultCount: number | null
   latencyMs: number | null
   countryCode: string | null
+  cantonCode: CantonCode | null
+  municipality: string | null
+  taxpayerType: TaxpayerType | null
   platform: string | null
   hasEngagement: boolean
   createdAt: Date
 }
 
-export type TrendingQuery = {
+export type SearchEvent = TaxSearchEvent
+
+export type TrendingTaxQuery = {
   id: string
   query: string
-  topicId: string | null
+  taxTopicId: string | null
   period: TrendingPeriod
   queryCount: number
   countryCode: string | null
+  cantonCode: CantonCode | null
   computedAt: Date
 }
 
+export type TrendingQuery = TrendingTaxQuery
+
 export type AlertType =
-  | 'pest'
-  | 'disease'
-  | 'weather'
-  | 'market'
-  | 'regulation'
-  | 'research'
+  | 'deadline'
+  | 'law_change'
+  | 'rate_change'
+  | 'form_update'
+  | 'official_news'
+  | 'guidance_update'
 
 export type AlertFrequency = 'immediate' | 'daily' | 'weekly'
 export type AlertChannel = 'email' | 'push' | 'webhook'
@@ -312,9 +353,9 @@ export type AlertSubscription = {
   userId: string
   name: string
   alertType: AlertType
-  topicId: string | null
+  taxTopicId: string | null
   keywords: string[]
-  regions: string[]
+  cantonCodes: CantonCode[]
   channels: AlertChannel[]
   frequency: AlertFrequency
   webhookUrl: string | null
@@ -324,7 +365,76 @@ export type AlertSubscription = {
   updatedAt: Date
 }
 
-// ---- AgriEvidence row mappers ----
+export type PolarStatus =
+  | 'active'
+  | 'past_due'
+  | 'canceled'
+  | 'unpaid'
+  | 'trialing'
+  | 'paused'
+
+export type Subscription = {
+  id: string
+  userId: string
+  tier: SubscriptionTier
+  monthlyCredits: number
+  creditsBalance: number
+  rolloverCredits: number
+  topupCredits: number
+  currentPeriodStart: Date
+  currentPeriodEnd: Date
+  polarCustomerId: string | null
+  polarSubscriptionId: string | null
+  polarProductId: string | null
+  polarStatus: PolarStatus
+  cancelAtPeriodEnd: boolean
+  trialEnd: Date | null
+  createdAt: Date
+  updatedAt: Date
+}
+
+export type CreditType = 'monthly' | 'rollover' | 'topup'
+export type CreditOperation =
+  | 'monthly_grant'
+  | 'rollover'
+  | 'speed_search'
+  | 'quality_search'
+  | 'deep_research'
+  | 'topup_purchase'
+  | 'topup_expiry'
+  | 'promo'
+  | 'refund'
+
+export type CreditLedgerEntry = {
+  id: string
+  userId: string
+  amount: number
+  creditType: CreditType
+  operation: CreditOperation
+  polarOrderId: string | null
+  chatId: string | null
+  messageId: string | null
+  description: string | null
+  expiresAt: Date | null
+  balanceAfter: number
+  createdAt: Date
+}
+
+// ---- SwissTaxSearch row mappers ----
+
+export function mapSwissCantonRow(row: any): SwissCanton {
+  return {
+    code: row.code as CantonCode,
+    nameDe: row.name_de,
+    nameFr: row.name_fr,
+    nameIt: row.name_it,
+    nameEn: row.name_en,
+    officialDomain: row.official_domain,
+    taxOfficeUrl: row.tax_office_url ?? null,
+    languages: row.languages ?? [],
+    createdAt: new Date(row.created_at)
+  }
+}
 
 export function mapUserProfileRow(row: any): UserProfile {
   return {
@@ -332,16 +442,11 @@ export function mapUserProfileRow(row: any): UserProfile {
     fullName: row.full_name ?? null,
     avatarUrl: row.avatar_url ?? null,
     bio: row.bio ?? null,
-    farmTypes: row.farm_types ?? [],
-    primaryCrops: row.primary_crops ?? [],
-    farmSizeHa: row.farm_size_ha ?? null,
-    countryCode: row.country_code ?? null,
-    region: row.region ?? null,
-    climateZone: row.climate_zone ?? null,
-    preferredLanguage: row.preferred_language,
+    cantonCode: (row.canton_code ?? null) as CantonCode | null,
+    municipality: row.municipality ?? null,
+    taxpayerType: row.taxpayer_type as TaxpayerType,
+    preferredLanguage: row.preferred_language as PreferredLanguage,
     subscriptionTier: row.subscription_tier as SubscriptionTier,
-    searchesThisMonth: row.searches_this_month,
-    monthlySearchLimit: row.monthly_search_limit,
     onboardingCompleted: row.onboarding_completed,
     lastSeenAt: row.last_seen_at ? new Date(row.last_seen_at) : null,
     createdAt: new Date(row.created_at),
@@ -349,17 +454,15 @@ export function mapUserProfileRow(row: any): UserProfile {
   }
 }
 
-export function mapTopicRow(row: any): Topic {
+export function mapTaxTopicRow(row: any): TaxTopic {
   return {
     id: row.id,
     slug: row.slug,
     name: row.name,
-    nameEs: row.name_es ?? null,
+    nameDe: row.name_de ?? null,
     nameFr: row.name_fr ?? null,
-    namePt: row.name_pt ?? null,
-    nameAr: row.name_ar ?? null,
-    nameHi: row.name_hi ?? null,
-    nameSw: row.name_sw ?? null,
+    nameIt: row.name_it ?? null,
+    nameEn: row.name_en ?? null,
     description: row.description ?? null,
     parentId: row.parent_id ?? null,
     icon: row.icon ?? null,
@@ -370,7 +473,9 @@ export function mapTopicRow(row: any): Topic {
   }
 }
 
-export function mapSourceRow(row: any): Source {
+export const mapTopicRow = mapTaxTopicRow
+
+export function mapOfficialSourceRow(row: any): OfficialSource {
   return {
     id: row.id,
     slug: row.slug,
@@ -379,9 +484,11 @@ export function mapSourceRow(row: any): Source {
     domain: row.domain,
     description: row.description ?? null,
     logoUrl: row.logo_url ?? null,
+    jurisdictionLevel: row.jurisdiction_level as JurisdictionLevel,
+    cantonCode: (row.canton_code ?? null) as CantonCode | null,
+    municipality: row.municipality ?? null,
     sourceType: row.source_type as SourceType,
     languages: row.languages ?? [],
-    regions: row.regions ?? [],
     trustScore: row.trust_score,
     isActive: row.is_active,
     isFeatured: row.is_featured,
@@ -389,6 +496,8 @@ export function mapSourceRow(row: any): Source {
     updatedAt: new Date(row.updated_at)
   }
 }
+
+export const mapSourceRow = mapOfficialSourceRow
 
 export function mapCollectionRow(row: any): Collection {
   return {
@@ -427,11 +536,14 @@ export function mapSearchEventRow(row: any): SearchEvent {
     userId: row.user_id ?? null,
     query: row.query,
     chatId: row.chat_id ?? null,
-    topicIds: row.topic_ids ?? [],
+    taxTopicIds: row.tax_topic_ids ?? [],
     providersUsed: row.providers_used ?? [],
     resultCount: row.result_count ?? null,
     latencyMs: row.latency_ms ?? null,
     countryCode: row.country_code ?? null,
+    cantonCode: (row.canton_code ?? null) as CantonCode | null,
+    municipality: row.municipality ?? null,
+    taxpayerType: (row.taxpayer_type ?? null) as TaxpayerType | null,
     platform: row.platform ?? null,
     hasEngagement: row.has_engagement,
     createdAt: new Date(row.created_at)
@@ -442,10 +554,11 @@ export function mapTrendingQueryRow(row: any): TrendingQuery {
   return {
     id: row.id,
     query: row.query,
-    topicId: row.topic_id ?? null,
+    taxTopicId: row.tax_topic_id ?? null,
     period: row.period as TrendingPeriod,
     queryCount: row.query_count,
     countryCode: row.country_code ?? null,
+    cantonCode: (row.canton_code ?? null) as CantonCode | null,
     computedAt: new Date(row.computed_at)
   }
 }
@@ -456,9 +569,9 @@ export function mapAlertSubscriptionRow(row: any): AlertSubscription {
     userId: row.user_id,
     name: row.name,
     alertType: row.alert_type as AlertType,
-    topicId: row.topic_id ?? null,
+    taxTopicId: row.tax_topic_id ?? null,
     keywords: row.keywords ?? [],
-    regions: row.regions ?? [],
+    cantonCodes: row.canton_codes ?? [],
     channels: row.channels as AlertChannel[],
     frequency: row.frequency as AlertFrequency,
     webhookUrl: row.webhook_url ?? null,
@@ -466,6 +579,45 @@ export function mapAlertSubscriptionRow(row: any): AlertSubscription {
     lastSentAt: row.last_sent_at ? new Date(row.last_sent_at) : null,
     createdAt: new Date(row.created_at),
     updatedAt: new Date(row.updated_at)
+  }
+}
+
+export function mapSubscriptionRow(row: any): Subscription {
+  return {
+    id: row.id,
+    userId: row.user_id,
+    tier: row.tier as SubscriptionTier,
+    monthlyCredits: row.monthly_credits,
+    creditsBalance: row.credits_balance,
+    rolloverCredits: row.rollover_credits,
+    topupCredits: row.topup_credits,
+    currentPeriodStart: new Date(row.current_period_start),
+    currentPeriodEnd: new Date(row.current_period_end),
+    polarCustomerId: row.polar_customer_id ?? null,
+    polarSubscriptionId: row.polar_subscription_id ?? null,
+    polarProductId: row.polar_product_id ?? null,
+    polarStatus: row.polar_status as PolarStatus,
+    cancelAtPeriodEnd: row.cancel_at_period_end,
+    trialEnd: row.trial_end ? new Date(row.trial_end) : null,
+    createdAt: new Date(row.created_at),
+    updatedAt: new Date(row.updated_at)
+  }
+}
+
+export function mapCreditLedgerRow(row: any): CreditLedgerEntry {
+  return {
+    id: row.id,
+    userId: row.user_id,
+    amount: row.amount,
+    creditType: row.credit_type as CreditType,
+    operation: row.operation as CreditOperation,
+    polarOrderId: row.polar_order_id ?? null,
+    chatId: row.chat_id ?? null,
+    messageId: row.message_id ?? null,
+    description: row.description ?? null,
+    expiresAt: row.expires_at ? new Date(row.expires_at) : null,
+    balanceAfter: row.balance_after,
+    createdAt: new Date(row.created_at)
   }
 }
 

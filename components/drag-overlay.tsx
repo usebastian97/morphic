@@ -1,5 +1,6 @@
 'use client'
-import { UploadCloud } from 'lucide-react'
+
+import { Icon } from '@iconify/react'
 
 import { cn } from '@/lib/utils'
 
@@ -12,7 +13,7 @@ export function DragOverlay({ visible }: { visible: boolean }) {
       )}
     >
       <div className="text-center text-muted-foreground">
-        <UploadCloud className="mx-auto mb-4 size-10" />
+        <Icon icon="solar:cloud-upload-bold" className="mx-auto mb-4 size-10" />
         <p className="text-lg font-semibold">Drop files here</p>
       </div>
     </div>

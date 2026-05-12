@@ -1,13 +1,13 @@
 'use client'
 
-import { useMemo, useState } from 'react'
 import Image from 'next/image'
+import { useMemo, useState } from 'react'
 
-import { Check, ChevronDown } from 'lucide-react'
+import { Icon } from '@iconify/react'
 
 import {
-  MODEL_SELECTION_COOKIE,
-  serializeModelSelectionCookie
+    MODEL_SELECTION_COOKIE,
+    serializeModelSelectionCookie
 } from '@/lib/config/model-selection-cookie'
 import { ModelSelectorData } from '@/lib/types/model-selector'
 import { Model } from '@/lib/types/models'
@@ -16,12 +16,12 @@ import { setCookie } from '@/lib/utils/cookies'
 
 import { Button } from './ui/button'
 import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList
 } from './ui/command'
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 
@@ -41,7 +41,7 @@ const PROVIDER_LOGO_BY_ID: Record<string, string> = {
 function ProviderLogo({ providerId }: { providerId: string }) {
   const logoSrc = PROVIDER_LOGO_BY_ID[providerId]
   if (!logoSrc) {
-    return <span className="size-4 rounded-full bg-muted-foreground/30" />
+    return <span className="size-4 rounded-full bg-red-700/15" />
   }
 
   return (
@@ -96,7 +96,7 @@ export function ModelSelectorClient({ data }: ModelSelectorClientProps) {
     return (
       <Button
         variant="outline"
-        className="text-sm rounded-full shadow-none gap-1 transition-all px-3 py-2 h-auto bg-muted border-none"
+        className="h-auto gap-1 rounded-full border-input bg-background px-3 py-2 text-sm shadow-none transition-colors"
         disabled
         title="No enabled models are available"
       >
@@ -118,13 +118,17 @@ export function ModelSelectorClient({ data }: ModelSelectorClientProps) {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="text-sm rounded-full shadow-none gap-1 transition-all px-3 py-2 h-auto bg-muted border-none"
+          className={cn(
+            'h-auto gap-1 rounded-full border-input bg-background px-3 py-2 text-sm text-foreground shadow-none transition-colors hover:border-red-700/40 hover:bg-red-700/10',
+            open && 'border-red-700/40 bg-red-700/10'
+          )}
         >
           <ProviderLogo providerId={selectedModel.providerId} />
           <span className="truncate max-w-40 text-xs font-medium">
             {selectedModel.name}
           </span>
-          <ChevronDown
+          <Icon
+            icon="solar:alt-arrow-down-bold"
             className={cn(
               'h-3 w-3 ml-0.5 opacity-50 transition-transform duration-200',
               open && 'rotate-180'
@@ -132,7 +136,11 @@ export function ModelSelectorClient({ data }: ModelSelectorClientProps) {
           />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[300px] p-0" align="end" sideOffset={6}>
+      <PopoverContent
+        className="w-[300px] border-input bg-background p-0"
+        align="end"
+        sideOffset={6}
+      >
         <Command>
           <CommandInput placeholder="Search models..." />
           <CommandList>
@@ -164,10 +172,13 @@ export function ModelSelectorClient({ data }: ModelSelectorClientProps) {
                       }}
                       className="cursor-pointer"
                     >
-                      <Check
+                      <Icon
+                        icon="solar:check-bold"
                         className={cn(
                           'h-4 w-4',
-                          isSelected ? 'opacity-100' : 'opacity-0'
+                          isSelected
+                            ? 'opacity-100 text-red-700 dark:text-red-400'
+                            : 'opacity-0'
                         )}
                       />
                       <ProviderLogo providerId={model.providerId} />

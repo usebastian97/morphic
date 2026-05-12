@@ -3,66 +3,65 @@ import { Icon } from '@iconify/react'
 const features = [
   {
     icon: 'solar:magnifer-bold',
-    title: 'Real-time Web Search',
+    title: 'Official-only search',
     description:
-      'Every answer is grounded in live search results. Morphic queries the web at the moment you ask, not from a stale training snapshot.',
+      'Every search is constrained to Swiss federal, cantonal, municipal, legal, statistics, and official tax authority domains.'
   },
   {
-    icon: 'solar:magic-stick-bold',
-    title: 'Generative UI',
+    icon: 'solar:map-point-bold',
+    title: 'Canton-aware context',
     description:
-      "Answers aren't walls of text. Morphic renders structured responses — with sources, follow-up questions, and rich components — in real time.",
+      'Profiles can capture canton, municipality, taxpayer type, and language so answers highlight the right jurisdiction.'
   },
   {
-    icon: 'solar:layers-bold',
-    title: 'Multiple AI Providers',
+    icon: 'solar:document-text-bold',
+    title: 'Source-backed answers',
     description:
-      'Switch between OpenAI, Anthropic, Google, and more. Bring your own API keys and stay in control of which models power your searches.',
+      'Responses include inline citations, official-source coverage scores, source breakdowns, and PDF exports for later review.'
   },
   {
     icon: 'solar:code-bold',
-    title: 'Fully Open Source',
+    title: 'Self-hostable stack',
     description:
-      'Every line is on GitHub under the MIT license. Self-host it in minutes with Docker, or deploy to Vercel with a single click.',
-  },
+      'Run the app with your own Supabase database, Redis cache, DeepSeek models, Parallel Search key, and Docker services.'
+  }
 ]
 
 export function FeaturesSection() {
   return (
-    <section id="features" className="relative px-6 py-24">
-      {/* Subtle background */}
-      <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-muted/20" />
-      </div>
-
-      <div className="mx-auto max-w-6xl">
-        {/* Header */}
-        <div className="mb-16 text-center">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+    <section id="features" className="bg-background px-6 py-[80px]">
+      <div className="mx-auto max-w-[1200px]">
+        {/* Section label */}
+        <div className="mb-4 flex justify-center">
+          <span className="text-[11px] font-semibold uppercase tracking-[0.88px] text-muted-foreground">
             Capabilities
-          </p>
-          <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Built for answers, not just chat.
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl text-base text-muted-foreground">
-            Morphic combines a powerful search engine with a generative UI framework
-            to give you answers you can actually trust and trace.
-          </p>
+          </span>
         </div>
 
-        {/* Grid */}
+        {/* Section head — weight 400, not bold */}
+        <h2 className="mx-auto mb-4 max-w-2xl text-center text-[26px] sm:text-[36px] font-normal leading-[1.2] tracking-[-0.72px] text-foreground">
+          Built for Swiss tax research.
+        </h2>
+        <p className="mx-auto mb-14 max-w-xl text-center text-[16px] leading-[1.5] text-muted-foreground">
+          SwissTaxSearch combines real-time retrieval with structured answers
+          for tax rates, forms, deadlines, official news, and jurisdiction
+          comparisons.
+        </p>
+
+        {/* Feature cards — hairline bordered, white on cream */}
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {features.map(f => (
             <div
               key={f.title}
-              className="group relative rounded-2xl border border-border/60 bg-card/60 p-6 backdrop-blur-sm transition-all hover:border-border hover:bg-card hover:shadow-md"
+              className="rounded-[12px] border border-border bg-card p-6"
             >
-              {/* Icon */}
-              <div className="mb-4 inline-flex size-10 items-center justify-center rounded-xl border border-border/60 bg-muted/50">
-                <Icon icon={f.icon} className="size-5 text-foreground/70" />
+              <div className="mb-4 inline-flex size-9 items-center justify-center rounded-[8px] border border-border bg-background">
+                <Icon icon={f.icon} className="size-4 text-foreground" />
               </div>
-              <h3 className="mb-2 font-semibold text-foreground">{f.title}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <h3 className="mb-2 text-[16px] font-semibold leading-[1.4] text-foreground">
+                {f.title}
+              </h3>
+              <p className="text-[14px] leading-[1.5] text-muted-foreground">
                 {f.description}
               </p>
             </div>

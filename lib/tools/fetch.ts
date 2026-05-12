@@ -1,6 +1,7 @@
 import { tool, UIToolInvocation } from 'ai'
 
 import { fetchSchema } from '@/lib/schema/fetch'
+import { isOfficialSwissTaxUrl } from '@/lib/swiss-tax/official-domain-policy'
 import { SearchResults as SearchResultsType } from '@/lib/types'
 
 const CONTENT_CHARACTER_LIMIT = 50000
@@ -14,7 +15,7 @@ async function fetchRegularData(url: string): Promise<SearchResultsType> {
     const response = await fetch(url, {
       signal: controller.signal,
       headers: {
-        'User-Agent': 'Mozilla/5.0 (compatible; Morphic/1.0)',
+        'User-Agent': 'Mozilla/5.0 (compatible; SwissTaxSearch/1.0)',
         Accept:
           'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
       }
@@ -166,6 +167,12 @@ export const fetchTool = tool({
     yield {
       state: 'fetching' as const,
       url
+    }
+
+    if (!isOfficialSwissTaxUrl(url)) {
+      throw new Error(
+        'SwissTaxSearch can only fetch official Swiss federal, cantonal, or municipal government URLs. Use search to find the relevant official source.'
+      )
     }
 
     let results: SearchResultsType

@@ -9,6 +9,7 @@ import type {
 } from '@/lib/types/ai'
 import type { DynamicToolPart } from '@/lib/types/dynamic-tools'
 
+import { EvidenceScoreBadge } from './artifact/evidence-score-badge'
 import { AnswerSection } from './answer-section'
 import { DynamicToolDisplay } from './dynamic-tool-display'
 import ResearchProcessSection from './research-process-section'
@@ -176,6 +177,20 @@ export function RenderMessage({
   })
   // Flush tail (no subsequent text)
   flushBuffer('tail')
+
+  // Show evidence score badge below assistant message when sources are present
+  const hasSourceParts = message.parts?.some(
+    (p: any) => p.type === 'source-url' || p.type === 'source-document'
+  )
+  if (hasSourceParts) {
+    elements.push(
+      <EvidenceScoreBadge
+        key={`${messageId}-evidence-score`}
+        messageId={messageId}
+        className="mt-1"
+      />
+    )
+  }
 
   return <>{elements}</>
 }

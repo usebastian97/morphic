@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 
-import { PlusCircle } from 'lucide-react'
+import { Icon } from '@iconify/react'
 
 import { SerperSearchResultItem } from '@/lib/types'
 
@@ -99,7 +99,7 @@ export function VideoResultGrid({
               </Card>
               {showOverlay && (
                 <div className="absolute inset-0 bg-black/30 rounded-md flex items-center justify-center text-white/80 text-sm">
-                  <PlusCircle size={24} />
+                  <Icon icon="solar:add-circle-bold" className="size-6" />
                 </div>
               )}
             </div>

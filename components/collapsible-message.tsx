@@ -1,4 +1,4 @@
-import { ChevronDown } from 'lucide-react'
+import { Icon } from '@iconify/react'
 
 import { cn } from '@/lib/utils'
 
@@ -121,7 +121,8 @@ export function CollapsibleMessage({
                     )}
                     aria-label={isOpen ? 'Collapse' : 'Expand'}
                   >
-                    <ChevronDown
+                    <Icon
+                      icon="solar:alt-arrow-down-bold"
                       className={cn(
                         'text-muted-foreground transition-transform duration-200 group-data-[state=open]:rotate-180',
                         chevronSize === 'sm' ? 'h-3 w-3' : 'h-4 w-4'
@@ -137,7 +138,10 @@ export function CollapsibleMessage({
                     className="p-1 hover:bg-accent rounded-md transition-transform duration-200 group"
                     aria-label={isOpen ? 'Collapse' : 'Expand'}
                   >
-                    <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform duration-200 group-data-[state=open]:rotate-180" />
+                    <Icon
+                      icon="solar:alt-arrow-down-bold"
+                      className="h-4 w-4 text-muted-foreground transition-transform duration-200 group-data-[state=open]:rotate-180"
+                    />
                   </button>
                 </CollapsibleTrigger>
               )}

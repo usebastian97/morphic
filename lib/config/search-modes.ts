@@ -1,8 +1,16 @@
-import { Search } from 'lucide-react'
+import { createElement } from 'react'
+
+import { Icon } from '@iconify/react'
 
 import { SearchMode } from '@/lib/types/search'
 
-import { IconLogoOutline } from '@/components/ui/icons'
+function SpeedIcon({ className }: { className?: string }) {
+  return createElement(Icon, { icon: 'solar:bolt-bold', className })
+}
+
+function QualityIcon({ className }: { className?: string }) {
+  return createElement(Icon, { icon: 'solar:stars-bold', className })
+}
 
 export interface SearchModeConfig {
   value: SearchMode
@@ -16,17 +24,18 @@ export interface SearchModeConfig {
 export const SEARCH_MODE_CONFIGS: SearchModeConfig[] = [
   {
     value: 'quick',
-    label: 'Quick',
-    description: 'Streamlined search for fast, concise responses',
-    icon: Search,
-    color: 'text-amber-500'
+    label: 'Speed',
+    description: 'Faster answers for straightforward Swiss tax questions.',
+    icon: SpeedIcon,
+    color: 'text-amber-700 dark:text-amber-300'
   },
   {
     value: 'adaptive',
-    label: 'Adaptive',
-    description: 'Adaptive agentic search with intelligent query understanding',
-    icon: IconLogoOutline,
-    color: 'text-violet-500'
+    label: 'Quality',
+    description:
+      'Deeper review for complex Swiss tax questions, comparisons, and source-heavy research.',
+    icon: QualityIcon,
+    color: 'text-red-700 dark:text-red-300'
   }
 ]
 

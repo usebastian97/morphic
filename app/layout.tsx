@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter as FontSans } from 'next/font/google'
+import { Inter as FontSans, JetBrains_Mono as FontMono } from 'next/font/google'
 
 import { Analytics } from '@vercel/analytics/next'
 
@@ -19,12 +19,17 @@ const fontSans = FontSans({
   variable: '--font-sans'
 })
 
-const title = 'Morphic'
+const fontMono = FontMono({
+  subsets: ['latin'],
+  variable: '--font-mono'
+})
+
+const title = 'SwissTaxSearch'
 const description =
-  'A fully open-source AI-powered answer engine with a generative UI.'
+  'Real-time AI search across official Swiss federal, cantonal, and municipal tax sources.'
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://morphic.sh'),
+  metadataBase: new URL('https://swisstaxsearch.ch'),
   title,
   description,
   openGraph: {
@@ -35,7 +40,7 @@ export const metadata: Metadata = {
     title,
     description,
     card: 'summary_large_image',
-    creator: '@miiura'
+    creator: 'SwissTaxSearch'
   }
 }
 
@@ -67,16 +72,20 @@ export default async function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn('font-sans antialiased', fontSans.variable)}>
+      <body
+        className={cn(
+          'font-sans antialiased',
+          fontSans.variable,
+          fontMono.variable
+        )}
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          <UserProvider hasUser={!!userId}>
-            {children}
-          </UserProvider>
+          <UserProvider hasUser={!!userId}>{children}</UserProvider>
           <Toaster />
           <Analytics />
         </ThemeProvider>

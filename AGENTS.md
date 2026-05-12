@@ -86,10 +86,10 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=[your-supabase-anon-key]
    - Database actions in `/lib/actions/chat-db.ts`
 
 4. **Search System**
-   - Multiple providers: Tavily (default), SearXNG (self-hosted), Exa (neural), Brave (optional)
-   - Brave Search is optional; if API key is not provided, type="general" searches fall back to primary provider
-   - Video/image search support depends on configured providers (Brave provides best multimedia support)
-   - URL-specific search capabilities
+   - Primary provider: Parallel Search for SwissTaxSearch official Swiss tax retrieval
+   - Query enrichment uses DeepSeek V4 Flash before sending searches to Parallel
+   - Official Swiss federal, cantonal, and municipal domains are loaded from Supabase `official_sources`
+   - Open-web fallback is disabled; non-official URLs are rejected by the fetch tool
    - Configurable search depth and result limits
 
 5. **Component Organization** (`/components`)
@@ -109,8 +109,8 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=[your-supabase-anon-key]
 ### Required Variables
 
 ```bash
-OPENAI_API_KEY=      # Default AI provider
-TAVILY_API_KEY=      # Default search provider
+DEEPSEEK_API_KEY=    # Default AI provider for SwissTaxSearch
+PARALLEL_API_KEY=    # Default search provider for SwissTaxSearch
 DATABASE_URL=        # PostgreSQL connection string
 ```
 

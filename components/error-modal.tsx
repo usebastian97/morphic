@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 
-import { AlertCircle, Clock, RefreshCw } from 'lucide-react'
+import { Icon } from '@iconify/react'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -41,12 +41,27 @@ export function ErrorModal({
   const getErrorIcon = () => {
     switch (error.type) {
       case 'rate-limit':
-        return <Clock className="size-6 text-yellow-500" />
+        return (
+          <Icon
+            icon="solar:clock-circle-bold"
+            className="size-6 text-yellow-500"
+          />
+        )
       case 'auth':
       case 'forbidden':
-        return <AlertCircle className="size-6 text-red-500" />
+        return (
+          <Icon
+            icon="solar:danger-circle-bold"
+            className="size-6 text-red-500"
+          />
+        )
       default:
-        return <AlertCircle className="size-6 text-orange-500" />
+        return (
+          <Icon
+            icon="solar:danger-circle-bold"
+            className="size-6 text-orange-500"
+          />
+        )
     }
   }
 
@@ -55,7 +70,7 @@ export function ErrorModal({
       case 'rate-limit':
         return 'Rate Limit Exceeded'
       case 'auth':
-        return 'Continue with Morphic'
+        return 'Continue with SwissTaxSearch'
       case 'forbidden':
         return 'Access Denied'
       default:
@@ -73,7 +88,7 @@ export function ErrorModal({
       case 'auth':
         return (
           error.message ||
-          'To use Morphic, sign in to your account or create a new one.'
+          'To search official Swiss tax sources, sign in to your account or create a new one.'
         )
       case 'forbidden':
         return 'You do not have permission to access this resource.'
@@ -139,7 +154,7 @@ export function ErrorModal({
                   }}
                   className="w-full"
                 >
-                  <RefreshCw className="mr-2 size-4" />
+                  <Icon icon="solar:refresh-bold" className="mr-2 size-4" />
                   Try Again
                 </Button>
               )}

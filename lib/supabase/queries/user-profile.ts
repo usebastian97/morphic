@@ -1,8 +1,6 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
-import {
-  mapUserProfileRow,
-  type UserProfile
-} from '../types'
+
+import { mapUserProfileRow, type UserProfile } from '../types'
 
 type DB = SupabaseClient
 
@@ -38,12 +36,9 @@ export async function updateUserProfile(
       | 'fullName'
       | 'avatarUrl'
       | 'bio'
-      | 'farmTypes'
-      | 'primaryCrops'
-      | 'farmSizeHa'
-      | 'countryCode'
-      | 'region'
-      | 'climateZone'
+      | 'cantonCode'
+      | 'municipality'
+      | 'taxpayerType'
       | 'preferredLanguage'
       | 'onboardingCompleted'
     >
@@ -51,17 +46,18 @@ export async function updateUserProfile(
 ): Promise<UserProfile> {
   const row: Record<string, unknown> = {}
 
-  if (updates.fullName !== undefined)           row.full_name = updates.fullName
-  if (updates.avatarUrl !== undefined)          row.avatar_url = updates.avatarUrl
-  if (updates.bio !== undefined)                row.bio = updates.bio
-  if (updates.farmTypes !== undefined)          row.farm_types = updates.farmTypes
-  if (updates.primaryCrops !== undefined)       row.primary_crops = updates.primaryCrops
-  if (updates.farmSizeHa !== undefined)         row.farm_size_ha = updates.farmSizeHa
-  if (updates.countryCode !== undefined)        row.country_code = updates.countryCode
-  if (updates.region !== undefined)             row.region = updates.region
-  if (updates.climateZone !== undefined)        row.climate_zone = updates.climateZone
-  if (updates.preferredLanguage !== undefined)  row.preferred_language = updates.preferredLanguage
-  if (updates.onboardingCompleted !== undefined) row.onboarding_completed = updates.onboardingCompleted
+  if (updates.fullName !== undefined) row.full_name = updates.fullName
+  if (updates.avatarUrl !== undefined) row.avatar_url = updates.avatarUrl
+  if (updates.bio !== undefined) row.bio = updates.bio
+  if (updates.cantonCode !== undefined) row.canton_code = updates.cantonCode
+  if (updates.municipality !== undefined)
+    row.municipality = updates.municipality
+  if (updates.taxpayerType !== undefined)
+    row.taxpayer_type = updates.taxpayerType
+  if (updates.preferredLanguage !== undefined)
+    row.preferred_language = updates.preferredLanguage
+  if (updates.onboardingCompleted !== undefined)
+    row.onboarding_completed = updates.onboardingCompleted
 
   const { data, error } = await db
     .from('user_profiles')
@@ -75,7 +71,7 @@ export async function updateUserProfile(
 }
 
 // ---------------------------------------------------------------
-// Touch last_seen_at + increment search counter
+// Touch last_seen_at
 // ---------------------------------------------------------------
 
 export async function touchUserActivity(db: DB, userId: string): Promise<void> {
@@ -84,10 +80,5 @@ export async function touchUserActivity(db: DB, userId: string): Promise<void> {
     .update({ last_seen_at: new Date().toISOString() })
     .eq('id', userId)
 
-  if (error) throw error
-}
-
-export async function incrementSearchCount(db: DB, userId: string): Promise<void> {
-  const { error } = await db.rpc('increment_search_count', { uid: userId })
   if (error) throw error
 }

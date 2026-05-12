@@ -4,11 +4,15 @@ import { cookies } from 'next/headers'
 import { loadChat } from '@/lib/actions/chat'
 import { calculateConversationTurn, trackChatEvent } from '@/lib/analytics'
 import { getCurrentUserId } from '@/lib/auth/get-current-user'
-import { checkAndEnforceAdaptiveLimit } from '@/lib/rate-limit/adaptive-limit'
-import { checkAndEnforceOverallChatLimit } from '@/lib/rate-limit/chat-limits'
 import { checkAndEnforceGuestLimit } from '@/lib/rate-limit/guest-limit'
 import { createChatStreamResponse } from '@/lib/streaming/create-chat-stream-response'
 import { createEphemeralChatStreamResponse } from '@/lib/streaming/create-ephemeral-chat-stream-response'
+import {
+  createCreditLimitResponse,
+  getSearchCreditCharge
+} from '@/lib/subscriptions/credits'
+import { getUserProfile } from '@/lib/supabase/queries/user-profile'
+import { createClient } from '@/lib/supabase/server'
 import { SearchMode } from '@/lib/types/search'
 import { selectModel } from '@/lib/utils/model-selection'
 import { perfLog, perfTime } from '@/lib/utils/perf-logging'
@@ -29,6 +33,19 @@ export async function POST(req: Request) {
   try {
     const body = await req.json()
     const { message, messages, chatId, trigger, messageId, isNewChat } = body
+
+    // ── MOCK MODE ───────────────────────────────────────────────────────────
+    // Intercepts ALL chat requests and returns a canned streaming response.
+    // No AI calls, no DB writes, no auth required.
+    // To disable: remove ENABLE_MOCK_CHAT from .env.local (or set it to false).
+    // To permanently remove: delete lib/mock/ and this block.
+    if (process.env.ENABLE_MOCK_CHAT === 'true') {
+      const { createMockChatStreamResponse } = await import(
+        '@/lib/mock/create-mock-chat-stream-response'
+      )
+      return createMockChatStreamResponse(body)
+    }
+    // ────────────────────────────────────────────────────────────────────────
 
     perfLog(
       `API Route - Start: chatId=${chatId}, trigger=${trigger}, isNewChat=${isNewChat}`
@@ -67,6 +84,7 @@ export async function POST(req: Request) {
 
     const guestChatEnabled = process.env.ENABLE_GUEST_CHAT === 'true'
     const isGuest = !userId
+    const isAnonymousModeUser = process.env.ENABLE_AUTH === 'false'
     if (isGuest && !guestChatEnabled) {
       return new Response('Authentication required', {
         status: 401,
@@ -91,7 +109,7 @@ export async function POST(req: Request) {
     const searchMode: SearchMode =
       searchModeCookie && ['quick', 'adaptive'].includes(searchModeCookie)
         ? (searchModeCookie as SearchMode)
-        : 'quick'
+        : 'adaptive'
 
     const selectedModel = await selectModel({ searchMode, cookieStore })
 
@@ -112,7 +130,7 @@ export async function POST(req: Request) {
       )
     }
 
-    // Adaptive mode is gated to authenticated users on cloud deployments.
+    // Quality mode (internal value: adaptive) is gated on cloud deployments.
     // Guests are nudged to sign in instead of being downgraded silently.
     if (
       isGuest &&
@@ -122,7 +140,7 @@ export async function POST(req: Request) {
       return new Response(
         JSON.stringify({
           error:
-            'Sign in to use Adaptive mode. Quick mode remains available without an account.',
+            'Sign in to use Quality mode. Speed mode remains available without an account.',
           mode: 'adaptive',
           authRequired: true
         }),
@@ -133,15 +151,28 @@ export async function POST(req: Request) {
       )
     }
 
-    if (!isGuest) {
-      const overallLimitResponse = await checkAndEnforceOverallChatLimit(userId)
-      if (overallLimitResponse) return overallLimitResponse
+    const creditCharge = getSearchCreditCharge(searchMode)
+    const supabase = !isGuest ? await createClient() : null
 
-      if (searchMode === 'adaptive') {
-        const adaptiveLimitResponse = await checkAndEnforceAdaptiveLimit(userId)
-        if (adaptiveLimitResponse) return adaptiveLimitResponse
-      }
+    if (!isGuest && !isAnonymousModeUser && supabase) {
+      const creditLimitResponse = await createCreditLimitResponse({
+        db: supabase,
+        userId,
+        charge: creditCharge
+      })
+      if (creditLimitResponse) return creditLimitResponse
     }
+
+    const userProfile =
+      !isGuest && !isAnonymousModeUser
+        ? await getUserProfile(
+            supabase ?? (await createClient()),
+            userId
+          ).catch(error => {
+            console.warn('[Chat] Failed to fetch user profile:', error)
+            return null
+          })
+        : null
 
     const streamStart = performance.now()
     perfLog(
@@ -165,7 +196,9 @@ export async function POST(req: Request) {
           messageId,
           abortSignal,
           isNewChat,
-          searchMode
+          searchMode,
+          userProfile,
+          creditCharge: isAnonymousModeUser ? null : creditCharge
         })
 
     perfTime('createChatStreamResponse resolved', streamStart)
@@ -208,7 +241,7 @@ export async function POST(req: Request) {
     // Invalidate the cache for this specific chat after creating the response
     // This ensures the next load will get fresh data
     if (chatId && !isGuest) {
-      revalidateTag(`chat-${chatId}`, 'max')
+      revalidateTag(`chat-${chatId}`)
     }
 
     const totalTime = performance.now() - startTime

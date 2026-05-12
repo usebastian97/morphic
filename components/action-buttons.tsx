@@ -2,14 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 
-import {
-  FileText,
-  HelpCircle,
-  LucideIcon,
-  Newspaper,
-  Scale,
-  Search
-} from 'lucide-react'
+import { Icon } from '@iconify/react'
 
 import { cn } from '@/lib/utils'
 
@@ -19,34 +12,34 @@ import { Button } from './ui/button'
 const FOCUS_OUT_DELAY_MS = 100 // Delay to ensure focus has actually moved
 
 interface ActionCategory {
-  icon: LucideIcon
+  icon: string
   label: string
   key: string
 }
 
 const actionCategories: ActionCategory[] = [
   {
-    icon: Search,
+    icon: 'solar:magnifer-bold',
     label: 'Research',
     key: 'research'
   },
   {
-    icon: Scale,
+    icon: 'solar:scale-bold',
     label: 'Compare',
     key: 'compare'
   },
   {
-    icon: Newspaper,
+    icon: 'solar:newspaper-bold',
     label: 'Latest',
     key: 'latest'
   },
   {
-    icon: FileText,
+    icon: 'solar:document-text-bold',
     label: 'Summarize',
     key: 'summarize'
   },
   {
-    icon: HelpCircle,
+    icon: 'solar:info-circle-bold',
     label: 'Explain',
     key: 'explain'
   }
@@ -54,34 +47,34 @@ const actionCategories: ActionCategory[] = [
 
 const promptSamples: Record<string, string[]> = {
   research: [
-    'Why is Nvidia growing so rapidly?',
-    'Research the latest AI developments',
-    'What are the key trends in robotics?',
-    'What are the latest breakthroughs in renewable energy?'
+    'Find the latest official ESTV VAT/MWST changes',
+    'What deductions are available for Zurich taxpayers?',
+    'Research withholding tax guidance for cross-border workers',
+    'Find official Swiss tax filing updates for this year'
   ],
   compare: [
-    'Tesla vs BYD vs Toyota comparison',
-    'Compare Next.js, Remix, and Astro',
-    'AWS vs GCP vs Azure',
-    'iPhone vs Android ecosystem comparison'
+    'Compare income tax rules in Zurich and Vaud',
+    'Compare cantonal corporate tax changes',
+    'Compare VAT/MWST rates and exemptions',
+    'Compare filing deadlines in Basel-Stadt and Bern'
   ],
   latest: [
-    'Latest news today',
-    'What happened in tech this week?',
-    'Recent breakthroughs in medicine',
-    'Latest AI model releases'
+    'Latest official Swiss tax news',
+    'Latest ESTV updates this month',
+    'Latest cantonal tax updates in Zurich',
+    'Latest Fedlex changes for Swiss tax law'
   ],
   summarize: [
-    'Summarize: https://arxiv.org/pdf/2504.19678',
-    "Summarize this week's business news",
-    'Create an executive summary of AI trends',
-    'Summarize recent climate change research'
+    'Summarize the latest ESTV VAT guidance',
+    'Summarize official Zurich deduction guidance',
+    'Summarize Swiss filing deadline changes',
+    'Summarize official double taxation guidance'
   ],
   explain: [
-    'Explain neural networks simply',
-    'How does blockchain work?',
-    'What is quantum entanglement?',
-    'Explain CRISPR gene editing'
+    'Explain direct federal tax in Switzerland',
+    'Explain VAT/MWST registration thresholds',
+    'Explain Swiss withholding tax for employees',
+    'Explain double taxation agreements in Switzerland'
   ]
 }
 
@@ -179,25 +172,22 @@ export function ActionButtons({
           )}
         >
           <div className="flex flex-wrap justify-center gap-2 px-2">
-            {actionCategories.map(category => {
-              const Icon = category.icon
-              return (
-                <Button
-                  key={category.key}
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  className={cn(
-                    'flex items-center gap-2 whitespace-nowrap rounded-full',
-                    'text-xs sm:text-sm px-3 sm:px-4'
-                  )}
-                  onClick={() => handleCategoryClick(category)}
-                >
-                  <Icon className="h-3 w-3 sm:h-4 sm:w-4" />
-                  <span>{category.label}</span>
-                </Button>
-              )
-            })}
+            {actionCategories.map(category => (
+              <Button
+                key={category.key}
+                type="button"
+                variant="outline"
+                size="sm"
+                className={cn(
+                  'flex items-center gap-2 whitespace-nowrap rounded-full border-input bg-background shadow-none hover:border-red-700/40 hover:bg-red-700/10',
+                  'text-xs sm:text-sm px-3 sm:px-4'
+                )}
+                onClick={() => handleCategoryClick(category)}
+              >
+                <Icon icon={category.icon} className="h-3 w-3 sm:h-4 sm:w-4" />
+                <span>{category.label}</span>
+              </Button>
+            ))}
           </div>
         </div>
 
@@ -215,12 +205,15 @@ export function ActionButtons({
                 type="button"
                 className={cn(
                   'w-full text-left px-3 py-2 rounded-md text-sm',
-                  'hover:bg-muted transition-colors',
+                  'hover:bg-red-700/10 transition-colors',
                   'flex items-center gap-2 group'
                 )}
                 onClick={() => handlePromptClick(prompt)}
               >
-                <Search className="h-3 w-3 text-muted-foreground flex-shrink-0 group-hover:text-foreground" />
+                <Icon
+                  icon="solar:magnifer-bold"
+                  className="h-3 w-3 flex-shrink-0 text-red-700/70 group-hover:text-red-700 dark:text-red-400/80 dark:group-hover:text-red-400"
+                />
                 <span className="line-clamp-1">{prompt}</span>
               </button>
             ))}

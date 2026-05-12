@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from 'react'
 
-import { Frown, Meh, Smile } from 'lucide-react'
+import { Icon } from '@iconify/react'
 import { toast } from 'sonner'
 
 import { submitFeedback } from '@/lib/actions/site-feedback'
@@ -67,7 +67,8 @@ export function FeedbackModal({ open, onOpenChange }: FeedbackModalProps) {
         <DialogHeader>
           <DialogTitle>Give feedback</DialogTitle>
           <DialogDescription>
-            Your feedback helps us improve Morphic. Let us know what you think!
+            Your feedback helps us improve SwissTaxSearch. Let us know what you
+            think!
           </DialogDescription>
         </DialogHeader>
 
@@ -83,7 +84,7 @@ export function FeedbackModal({ open, onOpenChange }: FeedbackModalProps) {
                 sentiment === 'positive' && 'bg-green-500 hover:bg-green-600'
               )}
             >
-              <Smile className="size-6" />
+              <Icon icon="solar:emoji-funny-square-bold" className="size-6" />
             </Button>
             <Button
               type="button"
@@ -95,7 +96,7 @@ export function FeedbackModal({ open, onOpenChange }: FeedbackModalProps) {
                 sentiment === 'neutral' && 'bg-yellow-500 hover:bg-yellow-600'
               )}
             >
-              <Meh className="size-6" />
+              <Icon icon="solar:emoji-bold" className="size-6" />
             </Button>
             <Button
               type="button"
@@ -107,7 +108,7 @@ export function FeedbackModal({ open, onOpenChange }: FeedbackModalProps) {
                 sentiment === 'negative' && 'bg-red-500 hover:bg-red-600'
               )}
             >
-              <Frown className="size-6" />
+              <Icon icon="solar:sad-circle-bold" className="size-6" />
             </Button>
           </div>
 

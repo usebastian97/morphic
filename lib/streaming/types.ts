@@ -1,5 +1,7 @@
 import { UIMessage } from '@ai-sdk/react'
 
+import type { SearchCreditCharge } from '../subscriptions/credits'
+import type { UserProfile } from '../supabase/types'
 import { Model } from '../types/models'
 import { SearchMode } from '../types/search'
 
@@ -13,4 +15,6 @@ export interface BaseStreamConfig {
   abortSignal?: AbortSignal
   isNewChat?: boolean
   searchMode?: SearchMode
+  userProfile?: UserProfile | null
+  creditCharge?: SearchCreditCharge | null
 }

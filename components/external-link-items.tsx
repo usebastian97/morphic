@@ -1,25 +1,21 @@
 'use client'
 
-import { SiDiscord, SiGithub, SiX } from 'react-icons/si'
 import Link from 'next/link'
+
+import { Icon } from '@iconify/react'
 
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
 
 const externalLinks = [
   {
-    name: 'X',
-    href: 'https://x.com/morphic_ai',
-    icon: <SiX className="mr-2 h-4 w-4" />
-  },
-  {
-    name: 'Discord',
-    href: 'https://discord.gg/zRxaseCuGq',
-    icon: <SiDiscord className="mr-2 h-4 w-4" />
-  },
-  {
-    name: 'GitHub',
+    name: 'Source code',
     href: 'https://git.new/morphic',
-    icon: <SiGithub className="mr-2 h-4 w-4" />
+    icon: <Icon icon="solar:code-bold" className="mr-2 size-4" />
+  },
+  {
+    name: 'Swiss tax portal',
+    href: 'https://www.estv.admin.ch/',
+    icon: <Icon icon="solar:buildings-bold" className="mr-2 size-4" />
   }
 ]
 

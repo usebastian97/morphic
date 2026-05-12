@@ -7,11 +7,10 @@ import {
   useCallback,
   useEffect,
   useMemo,
-  useRef,
   useState
 } from 'react'
 
-import { Images } from 'lucide-react'
+import { Icon } from '@iconify/react'
 
 import { SearchResultImage } from '@/lib/types'
 
@@ -311,7 +310,7 @@ export const SearchResultsImageSection: React.FC<
                   index === imageSubset.length - 1 &&
                   filteredCount > 1 && (
                     <div className="absolute bottom-1.5 right-1.5 bg-black/40 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-full flex items-center gap-1">
-                      <Images size={14} />
+                      <Icon icon="solar:gallery-bold" className="size-3.5" />
                       <span>{filteredCount}</span>
                     </div>
                   )}

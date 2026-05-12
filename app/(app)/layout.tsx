@@ -1,3 +1,5 @@
+import { headers } from 'next/headers'
+
 import { getCurrentUserId } from '@/lib/auth/get-current-user'
 import { createClient } from '@/lib/supabase/server'
 
@@ -13,6 +15,14 @@ export default async function AppLayout({
 }: {
   children: React.ReactNode
 }) {
+  const requestHeaders = await headers()
+  const pathname = requestHeaders.get('x-pathname') ?? ''
+  const isOnboardingRoute = pathname.startsWith('/onboarding')
+
+  if (isOnboardingRoute) {
+    return <div className="min-h-svh bg-background">{children}</div>
+  }
+
   let user = null
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
@@ -30,7 +40,7 @@ export default async function AppLayout({
   return (
     <div className="fixed inset-0 flex flex-col overflow-hidden">
       <SidebarProvider defaultOpen={false}>
-        {userId && <AppSidebar />}
+        {userId && <AppSidebar user={user} />}
         <KeyboardShortcutHandler />
         <div className="flex flex-col flex-1 min-w-0">
           <Header user={user} />

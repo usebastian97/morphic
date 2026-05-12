@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import TextareaAutosize from 'react-textarea-autosize'
 
-import { Check, ChevronDown, ChevronUp, Copy, Pencil } from 'lucide-react'
+import { Icon } from '@iconify/react'
 
 import { cn } from '@/lib/utils'
 
@@ -155,11 +155,13 @@ export const UserTextSection: React.FC<UserTextSectionProps> = ({
               >
                 {isExpanded ? (
                   <span className="inline-flex items-center gap-0.5">
-                    Show less <ChevronUp className="size-3" />
+                    Show less{' '}
+                    <Icon icon="solar:alt-arrow-up-bold" className="size-3" />
                   </span>
                 ) : (
                   <span className="inline-flex items-center gap-0.5">
-                    Show more <ChevronDown className="size-3" />
+                    Show more{' '}
+                    <Icon icon="solar:alt-arrow-down-bold" className="size-3" />
                   </span>
                 )}
               </button>
@@ -180,9 +182,9 @@ export const UserTextSection: React.FC<UserTextSectionProps> = ({
                 onClick={handleCopyClick}
               >
                 {copied ? (
-                  <Check className="size-3.5" />
+                  <Icon icon="solar:check-bold" className="size-3.5" />
                 ) : (
-                  <Copy className="size-3.5" />
+                  <Icon icon="solar:copy-bold" className="size-3.5" />
                 )}
               </Button>
               <Button
@@ -192,7 +194,7 @@ export const UserTextSection: React.FC<UserTextSectionProps> = ({
                 onMouseDown={e => e.preventDefault()}
                 onClick={handleEditClick}
               >
-                <Pencil className="size-3.5" />
+                <Icon icon="solar:pen-bold" className="size-3.5" />
               </Button>
             </div>
           </div>

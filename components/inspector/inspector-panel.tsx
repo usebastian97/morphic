@@ -1,6 +1,6 @@
 'use client'
 
-import { LightbulbIcon, ListTodo, MessageSquare, Search, X } from 'lucide-react'
+import { Icon } from '@iconify/react'
 
 import { Separator } from '@/components/ui/separator'
 import { TooltipProvider } from '@/components/ui/tooltip'
@@ -21,27 +21,32 @@ export function InspectorPanel() {
       case 'tool-askQuestion':
         const toolName = part.type.replace('tool-', '')
         return {
-          icon: <Search size={18} />,
+          icon: <Icon icon="solar:magnifer-bold" className="size-[18px]" />,
           title: toolName
         }
       case 'tool-todoWrite':
         return {
-          icon: <ListTodo size={18} />,
+          icon: (
+            <Icon
+              icon="solar:checklist-minimalistic-bold"
+              className="size-[18px]"
+            />
+          ),
           title: 'Todo List'
         }
       case 'reasoning':
         return {
-          icon: <LightbulbIcon size={18} />,
+          icon: <Icon icon="solar:lightbulb-bold" className="size-[18px]" />,
           title: 'Thoughts'
         }
       case 'text':
         return {
-          icon: <MessageSquare size={18} />,
+          icon: <Icon icon="solar:chat-square-bold" className="size-[18px]" />,
           title: 'Text'
         }
       default:
         return {
-          icon: <MessageSquare size={18} />,
+          icon: <Icon icon="solar:chat-square-bold" className="size-[18px]" />,
           title: 'Content'
         }
     }
@@ -67,7 +72,7 @@ export function InspectorPanel() {
               aria-label="Close panel"
               tooltipContent="Close"
             >
-              <X className="size-4" />
+              <Icon icon="solar:close-bold" className="size-4" />
             </TooltipButton>
           </div>
           <Separator className="my-1 bg-border/50" />
