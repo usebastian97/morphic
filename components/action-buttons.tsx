@@ -179,7 +179,7 @@ export function ActionButtons({
                 variant="outline"
                 size="sm"
                 className={cn(
-                  'flex items-center gap-2 whitespace-nowrap rounded-full',
+                  'flex items-center gap-2 whitespace-nowrap rounded-full border-input bg-background shadow-none hover:border-red-700/40 hover:bg-red-700/10',
                   'text-xs sm:text-sm px-3 sm:px-4'
                 )}
                 onClick={() => handleCategoryClick(category)}
@@ -205,14 +205,14 @@ export function ActionButtons({
                 type="button"
                 className={cn(
                   'w-full text-left px-3 py-2 rounded-md text-sm',
-                  'hover:bg-muted transition-colors',
+                  'hover:bg-red-700/10 transition-colors',
                   'flex items-center gap-2 group'
                 )}
                 onClick={() => handlePromptClick(prompt)}
               >
                 <Icon
                   icon="solar:magnifer-bold"
-                  className="h-3 w-3 text-muted-foreground flex-shrink-0 group-hover:text-foreground"
+                  className="h-3 w-3 flex-shrink-0 text-red-700/70 group-hover:text-red-700 dark:text-red-400/80 dark:group-hover:text-red-400"
                 />
                 <span className="line-clamp-1">{prompt}</span>
               </button>

@@ -9,7 +9,7 @@ function SpeedIcon({ className }: { className?: string }) {
 }
 
 function QualityIcon({ className }: { className?: string }) {
-  return createElement(Icon, { icon: 'solar:brain-bold', className })
+  return createElement(Icon, { icon: 'solar:stars-bold', className })
 }
 
 export interface SearchModeConfig {
@@ -25,16 +25,17 @@ export const SEARCH_MODE_CONFIGS: SearchModeConfig[] = [
   {
     value: 'quick',
     label: 'Speed',
-    description: 'Fast DeepSeek Flash search for concise answers',
+    description: 'Faster answers for straightforward Swiss tax questions.',
     icon: SpeedIcon,
-    color: 'text-amber-500'
+    color: 'text-amber-700 dark:text-amber-300'
   },
   {
     value: 'adaptive',
     label: 'Quality',
-    description: 'DeepSeek Pro reasoning for deeper evidence synthesis',
+    description:
+      'Deeper review for complex Swiss tax questions, comparisons, and source-heavy research.',
     icon: QualityIcon,
-    color: 'text-violet-500'
+    color: 'text-red-700 dark:text-red-300'
   }
 ]
 

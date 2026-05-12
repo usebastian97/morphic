@@ -1,8 +1,8 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Textarea from 'react-textarea-autosize'
-import { useRouter } from 'next/navigation'
 
 import { UseChatHelpers } from '@ai-sdk/react'
 import { Icon } from '@iconify/react'
@@ -14,14 +14,14 @@ import type { UIDataTypes, UIMessage, UITools } from '@/lib/types/ai'
 import type { ModelSelectorData } from '@/lib/types/model-selector'
 import { cn } from '@/lib/utils'
 
-import { useArtifact } from './artifact/artifact-context'
-import { Button } from './ui/button'
-import { IconBlinkingLogo } from './ui/icons'
 import { ActionButtons } from './action-buttons'
+import { useArtifact } from './artifact/artifact-context'
 import { FileUploadButton } from './file-upload-button'
 import { MessageNavigationDots } from './message-navigation-dots'
 import { ModelSelectorClient } from './model-selector-client'
 import { SearchModeSelector } from './search-mode-selector'
+import { Button } from './ui/button'
+import { IconBlinkingLogo } from './ui/icons'
 import { UploadedFileList } from './uploaded-file-list'
 
 // Constants for timing delays
@@ -246,9 +246,9 @@ export function ChatPanel({
 
         <div
           className={cn(
-            'relative flex flex-col w-full gap-2 bg-muted rounded-3xl border border-input transition-shadow',
+            'relative flex w-full flex-col gap-2 rounded-3xl border border-input bg-muted transition-colors transition-shadow',
             isInputFocused &&
-              'ring-1 ring-ring/20 ring-offset-1 ring-offset-background/50'
+              'border-red-700/40 ring-1 ring-red-700/20 ring-offset-1 ring-offset-background/50'
           )}
         >
           <Textarea
@@ -356,7 +356,7 @@ export function ChatPanel({
                   variant="outline"
                   size="icon"
                   onClick={handleNewChat}
-                  className="shrink-0 size-8 md:size-10 rounded-full group"
+                  className="group size-8 shrink-0 rounded-full border-input bg-background text-red-700 shadow-none hover:border-red-700/40 hover:bg-red-700/10 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 md:size-10"
                   type="button"
                   disabled={isLoading}
                 >
@@ -368,7 +368,7 @@ export function ChatPanel({
                 size={'icon'}
                 className={cn(
                   isLoading && 'animate-pulse',
-                  'size-8 md:size-10 rounded-full'
+                  'size-8 rounded-full bg-red-700 text-white hover:bg-red-800 active:bg-red-800 md:size-10'
                 )}
                 disabled={
                   (input.length === 0 && !isLoading) || !hasAvailableModels

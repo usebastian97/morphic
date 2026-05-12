@@ -59,7 +59,7 @@ export function FileUploadButton({
       onDrop={handleDrop}
       className={cn(
         'relative rounded-full',
-        isDragging && 'ring-2 ring-blue-500 ring-offset-2'
+        isDragging && 'ring-2 ring-red-700/40 ring-offset-2 ring-offset-background'
       )}
       title="Drag and drop or click to upload"
     >
@@ -77,7 +77,7 @@ export function FileUploadButton({
       <Button
         variant="outline"
         size="icon"
-        className="rounded-full"
+        className="rounded-full border-input bg-background text-red-700 shadow-none hover:border-red-700/40 hover:bg-red-700/10 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
         type="button"
         onClick={() => inputRef.current?.click()}
       >

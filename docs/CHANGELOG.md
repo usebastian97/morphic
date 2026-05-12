@@ -32,6 +32,8 @@ _Changes merged to `dev` but not yet reflected in a tagged release._
 
 - **SwissTaxSearch product surface cleanup** — updated live metadata, app shell, auth modals, footer disclaimer, chat starter prompts, marketing page copy, feedback copy, README headline, and `.env.local.example` search guidance to use SwissTaxSearch positioning.
 - **Official-only legacy search guard** — `app/api/advanced-search/route.ts` now loads the official Swiss tax domain policy and filters SearXNG text/image results to official Swiss sources before returning or crawling them.
+- **Chat composer palette alignment** — updated `components/chat-panel.tsx`, `components/search-mode-selector.tsx`, `components/model-selector-client.tsx`, `components/file-upload-button.tsx`, and `components/action-buttons.tsx` so the chat input controls use the onboarding-style red accent, focused borders, and `bg-background` chip surfaces.
+- **Search mode icon clarity** — updated `lib/config/search-modes.ts` and `components/search-mode-selector.tsx` so the speed and quality icons stay visible in both light and dark themes, and the hover descriptions explain Swiss tax use cases instead of mentioning model providers.
 
 - **Product domain pivot** — renamed active behavior from AgriEvidence agriculture search to SwissTaxSearch official Swiss tax search
   - `lib/agents/prompts/search-mode-prompts.ts` — rewritten for official Swiss tax answers, jurisdiction applicability, and non-advice caveats

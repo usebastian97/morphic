@@ -8,17 +8,17 @@ import { SEARCH_MODE_CONFIGS } from '@/lib/config/search-modes'
 import { SearchMode } from '@/lib/types/search'
 import { cn } from '@/lib/utils'
 import {
-  getCookie,
-  setCookie,
-  subscribeToCookieChange
+    getCookie,
+    setCookie,
+    subscribeToCookieChange
 } from '@/lib/utils/cookies'
 
 import { Button } from './ui/button'
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger
 } from './ui/dropdown-menu'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from './ui/hover-card'
 
@@ -74,7 +74,7 @@ export function SearchModeSelector() {
             <Button
               variant="outline"
               size="sm"
-              className="text-xs rounded-full shadow-none gap-1 transition-all"
+              className="gap-1 rounded-full border-input bg-background text-xs shadow-none transition-colors hover:border-red-700/40 hover:bg-red-700/10"
             >
               {SelectedIcon && (
                 <SelectedIcon
@@ -94,7 +94,11 @@ export function SearchModeSelector() {
               />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="w-64" sideOffset={5}>
+          <DropdownMenuContent
+            align="start"
+            className="w-64 border-input bg-background"
+            sideOffset={5}
+          >
             {SEARCH_MODE_CONFIGS.map(config => {
               const ModeIcon = config.icon
               const isSelected = value === config.value
@@ -102,12 +106,12 @@ export function SearchModeSelector() {
                 <DropdownMenuItem
                   key={config.value}
                   onClick={() => handleModeSelect(config.value)}
-                  className="relative flex flex-col items-start gap-1 py-2 pl-8 pr-2 cursor-pointer focus:outline-none"
+                  className="relative flex cursor-pointer flex-col items-start gap-1 py-2 pl-8 pr-2 focus:bg-red-700/10 focus:text-foreground focus:outline-none"
                 >
                   {isSelected && (
                     <Icon
                       icon="solar:check-circle-bold"
-                      className="absolute left-2 top-2.5 size-4"
+                      className="absolute left-2 top-2.5 size-4 text-red-700 dark:text-red-400"
                     />
                   )}
                   <div className="flex items-center gap-2">
@@ -130,10 +134,10 @@ export function SearchModeSelector() {
 
       {/* Desktop Toggle */}
       <div className="hidden sm:block">
-        <div className="relative inline-flex items-center rounded-full bg-background border p-1">
+        <div className="relative inline-flex items-center rounded-full border border-input bg-background p-1">
           {/* Animated background indicator */}
           <div
-            className="absolute inset-1 rounded-full bg-muted transition-all duration-200 ease-out"
+            className="absolute inset-1 rounded-full border border-red-700 bg-red-700 transition-all duration-200 ease-out"
             style={{
               width: `calc(${100 / modeCount}% - 4px)`,
               transform: `translateX(${selectedIndex * 100}%)`
@@ -165,7 +169,7 @@ export function SearchModeSelector() {
                       className={cn(
                         'relative z-10 flex-1 items-center justify-center rounded-full px-3 py-2 transition-colors duration-200',
                         isSelected
-                          ? 'text-foreground'
+                          ? 'text-white'
                           : 'text-muted-foreground hover:text-foreground/80'
                       )}
                       aria-label={`${config.label} mode`}
@@ -174,7 +178,7 @@ export function SearchModeSelector() {
                       <Icon
                         className={cn(
                           'h-3.5 w-3.5 transition-colors',
-                          isSelected ? config.color : ''
+                          isSelected ? 'text-white' : config.color
                         )}
                       />
                     </button>
