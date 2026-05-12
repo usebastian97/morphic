@@ -9,6 +9,7 @@
 
 drop trigger if exists on_auth_user_created on auth.users;
 
+
 drop table if exists public.credit_ledger cascade;
 drop table if exists public.subscriptions cascade;
 drop table if exists public.tax_alert_subscriptions cascade;
